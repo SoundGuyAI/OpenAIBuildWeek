@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Five visual WebXR game proposals for Loop Engineer, an educational game about Loop Engineering and the software development lifecycle.">
+  <title>Loop Engineer — five WebXR game proposals</title>
+  <style>
+    :root {
+      --ink: #0b1724;
+      --paper: #f7f5ef;
+      --muted: #5c6b79;
+      --line: rgba(15, 35, 52, .16);
+      --navy: #081522;
+      --cyan: #66e0e6;
+      --mint: #9cf0bf;
+      --gold: #ffd26d;
+      --coral: #ff8f78;
+      --violet: #bda2ff;
+      --radius: 26px;
+      --shadow: 0 18px 60px rgba(5, 18, 31, .17);
+      --max: 1180px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--navy); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(102, 224, 230, .12), transparent 36rem),
+        linear-gradient(180deg, #07131f 0, #0d2133 42rem, var(--paper) 42rem);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    :focus-visible { outline: 4px solid #ffe083; outline-offset: 4px; }
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      top: 10px;
+      left: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: white;
+      color: #102030;
+      transform: translateY(-160%);
+    }
+    .skip-link:focus { transform: none; }
+    .topbar {
+      position: sticky;
+      z-index: 50;
+      top: 0;
+      backdrop-filter: blur(18px);
+      background: rgba(6, 18, 30, .88);
+      color: white;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .topbar-inner {
+      width: min(var(--max), calc(100% - 28px));
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-height: 68px;
+    }
+    .brand {
+      white-space: nowrap;
+      font-weight: 900;
+      letter-spacing: -.02em;
+    }
+    .brand span { color: var(--cyan); }
+    .topbar nav {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      padding: 10px 2px;
+    }
+    .topbar nav a {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      text-decoration: none;
+      color: #d6e4ef;
+      padding: 8px 11px;
+      border-radius: 999px;
+      font-size: .86rem;
+      font-weight: 750;
+    }
+    .topbar nav a:hover { background: rgba(255,255,255,.1); color: white; }
+    main { display: block; }
+    .shell {
+      width: min(var(--max), calc(100% - 28px));
+      margin-inline: auto;
+    }
+    .cover {
+      color: white;
+      padding: 74px 0 42px;
+    }
+    .cover-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr);
+      align-items: center;
+      gap: clamp(28px, 6vw, 80px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 16px;
+      color: #9beaf0;
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 820px;
+      margin-bottom: 20px;
+      font-size: clamp(3.2rem, 8vw, 7.2rem);
+      line-height: .88;
+      letter-spacing: -.07em;
+    }
+    h1 small {
+      display: block;
+      margin-top: 18px;
+      color: #b7cad8;
+      font-size: .22em;
+      line-height: 1.25;
+      letter-spacing: .01em;
+      font-weight: 650;
+    }
+    .lede {
+      max-width: 700px;
+      margin-bottom: 28px;
+      color: #d5e4ef;
+      font-size: clamp(1.08rem, 2vw, 1.38rem);
+    }
+    .cover-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 11px 18px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: white;
+      font-weight: 850;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .button.primary { background: var(--cyan); color: #082033; border-color: transparent; }
+    .button:hover { transform: translateY(-1px); }
+    .cover-card {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 30px;
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 30px 80px rgba(0,0,0,.28);
+      transform: rotate(2deg);
+    }
+    .cover-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .cover-card figcaption {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      color: #d7e6ef;
+      font-size: .9rem;
+    }
+    .cover-card strong { color: white; }
+    .deadline {
+      margin-top: 30px;
+      padding: 14px 17px;
+      border-left: 4px solid var(--gold);
+      border-radius: 4px 16px 16px 4px;
+      background: rgba(255, 210, 109, .09);
+      color: #f6e7bc;
+      font-size: .94rem;
+    }
+    .paper {
+      margin-top: 34px;
+      padding: clamp(32px, 6vw, 72px) 0;
+      background: var(--paper);
+      border-radius: 38px 38px 0 0;
+    }
+    .section-heading {
+      display: grid;
+      grid-template-columns: minmax(0, .8fr) minmax(300px, 1.2fr);
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 32px;
+    }
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 4.7rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 1.05rem; }
+    .infographic {
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin: 28px 0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background: #10243a;
+    }
+    .infographic img { width: 100%; height: auto; }
+    .diagram-notes, .score-details {
+      margin: -10px 0 28px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+    }
+    .diagram-notes summary, .score-details summary {
+      cursor: pointer;
+      color: #16344a;
+      font-weight: 900;
+    }
+    .diagram-notes ol, .diagram-notes ul { margin-bottom: 0; padding-left: 22px; }
+    .diagram-notes li + li { margin-top: 6px; }
+    .score-details { margin-top: 22px; }
+    .concept-index {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin: 30px 0 50px;
+      padding: 0;
+      list-style: none;
+    }
+    .concept-index li { display: flex; min-width: 0; }
+    .mini-card {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: white;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(6,24,40,.07);
+    }
+    .mini-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .mini-card div { padding: 13px; }
+    .mini-card strong { display: block; line-height: 1.15; }
+    .mini-card span { display: block; margin-top: 5px; color: var(--muted); font-size: .8rem; }
+    .selection-panel {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+      margin: 26px 0 12px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: #e9eef2;
+    }
+    .selection-panel p { margin: 0; }
+    .selection-panel strong { color: #102a40; }
+    .clear-button {
+      min-height: 44px;
+      padding: 8px 14px;
+      border: 1px solid #9cacb8;
+      border-radius: 999px;
+      background: white;
+      color: #18344a;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .concept {
+      --accent: #61dce4;
+      --soft: #dff8f9;
+      min-height: calc(100vh - 68px);
+      padding: clamp(46px, 7vw, 86px) 0;
+      border-top: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 88% 16%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 28rem),
+        var(--paper);
+      scroll-margin-top: 68px;
+    }
+    .concept.garden { --accent: #72b98d; --soft: #e2f3e5; }
+    .concept.kaiju { --accent: #ff8f6a; --soft: #ffe6dc; }
+    .concept.train { --accent: #f0b84f; --soft: #fff0ca; }
+    .concept.museum { --accent: #a98cdc; --soft: #ede5fb; }
+    .concept-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(320px, .82fr);
+      gap: clamp(24px, 5vw, 58px);
+      align-items: center;
+    }
+    .concept-visual {
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      background: #0b1b28;
+    }
+    .concept-visual img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .concept-number {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(6,18,30,.82);
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.28);
+      backdrop-filter: blur(10px);
+    }
+    .concept-copy .tag {
+      display: inline-flex;
+      margin-bottom: 15px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #173247;
+      font-size: .77rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .concept-copy h2 {
+      margin-bottom: 14px;
+      font-size: clamp(2.6rem, 6vw, 5.3rem);
+      line-height: .92;
+      letter-spacing: -.06em;
+    }
+    .concept-copy .pitch { font-size: 1.18rem; font-weight: 650; }
+    .concept-copy .why { color: var(--muted); }
+    .meta-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin: 22px 0;
+    }
+    .meta {
+      padding: 12px;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+    .meta small { display: block; color: var(--muted); font-weight: 700; }
+    .meta strong { display: block; margin-top: 3px; font-size: 1rem; }
+    .shortlist {
+      min-height: 50px;
+      width: 100%;
+      padding: 10px 17px;
+      border: 2px solid #162d3f;
+      border-radius: 999px;
+      background: #162d3f;
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .shortlist[aria-pressed="true"] {
+      background: var(--accent);
+      color: #102131;
+      border-color: #102131;
+    }
+    .concept-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      gap: 24px;
+      margin-top: 34px;
+    }
+    .panel {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.78);
+      box-shadow: 0 8px 30px rgba(10,25,40,.05);
+    }
+    .panel h3 { margin-bottom: 15px; font-size: 1.28rem; }
+    .beats { display: grid; gap: 10px; }
+    .beat {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #f3f5f5;
+    }
+    .beat time { color: #28445a; font-size: .8rem; font-weight: 900; }
+    .beat p { margin: 0; font-size: .91rem; }
+    .beat strong { color: #132d43; }
+    .fact-list { display: grid; gap: 15px; }
+    .fact-list div { padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    .fact-list div:last-child { padding-bottom: 0; border-bottom: 0; }
+    .fact-list dt { margin-bottom: 3px; color: #24455b; font-weight: 900; }
+    .fact-list dd { margin: 0; color: var(--muted); }
+    .next {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 28px;
+    }
+    .next a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 46px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #173247;
+      text-decoration: none;
+      font-weight: 850;
+    }
+    .compare {
+      padding: clamp(50px, 7vw, 90px) 0;
+      background: #e9edf0;
+      scroll-margin-top: 68px;
+    }
+    .table-wrap { overflow-x: auto; border-radius: 20px; box-shadow: var(--shadow); }
+    table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td { padding: 14px 16px; border-bottom: 1px solid #dbe1e5; text-align: left; vertical-align: top; }
+    thead th { background: #12283b; color: white; font-size: .82rem; letter-spacing: .04em; }
+    tbody th { white-space: nowrap; }
+    .recommended { color: #913c22; font-weight: 900; }
+    .submission {
+      padding: clamp(50px, 7vw, 90px) 0;
+      color: white;
+      background: #0a1927;
+      scroll-margin-top: 68px;
+    }
+    .submission-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .8fr) minmax(340px, 1.2fr);
+      gap: 42px;
+    }
+    .submission h2 { font-size: clamp(2.5rem, 5vw, 4.8rem); line-height: .98; letter-spacing: -.05em; }
+    .submission p { color: #c8d8e5; }
+    .checklist { display: grid; gap: 10px; }
+    .check {
+      padding: 13px 15px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+    }
+    .check strong { color: #8eeaf0; }
+    .source-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .source-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #cfe4f1;
+      border: 1px solid rgba(255,255,255,.16);
+      text-decoration: none;
+      font-size: .8rem;
+    }
+    footer {
+      padding: 28px 0 40px;
+      color: #afc3d1;
+      background: #06111c;
+      font-size: .88rem;
+    }
+    footer .shell { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    @media (max-width: 960px) {
+      .cover-grid, .concept-head, .concept-body, .submission-grid, .section-heading { grid-template-columns: 1fr; }
+      .cover-card { max-width: 680px; transform: none; }
+      .concept-index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .section-heading { align-items: start; }
+    }
+    @media (max-width: 620px) {
+      body { background: linear-gradient(180deg, #07131f 0, #0d2133 36rem, var(--paper) 36rem); }
+      .topbar-inner { width: calc(100% - 18px); display: block; padding-top: 8px; }
+      .brand { display: block; padding: 5px 4px 0; }
+      .topbar nav { margin-inline: -2px; padding-block: 7px 10px; }
+      .shell { width: min(var(--max), calc(100% - 20px)); }
+      .cover { padding-top: 44px; }
+      h1 { font-size: clamp(3rem, 17vw, 5rem); }
+      .concept-index { grid-template-columns: 1fr; }
+      .mini-card { display: grid; grid-template-columns: 42% 1fr; }
+      .mini-card img { height: 100%; aspect-ratio: 1; }
+      .selection-panel { grid-template-columns: 1fr; }
+      .concept-head { gap: 24px; }
+      .concept-copy h2 { font-size: clamp(2.5rem, 14vw, 4rem); }
+      .meta-row { grid-template-columns: 1fr; }
+      .panel { padding: 18px; }
+      .beat { grid-template-columns: 1fr; gap: 4px; }
+      .submission-grid { gap: 22px; }
+      .infographic img { width: 900px; max-width: none; }
+      .infographic::after {
+        content: "Swipe horizontally to inspect the full-size diagram";
+        position: sticky;
+        left: 10px;
+        display: inline-block;
+        margin: 8px 10px 10px;
+        padding: 6px 9px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.9);
+        color: #18344a;
+        font-size: .74rem;
+        font-weight: 850;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+      .button:hover { transform: none; }
+    }
+    @media print {
+      :root { color-scheme: light; }
+      body { background: white; }
+      .topbar, .cover-actions, .selection-panel, .shortlist, .next { display: none !important; }
+      .cover { color: #102030; padding-top: 30px; }
+      .cover-grid, .concept-head, .concept-body, .submission-grid, .section-heading { grid-template-columns: 1fr; }
+      .paper { margin: 0; padding-top: 20px; }
+      .concept { min-height: 0; break-before: page; background: white; }
+      .concept-visual { max-width: 720px; }
+      .submission { color: #102030; background: white; break-before: page; }
+      .submission p { color: #334; }
+      .check { color: #102030; border-color: #bbb; background: white; }
+      a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to proposals</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Loop <span>Engineer</span></div>
+      <nav aria-label="Proposal pages">
+        <a href="#overview">Overview</a>
+        <a href="#stormglass">Stormglass</a>
+        <a href="#garden">Garden</a>
+        <a href="#kaiju">Kaiju QA</a>
+        <a href="#train">Sunrise Express</a>
+        <a href="#museum">Museum</a>
+        <a href="#compare">Compare</a>
+        <a href="#submission">Submit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="cover" aria-labelledby="cover-title">
+      <div class="shell cover-grid">
+        <div>
+          <p class="eyebrow">OpenAI Build Week · Education track · decision book</p>
+          <h1 id="cover-title">Loop Engineer<small>Five original 3D games about making change trustworthy.</small></h1>
+          <p class="lede">One shared lesson. Five completely different fantasies. Each can become a complete desktop, mobile, and WebXR judged demo in four focused implementation hours.</p>
+          <div class="cover-actions">
+            <a class="button primary" href="#overview">Compare the five</a>
+            <a class="button" href="PROPOSALS.md">Open the Markdown proposal</a>
+          </div>
+          <p class="deadline"><strong>Competition clock:</strong> submissions are due Tuesday, July 21, 2026 at 5:00 p.m. Pacific. The recommended bet is <strong>Kaiju QA</strong>; the recommended backup is <strong>The Museum of Almosts</strong>.</p>
+        </div>
+        <figure class="cover-card">
+          <img src="assets/kaiju-qa.png" alt="A friendly baby kaiju in a safety helmet walking through a miniature city test course on a laboratory table.">
+          <figcaption><strong>Recommended: Kaiju QA</strong><span>Stage tests · catch regression · ship safely</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="paper" id="overview" aria-labelledby="overview-title">
+      <div class="shell">
+        <div class="section-heading">
+          <h2 id="overview-title">The lesson is the loop.</h2>
+          <p>Loop Engineering is an emerging practice: define the goal, take a bounded action, observe external evidence, adjust from causality, then pass, stop, roll back, or escalate. Those loops live inside every SDLC phase.</p>
+        </div>
+        <figure class="infographic">
+          <img src="assets/learning-loop.svg" alt="Diagram showing Goal, Act, Observe, Adjust and a pass-stop-escalate gate nested inside seven software development lifecycle phases.">
+        </figure>
+        <details class="diagram-notes">
+          <summary>Read the learning-loop diagram as text</summary>
+          <ol>
+            <li><strong>Goal:</strong> define outcome, proof, constraints, budget, authority, and exit.</li>
+            <li><strong>Act:</strong> make the smallest safe, reversible change.</li>
+            <li><strong>Observe:</strong> inspect tests, traces, users, telemetry, or review.</li>
+            <li><strong>Adjust:</strong> change the plan or implementation from that evidence.</li>
+            <li><strong>Gate:</strong> pass, repeat, roll back, stop, or escalate.</li>
+          </ol>
+          <p>The loop can run inside conceive/plan, specify, design, build/integrate, verify/validate, release/operate, and maintain/retire.</p>
+        </details>
+        <figure class="infographic">
+          <img src="assets/demo-arc.svg" alt="Timeline showing a three-minute lesson: see the failure, earn a first success, read evidence, catch regression, then ship or escalate.">
+        </figure>
+        <details class="diagram-notes">
+          <summary>Read the three-minute arc as text</summary>
+          <ol>
+            <li><strong>0:00–0:20:</strong> see a deterministic failure and a visible goal.</li>
+            <li><strong>0:20–0:45:</strong> make one scoped change and earn a first result.</li>
+            <li><strong>0:45–1:30:</strong> read a partial pass and the actual mismatch.</li>
+            <li><strong>1:30–2:20:</strong> catch regression and adjust without weakening criteria.</li>
+            <li><strong>2:20–3:00:</strong> pass every gate, release or escalate, and invite replay.</li>
+          </ol>
+        </details>
+
+        <nav aria-label="Five concept shortcuts">
+        <ul class="concept-index">
+          <li><a class="mini-card" href="#stormglass"><img src="assets/stormglass.png" alt=""><div><strong>Stormglass</strong><span>Align · trace · rescue</span></div></a></li>
+          <li><a class="mini-card" href="#garden"><img src="assets/tomorrow-garden.png" alt=""><div><strong>Tomorrow Garden</strong><span>Cultivate · compare · stabilize</span></div></a></li>
+          <li><a class="mini-card" href="#kaiju"><img src="assets/kaiju-qa.png" alt=""><div><strong>Kaiju QA</strong><span>Stage · verify · protect</span></div></a></li>
+          <li><a class="mini-card" href="#train"><img src="assets/sunrise-express-v2.png" alt=""><div><strong>Sunrise Express</strong><span>Route · rehearse · release</span></div></a></li>
+          <li><a class="mini-card" href="#museum"><img src="assets/museum-of-almosts.png" alt=""><div><strong>Museum of Almosts</strong><span>Inspect · compare · preserve</span></div></a></li>
+        </ul>
+        </nav>
+
+        <div class="selection-panel">
+          <p><strong id="selection-status" aria-live="polite">No concept shortlisted yet.</strong><br><span>Your choice is stored only in this browser when local storage is available.</span></p>
+          <button class="clear-button" id="clear-selection" type="button">Clear shortlist</button>
+        </div>
+      </div>
+    </section>
+
+    <article class="concept storm" id="stormglass" aria-labelledby="storm-title">
+      <div class="shell">
+        <div class="concept-head">
+          <figure class="concept-visual">
+            <span class="concept-number" aria-hidden="true">01</span>
+            <img src="assets/stormglass.png" alt="Inside a sky lighthouse, glass prisms on a brass table open a glowing path through a storm for a small airship.">
+          </figure>
+          <div class="concept-copy">
+            <span class="tag">Cinematic rescue · paper score 87</span>
+            <h2 id="storm-title">Stormglass</h2>
+            <p class="pitch">Rotate the prisms of a sky-lighthouse, run repeatable storm tests, and use lightning traces to open one verified route for a courier airship.</p>
+            <p class="why"><strong>Why it is distinct:</strong> evidence fills the sky. The player calibrates one optical variable, compares route traces, and decides between a fast fragile path and a longer robust path.</p>
+            <div class="meta-row">
+              <div class="meta"><small>Core verb</small><strong>Align prisms</strong></div>
+              <div class="meta"><small>Evidence</small><strong>Route traces</strong></div>
+              <div class="meta"><small>Emotion</small><strong>Urgency → relief</strong></div>
+            </div>
+            <button class="shortlist" type="button" data-concept="Stormglass" aria-pressed="false">Shortlist Stormglass</button>
+          </div>
+        </div>
+        <div class="concept-body">
+          <section class="panel" aria-label="Stormglass three-minute loop">
+            <h3 id="storm-loop">The three-minute loop</h3>
+            <div class="beats">
+              <div class="beat"><time>0:00–0:20</time><p><strong>Baseline:</strong> pull the lever; crosswind collapses the courier route.</p></div>
+              <div class="beat"><time>0:20–0:45</time><p><strong>First success:</strong> rotate one prism; the nearest cloud ring clears.</p></div>
+              <div class="beat"><time>0:45–1:30</time><p><strong>New evidence:</strong> the fast route overloads the lighthouse.</p></div>
+              <div class="beat"><time>1:30–2:20</time><p><strong>Adjustment:</strong> compare ghost paths and preserve both acceptance criteria.</p></div>
+              <div class="beat"><time>2:20–3:00</time><p><strong>Release:</strong> pass a repeat test and commit the safe corridor.</p></div>
+            </div>
+          </section>
+          <aside class="panel" aria-label="Stormglass build and judge fit">
+            <h3>Build and judge fit</h3>
+            <dl class="fact-list">
+              <div><dt>Controls</dt><dd>Drag-and-snap or select-to-cycle through three discrete orientations; one test/commit control.</dd></div>
+              <div><dt>Four-hour floor</dt><dd>Two required prisms, three authored paths, two criteria, one airship animation, no volumetric weather.</dd></div>
+              <div><dt>Free assets</dt><dd>Quaternius Ships, Fantasy Props, modular ruins, or primitive silhouettes.</dd></div>
+              <div><dt>Win story</dt><dd>The clearest cinematic before/after transformation.</dd></div>
+              <div><dt>Risk and cut</dt><dd>If VFX is unreadable after 30 minutes, use ribbon paths over layered cloud cards.</dd></div>
+            </dl>
+          </aside>
+        </div>
+        <div class="next"><a href="#garden">Next: The Tomorrow Garden →</a></div>
+      </div>
+    </article>
+
+    <article class="concept garden" id="garden" aria-labelledby="garden-title">
+      <div class="shell">
+        <div class="concept-head">
+          <figure class="concept-visual">
+            <span class="concept-number" aria-hidden="true">02</span>
+            <img src="assets/tomorrow-garden.png" alt="A small robot tends a circular terrarium with flowers, roots, pollinator, and translucent earlier plant growth around it.">
+          </figure>
+          <div class="concept-copy">
+            <span class="tag">Calm systems mastery · paper score 84</span>
+            <h2 id="garden-title">The Tomorrow Garden</h2>
+            <p class="pitch">Run accelerated seasons in a seedship terrarium, compare the evidence left by each cycle, and cultivate a habitat that can sustain itself after release.</p>
+            <p class="why"><strong>Why it is distinct:</strong> the system is grown rather than assembled. Time, dependencies, and stability become visible plant silhouettes instead of charts.</p>
+            <div class="meta-row">
+              <div class="meta"><small>Core verb</small><strong>Cultivate</strong></div>
+              <div class="meta"><small>Evidence</small><strong>Season overlays</strong></div>
+              <div class="meta"><small>Emotion</small><strong>Care → wonder</strong></div>
+            </div>
+            <button class="shortlist" type="button" data-concept="The Tomorrow Garden" aria-pressed="false">Shortlist The Tomorrow Garden</button>
+          </div>
+        </div>
+        <div class="concept-body">
+          <section class="panel" aria-label="Tomorrow Garden three-minute loop">
+            <h3 id="garden-loop">The three-minute loop</h3>
+            <div class="beats">
+              <div class="beat"><time>0:00–0:20</time><p><strong>Baseline:</strong> a sprout grows, but the habitat cannot reproduce.</p></div>
+              <div class="beat"><time>0:20–0:45</time><p><strong>First success:</strong> add one sun tile and rerun the season.</p></div>
+              <div class="beat"><time>0:45–1:30</time><p><strong>Regression:</strong> extra water helps one plant and floods another.</p></div>
+              <div class="beat"><time>1:30–2:20</time><p><strong>Adjustment:</strong> compare prior gardens, prune one branch, rebalance one input.</p></div>
+              <div class="beat"><time>2:20–3:00</time><p><strong>Release:</strong> a full unattended season passes and the ark pod seals.</p></div>
+            </div>
+          </section>
+          <aside class="panel" aria-label="Tomorrow Garden build and judge fit">
+            <h3>Build and judge fit</h3>
+            <dl class="fact-list">
+              <div><dt>Controls</dt><dd>Drag or tap-place a care token, select one plant, press Run Season.</dd></div>
+              <div><dt>Four-hour floor</dt><dd>Three authored growth states, three required tokens, one prior-result overlay, no procedural botany.</dd></div>
+              <div><dt>Free assets</dt><dd>Quaternius Ultimate Crops, Stylized Nature, Simple Nature, Animated Robot.</dd></div>
+              <div><dt>Win story</dt><dd>An unusually gentle and memorable explanation of stability and dependency.</dd></div>
+              <div><dt>Risk and cut</dt><dd>Use scale/material swaps and outline markers if transparent growth ghosts sort poorly.</dd></div>
+            </dl>
+          </aside>
+        </div>
+        <div class="next"><a href="#kaiju">Next: Kaiju QA →</a></div>
+      </div>
+    </article>
+
+    <article class="concept kaiju" id="kaiju" aria-labelledby="kaiju-title">
+      <div class="shell">
+        <div class="concept-head">
+          <figure class="concept-visual">
+            <span class="concept-number" aria-hidden="true">03</span>
+            <img src="assets/kaiju-qa.png" alt="A baby kaiju in a safety helmet walks through a toy city testing course surrounded by robotic laboratory arms and path traces.">
+          </figure>
+          <div class="concept-copy">
+            <span class="tag">Recommended · paper score 92</span>
+            <h2 id="kaiju-title">Kaiju QA</h2>
+            <p class="pitch">Before a helpful baby kaiju meets a real city, build a tabletop test district, stage edge cases, and prove that its behavior is safe enough to ship.</p>
+            <p class="why"><strong>Why it is distinct:</strong> the player is not the monster or its programmer. They are the quality engineer. Test coverage becomes a miniature city and over-broad fixes create funny, visible regression.</p>
+            <div class="meta-row">
+              <div class="meta"><small>Core verb</small><strong>Stage tests</strong></div>
+              <div class="meta"><small>Evidence</small><strong>Coverage paths</strong></div>
+              <div class="meta"><small>Emotion</small><strong>Comedy → confidence</strong></div>
+            </div>
+            <button class="shortlist" type="button" data-concept="Kaiju QA" aria-pressed="false">Shortlist Kaiju QA</button>
+          </div>
+        </div>
+        <div class="concept-body">
+          <section class="panel" aria-label="Kaiju QA three-minute loop">
+            <h3 id="kaiju-loop">The three-minute loop</h3>
+            <div class="beats">
+              <div class="beat"><time>0:00–0:20</time><p><strong>Happy path:</strong> the kaiju carries a stalled car and earns a partial pass.</p></div>
+              <div class="beat"><time>0:20–0:45</time><p><strong>Edge case:</strong> place a fragile tower; helpful behavior knocks it over.</p></div>
+              <div class="beat"><time>0:45–1:30</time><p><strong>Regression:</strong> a broad freeze rule protects the tower but blocks an ambulance.</p></div>
+              <div class="beat"><time>1:30–2:20</time><p><strong>Adjustment:</strong> compare both paths and place a targeted slow-zone boundary.</p></div>
+              <div class="beat"><time>2:20–3:00</time><p><strong>Release:</strong> every scenario passes; the tiny kaiju becomes the city guardian.</p></div>
+            </div>
+          </section>
+          <aside class="panel" aria-label="Kaiju QA build and judge fit">
+            <h3>Build and judge fit</h3>
+            <dl class="fact-list">
+              <div><dt>Controls</dt><dd>Drag one scenario prop or boundary into a socket; inspect a path; press Run.</dd></div>
+              <div><dt>Four-hour floor</dt><dd>Four buildings, one creature, two props, three authored paths, one scale-up finale.</dd></div>
+              <div><dt>Free assets</dt><dd>Quaternius Cute/Ultimate Monsters, Simple Buildings, Cars, Animated Robot.</dd></div>
+              <div><dt>Win story</dt><dd>Fastest comprehension, clearest regression, strongest screenshot and audience reaction.</dd></div>
+              <div><dt>Risk and cut</dt><dd>No destruction physics. Every outcome is an authored, reversible state transition.</dd></div>
+            </dl>
+          </aside>
+        </div>
+        <div class="next"><a href="#train">Next: Sunrise Express →</a></div>
+      </div>
+    </article>
+
+    <article class="concept train" id="train" aria-labelledby="train-title">
+      <div class="shell">
+        <div class="concept-head">
+          <figure class="concept-visual">
+            <span class="concept-number" aria-hidden="true">04</span>
+            <img src="assets/sunrise-express-v2.png" alt="Golden trains and translucent rehearsal trains loop above a dark miniature city toward a large sunrise.">
+          </figure>
+          <div class="concept-copy">
+            <span class="tag">Release ritual · paper score 86</span>
+            <h2 id="train-title">Sunrise Express</h2>
+            <p class="pitch">Rehearse a magical release train across an orbital switchyard, diagnose where dependencies stop, and dispatch a verified sunrise to the city below.</p>
+            <p class="why"><strong>Why it is distinct:</strong> the train is the release artifact, not a logistics economy. The player sees integration order, quality gates, rollback, and operation as one civic ritual.</p>
+            <div class="meta-row">
+              <div class="meta"><small>Core verb</small><strong>Route rehearsal</strong></div>
+              <div class="meta"><small>Evidence</small><strong>Ghost trains</strong></div>
+              <div class="meta"><small>Emotion</small><strong>Momentum → triumph</strong></div>
+            </div>
+            <button class="shortlist" type="button" data-concept="Sunrise Express" aria-pressed="false">Shortlist Sunrise Express</button>
+          </div>
+        </div>
+        <div class="concept-body">
+          <section class="panel" aria-label="Sunrise Express three-minute loop">
+            <h3 id="train-loop">The three-minute loop</h3>
+            <div class="beats">
+              <div class="beat"><time>0:00–0:20</time><p><strong>Baseline:</strong> one light car arrives, but the full train stops at a dependency.</p></div>
+              <div class="beat"><time>0:20–0:45</time><p><strong>First success:</strong> flip one switch; two cars pass the next gate.</p></div>
+              <div class="beat"><time>0:45–1:30</time><p><strong>Quality tradeoff:</strong> a shortcut is fast but leaves one car unverified.</p></div>
+              <div class="beat"><time>1:30–2:20</time><p><strong>Adjustment:</strong> use the suspended route trace to choose a robust path.</p></div>
+              <div class="beat"><time>2:20–3:00</time><p><strong>Release:</strong> dispatch the train; its wake lights the city and monitor.</p></div>
+            </div>
+          </section>
+          <aside class="panel" aria-label="Sunrise Express build and judge fit">
+            <h3>Build and judge fit</h3>
+            <dl class="fact-list">
+              <div><dt>Controls</dt><dd>Click, tap, or ray-toggle three switches and one quality gate.</dd></div>
+              <div><dt>Four-hour floor</dt><dd>Six fixed route segments, one train root, at most two retained traces, one city material change.</dd></div>
+              <div><dt>Free assets</dt><dd>Quaternius Modular Train, Public Transport, Simple Buildings, Modular Streets.</dd></div>
+              <div><dt>Win story</dt><dd>The most tangible deployment and post-release monitoring metaphor.</dd></div>
+              <div><dt>Risk and cut</dt><dd>Avoid familiar throughput play; score coverage, risk, and correct release order.</dd></div>
+            </dl>
+          </aside>
+        </div>
+        <div class="next"><a href="#museum">Next: The Museum of Almosts →</a></div>
+      </div>
+    </article>
+
+    <article class="concept museum" id="museum" aria-labelledby="museum-title">
+      <div class="shell">
+        <div class="concept-head">
+          <figure class="concept-visual">
+            <span class="concept-number" aria-hidden="true">05</span>
+            <img src="assets/museum-of-almosts.png" alt="An origami bird sculpture in a museum is compared with translucent reference versions through a large inspection lens.">
+          </figure>
+          <div class="concept-copy">
+            <span class="tag">Backup choice · paper score 89</span>
+            <h2 id="museum-title">The Museum of Almosts</h2>
+            <p class="pitch">Restore an unfinished kinetic exhibit by comparing layered prototypes, finding their shared mismatch, and preserving every useful failure in the final verified story.</p>
+            <p class="why"><strong>Why it is distinct:</strong> the evidence itself is the toy. An inspection lens, translucent attempts, and one test crank turn diffs, regression protection, and retrospectives into spatial play.</p>
+            <div class="meta-row">
+              <div class="meta"><small>Core verb</small><strong>Inspect and compare</strong></div>
+              <div class="meta"><small>Evidence</small><strong>Prototype layers</strong></div>
+              <div class="meta"><small>Emotion</small><strong>Mystery → wonder</strong></div>
+            </div>
+            <button class="shortlist" type="button" data-concept="The Museum of Almosts" aria-pressed="false">Shortlist The Museum of Almosts</button>
+          </div>
+        </div>
+        <div class="concept-body">
+          <section class="panel" aria-label="Museum of Almosts three-minute loop">
+            <h3 id="museum-loop">The three-minute loop</h3>
+            <div class="beats">
+              <div class="beat"><time>0:00–0:20</time><p><strong>Baseline:</strong> turn the crank; the paper bird forms only one wing.</p></div>
+              <div class="beat"><time>0:20–0:45</time><p><strong>First success:</strong> align an expected silhouette and replace one worn part.</p></div>
+              <div class="beat"><time>0:45–1:30</time><p><strong>New evidence:</strong> the wing passes, but flight still fails.</p></div>
+              <div class="beat"><time>1:30–2:20</time><p><strong>Adjustment:</strong> overlay attempts and fix the cause without erasing prior gains.</p></div>
+              <div class="beat"><time>2:20–3:00</time><p><strong>Release:</strong> the bird flies and the exhibit preserves the complete attempt history.</p></div>
+            </div>
+          </section>
+          <aside class="panel" aria-label="Museum of Almosts build and judge fit">
+            <h3>Build and judge fit</h3>
+            <dl class="fact-list">
+              <div><dt>Controls</dt><dd>Snap a lens among discrete positions or toggle Compare, select one part, press one test crank.</dd></div>
+              <div><dt>Four-hour floor</dt><dd>One plinth, three bird poses, at most two visible results, three parts, one light transformation.</dd></div>
+              <div><dt>Free assets</dt><dd>Quaternius Furniture, Fantasy Props, plus primitive geometry for the hero bird.</dd></div>
+              <div><dt>Win story</dt><dd>The most original and emotionally resonant expression of evidence and memory.</dd></div>
+              <div><dt>Risk and cut</dt><dd>If transparent overlays are unclear, use solid side-by-side miniatures.</dd></div>
+            </dl>
+          </aside>
+        </div>
+        <div class="next"><a href="#compare">Compare all five →</a></div>
+      </div>
+    </article>
+
+    <section class="compare" id="compare" aria-labelledby="compare-title">
+      <div class="shell">
+        <div class="section-heading">
+          <h2 id="compare-title">Choose the bet.</h2>
+          <p>Paper scores are a decision aid. The final lock should follow a 30-minute graybox of the riskiest interaction and a thumbnail test of the hero state.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Concept</th><th scope="col">Verb</th><th scope="col">Best strength</th><th scope="col">Main risk</th><th scope="col">Score</th><th scope="col">Recommendation</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Stormglass</th><td>Align</td><td>Cinematic transformation</td><td>Weather VFX scope</td><td>87</td><td>Visual alternative</td></tr>
+              <tr><th scope="row">Tomorrow Garden</th><td>Cultivate</td><td>Gentle systems lesson</td><td>Can resemble resource balancing</td><td>84</td><td>Calm alternative</td></tr>
+              <tr><th scope="row">Kaiju QA</th><td>Stage tests</td><td>Instant comprehension + regression</td><td>Avoid physics</td><td><strong>92</strong></td><td class="recommended">Recommended</td></tr>
+              <tr><th scope="row">Sunrise Express</th><td>Route</td><td>Release and monitoring metaphor</td><td>Familiar network puzzle</td><td>86</td><td>Deployment alternative</td></tr>
+              <tr><th scope="row">Museum of Almosts</th><td>Inspect</td><td>Originality + emotional payoff</td><td>Abstract objective</td><td><strong>89</strong></td><td><strong>Backup</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="score-details">
+          <summary>How the paper scores were calculated</summary>
+          <p>Each criterion is scored 1–5. Weighted contribution is <code>(score ÷ 5) × weight</code>; no hidden penalty is applied.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Concept</th><th scope="col">Comprehension /15</th><th scope="col">Verb /15</th><th scope="col">Arc /15</th><th scope="col">Build /20</th><th scope="col">Parity /10</th><th scope="col">XR /10</th><th scope="col">Demo /10</th><th scope="col">Energy /5</th><th scope="col">Total</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Stormglass</th><td>4</td><td>4</td><td>5</td><td>4</td><td>4</td><td>5</td><td>5</td><td>4</td><td>87</td></tr>
+                <tr><th scope="row">Tomorrow Garden</th><td>4</td><td>4</td><td>5</td><td>4</td><td>5</td><td>4</td><td>4</td><td>3</td><td>84</td></tr>
+                <tr><th scope="row">Kaiju QA</th><td>5</td><td>4</td><td>5</td><td>5</td><td>4</td><td>4</td><td>5</td><td>4</td><td><strong>92</strong></td></tr>
+                <tr><th scope="row">Sunrise Express</th><td>4</td><td>5</td><td>4</td><td>5</td><td>4</td><td>4</td><td>4</td><td>3</td><td>86</td></tr>
+                <tr><th scope="row">Museum of Almosts</th><td>4</td><td>4</td><td>5</td><td>4</td><td>5</td><td>5</td><td>5</td><td>4</td><td><strong>89</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+        <figure class="infographic">
+          <img src="assets/four-hour-build.svg" alt="Four-hour build schedule prioritizing the complete loop, cross-platform input, feedback, polish, and final validation.">
+        </figure>
+        <details class="diagram-notes">
+          <summary>Read the four-hour schedule as text</summary>
+          <ol>
+            <li><strong>0:00–0:30:</strong> lock the complete arc, states, failure, and win.</li>
+            <li><strong>0:30–1:15:</strong> build one semantic verb for pointer, touch, and XR ray.</li>
+            <li><strong>1:15–2:10:</strong> implement baseline, evidence, adjustment, and rerun.</li>
+            <li><strong>2:10–2:50:</strong> add shape, motion, and plain-language teaching cues.</li>
+            <li><strong>2:50–3:20:</strong> polish one hero transformation.</li>
+            <li><strong>3:20–4:00:</strong> typecheck, build, E2E, XR checks, screenshots, deploy, and README.</li>
+          </ol>
+        </details>
+      </div>
+    </section>
+
+    <section class="submission" id="submission" aria-labelledby="submission-title">
+      <div class="shell submission-grid">
+        <div>
+          <p class="eyebrow">Devpost preparation</p>
+          <h2 id="submission-title">Design the submission while designing the game.</h2>
+          <p><strong>Recommended track:</strong> Education. Position the selected runnable game—not this concept book—as a three-minute practice tool for novice AI-assisted developers.</p>
+          <p><strong>Suggested tagline:</strong> Turn the AI build-test-learn loop into muscle memory.</p>
+          <div class="cover-actions">
+            <a class="button primary" href="DEVPOST_SUBMISSION_DRAFT.md">Open submission draft</a>
+            <a class="button" href="ASSET_PLAN.md">Open asset plan</a>
+          </div>
+          <nav class="source-links" aria-label="Research sources">
+            <a href="https://openai.devpost.com/">Competition</a>
+            <a href="https://openai.devpost.com/rules">Official rules</a>
+            <a href="https://www.ibm.com/think/topics/loop-engineering">Loop Engineering</a>
+            <a href="https://csrc.nist.gov/pubs/sp/800/218/final">NIST SSDF</a>
+            <a href="https://quaternius.com/faq.html">Quaternius license</a>
+          </nav>
+        </div>
+        <div class="checklist">
+          <div class="check"><strong>Working project:</strong> one complete desktop/mobile browser path, with WebXR enhancement.</div>
+          <div class="check"><strong>Public demo video:</strong> shorter than three minutes, with audio covering the game and Codex/GPT-5.6 use.</div>
+          <div class="check"><strong>Repository:</strong> public with relevant licensing, or private and shared with both official judge addresses.</div>
+          <div class="check"><strong>README:</strong> setup, testing, asset licenses, old/new work boundary, and concrete human–Codex collaboration.</div>
+          <div class="check"><strong>Codex evidence:</strong> include the main feedback session ID where most core functionality was built.</div>
+          <div class="check"><strong>Judge access:</strong> keep the project free and available through August 5, 2026 at 5:00 p.m. Pacific.</div>
+          <div class="check"><strong>Four equal criteria:</strong> technological implementation, design, potential impact, and quality of the idea.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <span>Generated concept art: Azure FLUX.2-pro. Diagrams: deterministic SVG. All runtime dependencies: none.</span>
+      <span><a href="AZURE_FLUX_PROMPTS.md">Prompt provenance</a> · <a href="README.md">File map</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var key = "loopEngineerShortlist";
+      var buttons = Array.prototype.slice.call(document.querySelectorAll(".shortlist"));
+      var status = document.getElementById("selection-status");
+      var clear = document.getElementById("clear-selection");
+      var memoryValue = "";
+
+      function readSelection() {
+        try { return window.localStorage.getItem(key) || ""; }
+        catch (error) { return memoryValue; }
+      }
+
+      function writeSelection(value) {
+        memoryValue = value;
+        try {
+          if (value) { window.localStorage.setItem(key, value); }
+          else { window.localStorage.removeItem(key); }
+        } catch (error) {
+          /* Local file privacy settings may block storage; in-memory choice still works. */
+        }
+      }
+
+      function render(value) {
+        buttons.forEach(function (button) {
+          var selected = button.getAttribute("data-concept") === value;
+          button.setAttribute("aria-pressed", selected ? "true" : "false");
+          button.textContent = selected ? "Shortlisted: " + value : "Shortlist " + button.getAttribute("data-concept");
+        });
+        status.textContent = value ? "Current shortlist: " + value : "No concept shortlisted yet.";
+      }
+
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var value = button.getAttribute("data-concept");
+          writeSelection(value);
+          render(value);
+        });
+      });
+
+      clear.addEventListener("click", function () {
+        writeSelection("");
+        render("");
+      });
+
+      render(readSelection());
+    }());
+  </script>
+</body>
+</html>

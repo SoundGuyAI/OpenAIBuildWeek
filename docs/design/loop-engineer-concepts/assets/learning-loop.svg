@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Loop Engineering nested inside the software development lifecycle</title>
+  <desc id="desc">Goal, Act, Observe, and Adjust repeat under a pass, stop, or escalate gate. That inner loop can operate inside every SDLC phase from planning through retirement.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07121f"/>
+      <stop offset="1" stop-color="#15243b"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#5de1ff"/>
+      <stop offset="1" stop-color="#a8ff8a"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".28"/>
+    </filter>
+    <marker id="tip" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#88f5d0"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="660" rx="36" fill="url(#bg)"/>
+  <text x="60" y="68" fill="#f7fbff" font-family="system-ui,Segoe UI,sans-serif" font-size="34" font-weight="800">Design the loop. Govern the exit.</text>
+  <text x="60" y="104" fill="#a9bfd3" font-family="system-ui,Segoe UI,sans-serif" font-size="18">Loop Engineering is the inner learning cycle; SDLC is the outer product lifecycle.</text>
+
+  <g transform="translate(78 154)" filter="url(#shadow)">
+    <rect width="650" height="410" rx="30" fill="#0d1b2b" stroke="#264560" stroke-width="2"/>
+    <text x="36" y="52" fill="#8df4d4" font-family="system-ui,Segoe UI,sans-serif" font-size="18" font-weight="800" letter-spacing="2">INNER LOOP</text>
+    <path d="M160 138 C250 70 400 70 490 138 M505 166 C555 242 520 322 432 348 M395 355 C288 392 168 350 133 270 M120 235 C96 188 105 160 137 140"
+      fill="none" stroke="url(#arrow)" stroke-width="10" stroke-linecap="round" marker-end="url(#tip)"/>
+
+    <g transform="translate(72 102)">
+      <rect width="174" height="92" rx="22" fill="#163a59" stroke="#5de1ff" stroke-width="3"/>
+      <text x="87" y="40" text-anchor="middle" fill="#fff" font-family="system-ui,Segoe UI,sans-serif" font-size="25" font-weight="800">1 · GOAL</text>
+      <text x="87" y="68" text-anchor="middle" fill="#bdefff" font-family="system-ui,Segoe UI,sans-serif" font-size="15">Outcome + proof + limits</text>
+    </g>
+    <g transform="translate(403 102)">
+      <rect width="174" height="92" rx="22" fill="#3f2a60" stroke="#c39bff" stroke-width="3"/>
+      <text x="87" y="40" text-anchor="middle" fill="#fff" font-family="system-ui,Segoe UI,sans-serif" font-size="25" font-weight="800">2 · ACT</text>
+      <text x="87" y="68" text-anchor="middle" fill="#e3d3ff" font-family="system-ui,Segoe UI,sans-serif" font-size="15">Small, safe, reversible</text>
+    </g>
+    <g transform="translate(403 278)">
+      <rect width="174" height="92" rx="22" fill="#52343a" stroke="#ff9d87" stroke-width="3"/>
+      <text x="87" y="40" text-anchor="middle" fill="#fff" font-family="system-ui,Segoe UI,sans-serif" font-size="25" font-weight="800">3 · OBSERVE</text>
+      <text x="87" y="68" text-anchor="middle" fill="#ffd8cf" font-family="system-ui,Segoe UI,sans-serif" font-size="15">Tests, traces, users, logs</text>
+    </g>
+    <g transform="translate(72 278)">
+      <rect width="174" height="92" rx="22" fill="#25482e" stroke="#a8ff8a" stroke-width="3"/>
+      <text x="87" y="40" text-anchor="middle" fill="#fff" font-family="system-ui,Segoe UI,sans-serif" font-size="25" font-weight="800">4 · ADJUST</text>
+      <text x="87" y="68" text-anchor="middle" fill="#d8ffcc" font-family="system-ui,Segoe UI,sans-serif" font-size="15">Change from evidence</text>
+    </g>
+    <g transform="translate(252 203)">
+      <rect width="146" height="76" rx="38" fill="#f7fbff"/>
+      <text x="73" y="30" text-anchor="middle" fill="#10243a" font-family="system-ui,Segoe UI,sans-serif" font-size="17" font-weight="900">GATE</text>
+      <text x="73" y="53" text-anchor="middle" fill="#37516b" font-family="system-ui,Segoe UI,sans-serif" font-size="13">pass · stop · escalate</text>
+    </g>
+  </g>
+
+  <g transform="translate(770 154)">
+    <rect width="352" height="410" rx="30" fill="#f7f9fc" stroke="#d8e1ec" stroke-width="2" filter="url(#shadow)"/>
+    <text x="30" y="52" fill="#17324d" font-family="system-ui,Segoe UI,sans-serif" font-size="18" font-weight="800" letter-spacing="2">OUTER SDLC</text>
+    <g font-family="system-ui,Segoe UI,sans-serif" font-weight="750" font-size="17">
+      <g transform="translate(30 82)"><rect width="292" height="36" rx="18" fill="#d9f5ff"/><text x="18" y="24" fill="#17324d">1 · Conceive &amp; plan</text></g>
+      <g transform="translate(30 126)"><rect width="292" height="36" rx="18" fill="#e5e0ff"/><text x="18" y="24" fill="#30245f">2 · Specify</text></g>
+      <g transform="translate(30 170)"><rect width="292" height="36" rx="18" fill="#ffe3d8"/><text x="18" y="24" fill="#663427">3 · Design</text></g>
+      <g transform="translate(30 214)"><rect width="292" height="36" rx="18" fill="#e8f8d6"/><text x="18" y="24" fill="#2f5424">4 · Build &amp; integrate</text></g>
+      <g transform="translate(30 258)"><rect width="292" height="36" rx="18" fill="#fff0c7"/><text x="18" y="24" fill="#5b4613">5 · Verify &amp; validate</text></g>
+      <g transform="translate(30 302)"><rect width="292" height="36" rx="18" fill="#dceaff"/><text x="18" y="24" fill="#244370">6 · Release &amp; operate</text></g>
+      <g transform="translate(30 346)"><rect width="292" height="36" rx="18" fill="#f1dfec"/><text x="18" y="24" fill="#613956">7 · Maintain &amp; retire</text></g>
+    </g>
+  </g>
+
+  <g transform="translate(60 606)">
+    <circle cx="9" cy="9" r="8" fill="#5de1ff"/>
+    <text x="28" y="15" fill="#dce9f4" font-family="system-ui,Segoe UI,sans-serif" font-size="17">Evidence moves the product forward—or safely sends it back.</text>
+  </g>
+</svg>

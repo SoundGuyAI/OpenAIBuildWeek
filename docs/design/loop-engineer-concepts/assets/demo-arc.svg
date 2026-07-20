@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">The 180-second Loop Engineer demo arc</title>
+  <desc id="desc">Five timed beats move from a visible problem to a first success, evidence-based iteration, regression, and a final release decision.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#081526"/><stop offset="1" stop-color="#182d45"/></linearGradient>
+    <filter id="s"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-opacity=".25"/></filter>
+  </defs>
+  <rect width="1200" height="300" rx="32" fill="url(#bg)"/>
+  <text x="48" y="58" fill="#fff" font-family="system-ui,Segoe UI,sans-serif" font-size="31" font-weight="850">A complete lesson in three minutes</text>
+  <text x="48" y="88" fill="#a9bfd3" font-family="system-ui,Segoe UI,sans-serif" font-size="17">The clock is a demo budget—not a dexterity score.</text>
+  <g transform="translate(48 122)" font-family="system-ui,Segoe UI,sans-serif" filter="url(#s)">
+    <g><rect width="210" height="126" rx="20" fill="#183c59"/><text x="18" y="30" fill="#7be6ff" font-size="15" font-weight="800">0:00–0:20</text><text x="18" y="61" fill="#fff" font-size="22" font-weight="850">See the failure</text><text x="18" y="88" fill="#c7e9f7" font-size="15">Goal is visible.</text><text x="18" y="108" fill="#c7e9f7" font-size="15">Blind retry is blocked.</text></g>
+    <g transform="translate(220)"><rect width="210" height="126" rx="20" fill="#40305f"/><text x="18" y="30" fill="#d2b4ff" font-size="15" font-weight="800">0:20–0:45</text><text x="18" y="61" fill="#fff" font-size="22" font-weight="850">First success</text><text x="18" y="88" fill="#eadfff" font-size="15">Make one scoped change.</text><text x="18" y="108" fill="#eadfff" font-size="15">Run the same test.</text></g>
+    <g transform="translate(440)"><rect width="210" height="126" rx="20" fill="#55353a"/><text x="18" y="30" fill="#ffb29d" font-size="15" font-weight="800">0:45–1:30</text><text x="18" y="61" fill="#fff" font-size="22" font-weight="850">Read evidence</text><text x="18" y="88" fill="#ffe2da" font-size="15">Partial pass exposes</text><text x="18" y="108" fill="#ffe2da" font-size="15">the real mismatch.</text></g>
+    <g transform="translate(660)"><rect width="210" height="126" rx="20" fill="#2e4b31"/><text x="18" y="30" fill="#b8ff9e" font-size="15" font-weight="800">1:30–2:20</text><text x="18" y="61" fill="#fff" font-size="22" font-weight="850">Catch regression</text><text x="18" y="88" fill="#dffff0" font-size="15">Protect the criteria.</text><text x="18" y="108" fill="#dffff0" font-size="15">Adjust from causality.</text></g>
+    <g transform="translate(880)"><rect width="224" height="126" rx="20" fill="#584b23"/><text x="18" y="30" fill="#ffe487" font-size="15" font-weight="800">2:20–3:00</text><text x="18" y="61" fill="#fff" font-size="22" font-weight="850">Ship or escalate</text><text x="18" y="88" fill="#fff4c9" font-size="15">Pass every gate.</text><text x="18" y="108" fill="#fff4c9" font-size="15">Release, monitor, replay.</text></g>
+  </g>
+</svg>

@@ -28,7 +28,11 @@ body {
     #050713;
 }
 
-button {
+button,
+.hud-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 42px;
   border: 1px solid rgb(142 220 255 / 42%);
   border-radius: 999px;
@@ -39,11 +43,14 @@ button {
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
   backdrop-filter: blur(14px);
 }
 
 button:hover:not(:disabled),
-button:focus-visible {
+button:focus-visible,
+.hud-link:hover,
+.hud-link:focus-visible {
   border-color: #8edcff;
   background: rgb(24 68 110 / 92%);
   outline: 2px solid rgb(142 220 255 / 38%);
@@ -117,6 +124,12 @@ h1 {
   background: linear-gradient(135deg, #71e4ff, #b2ffd8);
 }
 
+#concepts-link {
+  color: #1e1203;
+  border-color: #ffd089;
+  background: linear-gradient(135deg, #ffe1a8, #ffb889);
+}
+
 #touch-controls {
   display: none;
   position: fixed;
@@ -158,7 +171,8 @@ h1 {
     gap: 0.4rem;
   }
 
-  button {
+  button,
+  .hud-link {
     min-height: 38px;
     padding: 0.5rem 0.75rem;
     font-size: 0.82rem;
