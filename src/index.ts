@@ -251,6 +251,8 @@ function mapVisualCue(cue: ModelSceneCue): SceneCue | null {
     case "targeted-pass":
     case "release":
       return cue;
+    case "stale":
+      return "idle";
     case "reset":
       return "idle";
     default:
@@ -682,6 +684,7 @@ World.create(container, {
         button: enterXrButton,
         status,
       });
+      status.textContent = lastAnnouncement;
     };
 
     const updateSuspended = () => {
