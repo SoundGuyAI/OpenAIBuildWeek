@@ -47,6 +47,13 @@ async function openExperience(page: Page) {
   return runtimeErrors;
 }
 
+function getEvidenceScreenshotName(projectName: string) {
+  if (projectName === "desktop-chromium") return "01-desktop.png";
+  if (projectName === "mobile-chromium") return "02-mobile.png";
+
+  throw new Error(`No evidence screenshot name configured for project: ${projectName}`);
+}
+
 test("boots the IWSDK scene and supports platform controls", async ({ page }, testInfo) => {
   // IWSDK uses worker-backed rendering and software WebGL is intentionally slow
   // in headless CI. Allow enough time for a full boot plus clean worker teardown.
@@ -81,6 +88,13 @@ test("boots the IWSDK scene and supports platform controls", async ({ page }, te
   }
 
   expect(runtimeErrors, "The app should not emit runtime or asset-loading errors").toEqual([]);
+
+  const screenshotName = getEvidenceScreenshotName(testInfo.project.name);
+  await page.screenshot({
+    path: `test-results/evidence/${screenshotName}`,
+    type: "png",
+    animations: "disabled",
+  });
 
   // Leave the worker-backed WebGL page before Playwright closes the context.
   // This keeps teardown deterministic in headless Chromium.

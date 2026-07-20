@@ -4,6 +4,45 @@ Branch: `codex/boilerplate`
 Created: 2026-07-19  
 Status: draft PR hardening; physical XR evidence pending
 
+## Post-merge review completion — 2026-07-20
+
+PR #1 merged to `main` as `be6dd7136a91d4062ba59c3e0d4c838b1bf21804`.
+This follow-up closes every review item that can be established without running
+the page in a local browser. It does not claim IWER, physical-headset, or real
+phone verification.
+
+### Acceptance criteria
+
+- [x] Confirm the exact PR merge commit and successful Pages deployment.
+- [x] Verify the hosted document and critical static assets over HTTPS.
+- [x] Confirm typecheck, production build, and desktop/mobile E2E passed on the
+  deployed commit in GitHub Actions.
+- [x] Capture desktop and mobile player-visible screenshots on GitHub Actions
+  and preserve them as feature evidence.
+- [x] Complete a static experience-quality assessment with measured versus
+  device-dependent findings clearly separated.
+- [x] Reconcile the evidence manifest and reports with the merge SHA,
+  deployment run, hosted URL, and remaining limitations.
+- [x] Obtain an independent post-merge review of the actual follow-up diff and
+  evidence.
+
+### Non-goals
+
+- Running Chromium, Edge, IWER, or the game locally in this worktree.
+- Claiming successful XR entry, locomotion, grabbing, exit/re-entry, headset
+  comfort, or physical-phone usability without device evidence.
+- Changing player-facing production behavior unless review work exposes a
+  separate blocking defect.
+
+### Verification matrix
+
+| Surface | Verification | Evidence |
+| --- | --- | --- |
+| Source/config | Static IWSDK, lifecycle, accessibility, security, and deployment review | `evidence/boilerplate/review.md` |
+| Hosted Pages | HTTPS status and critical document/script/style/WASM/worker assets | `evidence/boilerplate/README.md` |
+| Desktop/mobile | GitHub Actions Playwright assertions plus remote screenshots | `browser-qa.md`, `01-desktop.webp`, `02-mobile.webp` |
+| XR | Existing deterministic unsupported/denied tests only | `xr-qa.md`; successful sessions remain unverified |
+
 ## Player outcome
 
 Open one URL and immediately see an interactive floating 3D “Hello World” that

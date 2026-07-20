@@ -88,3 +88,46 @@ Branch: `codex/boilerplate`
   machine or headset.
 - Confirmed GitHub Pages still requires a repository administrator to select
   GitHub Actions as the source in repository Settings before the first deploy.
+
+## User prompt — post-merge review scope
+
+Logged: 2026-07-20T07:22:54.1293296-07:00
+Branch: `chore/boilerplate-post-merge-review`
+
+> ive copmleted the merge to main. what can you do (that doesnt' require you to run the page locally on a browser) tto comlete the reciew?
+
+## User prompt — approval to proceed
+
+Logged: 2026-07-20T07:22:54.1293296-07:00
+Branch: `chore/boilerplate-post-merge-review`
+
+> ok
+
+## Orchestrator outcome — post-merge review plan
+
+- Created a clean worktree from merged `main` so the separate game-concept work
+  remains untouched.
+- Limited local verification to non-browser checks. Browser rendering and
+  screenshot capture will run on GitHub Actions when practical.
+- Planned a static source/configuration audit, deployed-site HTTP verification,
+  remote-CI evidence capture, documentation updates, and independent review.
+- Kept IWER, physical-headset, and real-device experience claims explicitly out
+  of scope unless separate evidence is supplied.
+
+## Orchestrator outcome — post-merge non-local review
+
+- Confirmed PR #1 merged as `be6dd713` and GitHub Pages run `29748804444`
+  successfully published the HTTPS site.
+- Verified the hosted document and sampled JavaScript, CSS, WASM, and worker
+  assets returned HTTP 200 without rendering the page locally.
+- Ran local non-browser typecheck, production build, production dependency
+  audit, and secret-pattern scan successfully.
+- Used GitHub Actions run `29751524684` for all browser execution. Its six
+  desktop/mobile tests passed and it uploaded deterministic screenshot evidence.
+- Recorded a desktop visual pass and a mobile visual failure: the Pixel 7 image
+  crops `HELLO WORLD` beyond both horizontal edges.
+- Added static experience-quality and XR evidence-gap reports. Successful XR
+  entry, scale, locomotion, grabbing, exit/re-entry, comfort, and physical
+  headset behavior remain unverified.
+- Opened follow-up PR #2 to preserve the evidence and review tooling without
+  changing player-facing production code.

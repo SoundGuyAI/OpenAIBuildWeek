@@ -1,154 +1,116 @@
-# Independent follow-up review: boilerplate
+# Independent final post-merge review: boilerplate
 
-Branch: `codex/boilerplate`
-PR: #1 (draft)
-Baseline commit: `17762c9d0a6108ba5dd4b8163f0dd38f20e67c93`
-Reviewed commit: `53fbef6689522f1e56f06b04aaae4697c535ffe6`
+Branch: `chore/boilerplate-post-merge-review`
+PR: #2
+Base: `be6dd7136a91d4062ba59c3e0d4c838b1bf21804`
+Reviewed evidence head: `dd53a3af83b57c2872bbf6558f05aef33cc38881`
 Reviewed: 2026-07-20
-Status: **safe to continue as a draft; not ready to merge**
+Status: **PR #2 changes are safe; product verification remains incomplete**
 
-## Gate decision
+## Verdict
 
-No finding blocks keeping PR #1 open, sharing it with the team, or adding more
-follow-up commits. The follow-up range resolves the earlier source-level XR
-feedback gap and hardens the Pages workflow. Pull-request CI is green at the
-reviewed commit.
+The committed test/workflow changes are sound and PR #2 is technically clean
+and mergeable. It is safe to merge as a review-and-evidence follow-up **after**
+the inspected evidence updates, both WebP screenshots, and this review are
+committed and CI remains green on that final commit.
 
-The PR is **not merge-ready**. GitHub Pages is not enabled and the required
-player-visible browser/XR evidence is incomplete.
+Merging PR #2 must not be represented as full boilerplate or release
+verification. The captured mobile composition fails, successful XR/device
+behavior is untested, and the core movement/manipulation happy path is not yet
+demonstrated.
 
-## Review scope and method
+## Severity-ranked findings
 
-- Reviewed the committed diff `17762c9..53fbef6` against `AGENTS.md`,
-  `plans/boilerplate/PLAN.md`, `docs/DEFINITION_OF_DONE.md`, IWSDK 0.4.2
-  conventions, accessibility/comfort, security, CI/CD, and existing evidence.
-- Inspected the committed blobs rather than unrelated working-tree changes.
-- Compared `src/xr-support.ts` with IWSDK 0.4.2's installed session launch,
-  reference-space fallback, camera restore, and cleanup path.
-- Did not treat internal agent assignments or compaction material as product
-  prompts and found no prompt-log issue in the reviewed range.
+### [P1 — product] Mobile initial composition does not show the complete word
 
-## Confirmed validation
+`evidence/boilerplate/02-mobile.webp` crops `HELLO WORLD` beyond both horizontal
+edges; only the middle portion is visible. The desktop evidence shows the full
+word. The fixed camera/word placement in `src/index.ts:160` and
+`src/index.ts:201-204` does not adapt composition to the mobile aspect ratio.
 
-- GitHub Actions run `29741499653`, job `88349070024`, completed successfully for
-  commit `53fbef6`. It passed the locked install, TypeScript typecheck,
-  production build, and all six Playwright cases across desktop and mobile
-  Chromium.
-- Independent local validation passed in the required order:
-  `npm run typecheck`, then `npm run build`.
-- The production build transformed 493 modules and completed successfully. It
-  continues to report the known chunk-size warning, with approximately 1.69 MB
-  of minified application JavaScript and a 2.09 MB Havok WASM asset.
-- `npm audit --audit-level=high` reported zero known vulnerabilities.
-- A tracked-file scan found no common access-token or private-key signatures.
-- The GitHub Pages API still returns HTTP 404 for this repository, confirming
-  that the site has not been enabled.
-- After this review, the orchestrator updated the evidence manifest, browser-QA
-  report, assignments, conversation outcome, and draft PR body for commit
-  `53fbef6` and run `29741499653`.
+The E2E assertion at `tests/e2e/hello-world.spec.ts:78-83` checks DOM overflow,
+not whether the WebGL subject fits the viewport, so CI correctly passes while
+the player-visible outcome fails. Fix and recapture before calling mobile
+browser acceptance complete. This defect does not make the evidence-only PR
+unsafe to merge if it remains recorded as a failure.
 
-## Resolved findings from the prior review
+### [P1 — release evidence] Successful XR and physical-device behavior is unverified
 
-### XR unsupported and request-failure feedback: resolved
+`evidence/boilerplate/xr-qa.md:28-39` records no successful XR session,
+reference-space, controller/hand, locomotion, grabbing, exit/re-entry, comfort,
+or physical-headset observation. The unsupported and denied-session tests are
+useful recovery evidence, but they do not exercise a real session. This leaves
+the applicable gates in `docs/DEFINITION_OF_DONE.md:98-101` open.
 
-`src/xr-support.ts` now checks immersive-VR support, distinguishes unavailable,
-support-check failure, permission/security failure, request failure, and setup
-failure states, and provides visible disabled or retryable UI. `src/index.ts`
-integrates checking, launching, active, exit, and retry states without removing
-the desktop/mobile path.
+### [P1 — observational gap] Core movement and letter manipulation are not proven
 
-The launch helper follows IWSDK 0.4.2's exported session-init and
-reference-space helpers, sets the renderer session, restores the browser camera
-on exit, clears `world.session`, and ends a partially configured session on
-setup failure. The two deterministic Playwright scenarios verify unsupported
-and denied-session behavior in both configured browser projects.
+The browser test boots the scene, toggles motion, checks controls, and captures
+screenshots, but it never demonstrates that desktop/mobile movement changes the
+view or that a letter can be selected, moved, and released
+(`tests/e2e/hello-world.spec.ts:57-102`). The screenshots are initial-state
+evidence only. The player promise to “move around and play with” the letters is
+therefore not fully verified on browser inputs.
 
-### Pages workflow permissions and failure mode: resolved in code
+### [P2 — accessibility] The core letter action has no keyboard equivalent
 
-`.github/workflows/deploy-pages.yml` now uses explicit job-level permissions,
-requires `main`, verifies that Pages is configured for GitHub Actions, validates
-typecheck/build/E2E before artifact upload, and reserves `pages: write` plus
-`id-token: write` for the deploy job. Current referenced Pages action major tags
-exist, and `configure-pages` is explicitly prevented from trying unsupported
-automatic enablement with the default token.
+Letters receive only 3D `Interactable` and `DistanceGrabbable` behavior at
+`src/index.ts:229-236`; the DOM exposes only a generic labeled scene container
+at `index.html:17`. There is no named, focusable, keyboard-operable letter path.
+This conflicts with the cross-input and accessibility expectations in
+`docs/DEFINITION_OF_DONE.md:25-27` unless an explicit supported-input exception
+is approved.
 
-The repository setting itself remains a merge blocker below.
+### [P3 — PR hygiene] The PR body still shows screenshot CI as incomplete
 
-## Blocking findings before ready/merge
+PR #2's body leaves the GitHub Actions screenshot-artifact item unchecked even
+though run `29751524684` succeeded. Update it so the PR description matches the
+evidence and remaining limitations.
 
-### [P1] GitHub Pages is still disabled
+## What this follow-up closes
 
-The repository Pages API returns HTTP 404. The hardened workflow will now fail
-early with a useful message, but merging to `main` before an administrator sets
-**Settings -> Pages -> Source -> GitHub Actions** will still produce a failed
-deployment and no hosted game URL.
+- PR #1 merged to `main`, and Pages run `29748804444` successfully validated and
+  deployed commit `be6dd713`; the hosted document and sampled JS, CSS, WASM, and
+  worker assets returned HTTP 200.
+- PR #2 run `29751524684`, job `88382979088`, passed typecheck, production build,
+  and all six desktop/mobile Chromium tests in 53.1 seconds.
+- The workflow uploads `test-results/evidence/` on success with missing files as
+  an error (`.github/workflows/ci.yml:57-63`). The artifact contains exactly the
+  desktop and mobile PNGs; the reviewed WebPs preserve their 1280x720 and
+  1082x2202 dimensions.
+- `01-desktop.webp` credibly shows the complete word, floor, readable HUD,
+  instructions, and controls without obvious clipping.
+- Browser, experience-quality, and XR reports now state their evidence
+  boundaries instead of treating static implementation as observed behavior.
+- Local non-browser validation passed in the required order: typecheck, then
+  production build. The build completed with the known large-chunk warning.
+  The production dependency audit reported zero high-severity vulnerabilities.
 
-Enable Pages, run the deployment workflow from `main`, and verify the published
-URL from a fresh browser session before declaring the hosting acceptance
-criterion complete.
+## Engineering assessment
 
-### [P1] Required browser interaction and XR evidence is incomplete
+- IWSDK remains pinned to 0.4.2. Three.js classes come from `@iwsdk/core`;
+  gameplay objects use `world.createTransformEntity`; interaction uses
+  `Interactable`/`DistanceGrabbable`; locomotion uses
+  `LocomotionEnvironment`; application physics is disabled.
+- The floating ECS system performs no geometry, material, vector, or array
+  allocation in its update loop. The static scene does not currently remove
+  entities, so no newly introduced disposal defect was found.
+- Native buttons, labels, visible focus, status messaging, safe-area offsets,
+  and reduced-motion handling are good foundations. The experience review's
+  input, reflow, initialization-recovery, and touch-target findings remain open.
+- CI has read-only repository permission and the Pages build/deploy permissions
+  are separated. No secret or live credential is required. Mutable action major
+  tags and the large JS/WASM payload remain non-blocking hardening/performance
+  risks.
 
-The green Playwright run is reliable automated evidence for boot, responsive
-controls, reduced-motion toggling, unsupported WebXR, and denied-session retry
-feedback. It is not proof that HELLO WORLD is visibly rendered, movement changes
-the player/camera, reset restores state, pointer/touch input moves a letter, or a
-real/emulated XR session can enter, grab, exit, and re-enter.
+## Final decision
 
-No desktop, mobile, or VR screenshot is checked in, and no `xr-qa.md` report is
-present. The plan correctly leaves screenshots and XR verification open. Run
-the remaining browser QA on the stronger machine, run IWER/runtime or headset
-QA, record any physical-headset limitation precisely, and add the required
-artifacts before merge.
+**PR #2 code/evidence approach: pass.** It safely adds durable remote screenshot
+capture and candid review records.
 
-## Non-blocking risks and follow-ups
+**PR #2 current publication state: conditional pass.** Commit the reviewed
+evidence/screenshots/review and confirm green CI on the resulting head before
+merge.
 
-- [P2] `launchImmersiveVr` intentionally mirrors IWSDK's launch sequence because
-  IWSDK 0.4.2's `World.launchXR()` returns `void`. The implementation is aligned
-  with the pinned SDK, but this duplication is an upgrade hazard. Re-review or
-  remove it when changing IWSDK versions.
-- [P2] Deterministic tests cover unsupported support checks and a rejected
-  session request, but not successful renderer session setup, setup failure,
-  session end, or re-entry. The required XR QA is the release gate for those
-  paths.
-- [P2] The build still ships a large JavaScript chunk and Havok WASM despite
-  application physics being disabled. Measure startup and memory on the
-  release-gate phone and headset before feature freeze.
-- [P2] The three HUD buttons shrink to a 38 px minimum height on coarse/mobile
-  layouts. The 52 px movement controls are appropriately larger, but the HUD
-  targets should be checked on the release-gate phone for reliable touch use.
-- [P2] GitHub Actions use mutable major-version tags rather than immutable commit
-  SHAs. Permissions are appropriately narrow, so this is a supply-chain
-  hardening opportunity rather than a draft blocker.
-- [P3] The shared disabled-button style uses a wait cursor even for the permanent
-  `VR unavailable` state. A state-specific cursor would communicate the result
-  more accurately.
-- [P2] `scripts/run-e2e.mjs` cleans up during normal completion but has no
-  explicit SIGINT/SIGTERM cleanup path; an interrupted local run can leave the
-  preview process behind, especially on Windows.
-
-## IWSDK, accessibility, security, and CI/CD assessment
-
-- IWSDK remains pinned to `0.4.2`; Three.js classes come from `@iwsdk/core`.
-- Gameplay objects use `world.createTransformEntity`; interaction uses
-  `Interactable` and `DistanceGrabbable`; locomotion uses
-  `LocomotionEnvironment`; application physics remains disabled.
-- The floating behavior uses an ECS query without hot-loop geometry, material,
-  or vector allocation. The new reduced-motion listener disables floating by
-  default when the preference is active and preserves a user's manual pause.
-- Desktop and mobile instructions are mode-appropriate, controls have accessible
-  names, XR state changes use the existing status region, and failure text
-  preserves the non-XR recovery path.
-- Pull-request CI has read-only repository permission. Pages build and deploy
-  permissions are separated and least-privilege for their responsibilities.
-- No production secret or live-service credential is required.
-
-## Final verdict
-
-**Draft-PR safety: pass.** Commit `53fbef6` is a sound follow-up and its CI is
-green.
-
-**Merge readiness: fail pending external/configuration and evidence work.** Keep
-PR #1 in draft until Pages is enabled and verified, browser screenshots and
-interaction evidence are captured, XR entry/grab/exit/re-entry is tested or its
-hardware gap is explicitly accepted.
+**Boilerplate/release verification: fail/incomplete.** Mobile composition is an
+observed defect, and successful XR/device plus core interaction evidence is
+still missing.
