@@ -6,8 +6,8 @@ Status: deterministic/static checks pass; browser and XR runtime intentionally d
 
 ## Build under test
 
-- Commit: final PR head (populate from GitHub after push)
-- Base: `origin/main` at `9b9d69244073c937bfb39ef18bf8da4d84ea997d`
+- Build commit: `9cf55998c99b49b69b9f7a08c5220516fa8b4b0d`
+- Base: `origin/main` at `effe276bdc3287492a8e273e648b8e930ce8fda8`
 - IWSDK: `0.4.2`
 - Node: `v22.18.0`
 - Operating system: Windows / PowerShell
@@ -22,7 +22,7 @@ Status: deterministic/static checks pass; browser and XR runtime intentionally d
 | --- | --- | --- | --- | --- | --- |
 | 01 | `npm run test:model` | Baseline, edge case, two regressions, stale evidence, targeted pass, release gate, reset, guide, immutability, and retained history are deterministic | 6 tests passed, 0 failed | Pass | `tests/model/kaiju-qa-model.test.mjs` |
 | 02 | `npm run typecheck` | All TypeScript, including authored Playwright specs, compiles | Exit 0 | Pass | Command output in task log |
-| 03 | `npm run build` | Production static bundle completes | 494 modules transformed; build completed | Pass with existing large-chunk warning | `dist/` (ignored build output) |
+| 03 | `npm run build` | Production static bundle and merged concept book complete | 494 modules transformed; build completed; concept book copied | Pass with existing large-chunk warning | `dist/` (ignored build output) |
 | 04 | `git diff --check` | No whitespace errors | No errors | Pass | Git command output |
 | 05 | Desktop/mobile Playwright suite | Complete tutorial, wrong-choice recovery, targeted 3/3, release, reset, keyboard focus, mobile layout, reduced motion, XR fallback mocks | Authored and typechecked; not executed locally | Deferred | `tests/e2e/hello-world.spec.ts`, `tests/e2e/xr-support.spec.ts` |
 | 06 | Independent browser QA | Review selectors, diagnostics, matrix, and runtime gap | Static review completed; runtime sign-off blocked until CI/stronger machine executes Playwright | Conditional | `browser-qa.md` |

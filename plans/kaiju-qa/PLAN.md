@@ -145,4 +145,4 @@ guardrails, rerun the suite, and decide whether the build is safe to release.
 - [x] XR static review and runtime limitation recorded
 - [x] Evidence manifest complete
 - [x] Independent review complete; no code blocker remains
-- [ ] Draft PR opened from `feature/kaiju-qa` to `main`
+- [x] Draft PR opened from `feature/kaiju-qa` to `main`: GitHub PR #5
