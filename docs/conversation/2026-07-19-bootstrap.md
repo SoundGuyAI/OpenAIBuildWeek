@@ -74,3 +74,17 @@ Branch: `codex/boilerplate`
 - Accepted typecheck and production build as the immediate baseline gate.
 - Marked full desktop/mobile IWSDK E2E and XR verification for a stronger machine
   and planned follow-up commits on the same pull request.
+
+## Orchestrator outcome — baseline and follow-up publication
+
+- Published baseline commit `17762c9` and opened draft pull request #1.
+- Published follow-up commit `29c507b` for reduced-motion behavior, persistent
+  mobile guidance, and corrected browser evidence.
+- Published follow-up commit `53fbef6` for explicit WebXR support/failure states,
+  deterministic recovery-path tests, and a fail-fast GitHub Pages workflow.
+- Used GitHub Actions instead of this VM for browser execution. Run `29741499653`
+  passed typecheck, production build, and six desktop/mobile Chromium tests.
+- Kept physical/IWER XR interaction evidence and screenshots open for a stronger
+  machine or headset.
+- Confirmed GitHub Pages still requires a repository administrator to select
+  GitHub Actions as the source in repository Settings before the first deploy.

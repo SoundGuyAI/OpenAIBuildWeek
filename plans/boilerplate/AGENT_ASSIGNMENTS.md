@@ -2,7 +2,7 @@
 
 Branch: `codex/boilerplate`  
 Updated: 2026-07-20  
-Status: follow-up hardening in progress
+Status: follow-up hardening complete; external QA pending
 
 ## Orchestrator-only paths
 
@@ -23,6 +23,7 @@ Status: follow-up hardening in progress
 | `019f7f5e-f41d-7381-b973-17fd47da7273` | Independent reviewer | `evidence/boilerplate/review.md` | Diff, tests, evidence, and residual risks reviewed | Complete; follow-up re-review pending |
 | `019f7f68-9504-7cd0-a689-2cb70f403043` | IWSDK/XR implementation expert | `src/xr-support.ts`, `tests/e2e/xr-support.spec.ts` | Unsupported and launch-failure states are user-visible and browser-tested | Complete; integrated by orchestrator |
 | `019f7f68-bef5-7ad1-bc22-3d62604d4af4` | CI/CD and GitHub Pages expert | `.github/workflows/deploy-pages.yml`, `plans/boilerplate/agent-notes/pages-review.md` | Pages workflow permissions and configuration path are reviewed and corrected | Complete; repository setting remains |
+| `019f7f73-a247-7f20-b393-2352835fa446` | Independent follow-up reviewer | `evidence/boilerplate/review.md` | Review commit `53fbef6`, new tests, CI result, workflow, and remaining merge blockers | Complete; draft safe, merge blockers recorded |
 
 ## Scope rules
 
