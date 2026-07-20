@@ -68,7 +68,7 @@ const guideProgress = requiredElement<HTMLElement>("#guide-progress");
 const guideCopy = requiredElement<HTMLParagraphElement>("#guide-copy");
 const toggleGuideButton = requiredElement<HTMLButtonElement>("#toggle-guide");
 const hintButton = requiredElement<HTMLButtonElement>("#hint-button");
-const coverageStatus = requiredElement<HTMLOutputElement>("#coverage-status");
+const coverageStatus = requiredElement<HTMLElement>("#coverage-status");
 const guardrailFieldset =
   requiredElement<HTMLFieldSetElement>("#guardrail-fieldset");
 const attemptHistory = requiredElement<HTMLOListElement>("#attempt-history");
@@ -342,7 +342,7 @@ function renderScenarios(currentState: GameState): void {
     );
     requiredElement<HTMLElement>(`#${scenario}-status`).textContent =
       evidence.status.toUpperCase();
-    requiredElement<HTMLOutputElement>(`#${scenario}-output`).textContent =
+    requiredElement<HTMLElement>(`#${scenario}-output`).textContent =
       SCENARIO_COPY[scenario][evidence.status] ?? evidence.status;
     if (["pass", "fail", "regression"].includes(evidence.status)) {
       currentCount += 1;
@@ -680,6 +680,7 @@ World.create(container, {
 
     let immersiveVrSupport: ImmersiveVrSupportState | undefined;
     const applyXrState = (xrState: ImmersiveVrState) => {
+      lastAnnouncement = xrState.message;
       applyImmersiveVrUiState(xrState, {
         button: enterXrButton,
         status,
