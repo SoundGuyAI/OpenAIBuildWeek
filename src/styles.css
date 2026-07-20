@@ -100,6 +100,10 @@ h1 {
   font-size: 0.9rem;
 }
 
+.mobile-hint {
+  display: none;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;
@@ -138,8 +142,12 @@ h1 {
     padding: 0.8rem 0.9rem;
   }
 
-  #hud .hint {
+  .desktop-hint {
     display: none;
+  }
+
+  .mobile-hint {
+    display: inline;
   }
 
   #touch-controls {
@@ -166,4 +174,3 @@ h1 {
     animation-duration: 0.01ms !important;
   }
 }
-

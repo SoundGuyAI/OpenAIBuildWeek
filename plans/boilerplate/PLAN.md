@@ -19,8 +19,9 @@ works in desktop/mobile browsers and can enter VR.
 - [x] Feature branch, plan, evidence, design, and conversation conventions exist.
 - [x] Pull-request CI and GitHub Pages deployment workflows exist.
 - [x] Typecheck and production build pass.
-- [ ] Full desktop/mobile browser E2E and screenshots pass on a machine with
-  sufficient IWSDK/WebGL headroom.
+- [x] Desktop/mobile Chromium E2E passes in GitHub Actions.
+- [ ] Browser screenshots are captured on a machine with sufficient IWSDK/WebGL
+  headroom.
 - [ ] XR entry and controller grabbing are verified in IWER or marked with the
   exact remaining limitation.
 

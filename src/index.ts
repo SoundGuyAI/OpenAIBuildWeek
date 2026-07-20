@@ -120,6 +120,16 @@ const status = requiredElement<HTMLParagraphElement>("#status");
 const enterXrButton = requiredElement<HTMLButtonElement>("#enter-xr");
 const resetButton = requiredElement<HTMLButtonElement>("#reset-view");
 const motionButton = requiredElement<HTMLButtonElement>("#toggle-motion");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+let motionEnabled = !reducedMotionQuery.matches;
+let motionPausedByUser = false;
+
+function updateMotionButton() {
+  motionButton.textContent = motionEnabled ? "Pause float" : "Resume float";
+}
+
+updateMotionButton();
 
 wireTouchControls();
 
@@ -183,13 +193,15 @@ World.create(container, {
   wordRoot.name = "HelloWorldRoot";
   wordRoot.position.set(0, 1.8, -2.2);
   wordRoot.scale.setScalar(0.72);
+  motionEnabled = !reducedMotionQuery.matches;
+  updateMotionButton();
   const wordEntity = world
     .createTransformEntity(wordRoot)
     .addComponent(FloatingWord, {
       baseY: 1.8,
       amplitude: 0.08,
       speed: 0.9,
-      enabled: true,
+      enabled: motionEnabled,
     });
 
   const visibleCharacters = [...WORD].filter((character) => character !== " ");
@@ -219,11 +231,25 @@ World.create(container, {
 
   world.registerSystem(FloatingWordSystem);
 
-  let motionEnabled = true;
-  motionButton.addEventListener("click", () => {
-    motionEnabled = !motionEnabled;
+  const setMotionEnabled = (enabled: boolean) => {
+    motionEnabled = enabled;
     wordEntity.setValue(FloatingWord, "enabled", motionEnabled);
-    motionButton.textContent = motionEnabled ? "Pause float" : "Resume float";
+    updateMotionButton();
+  };
+
+  motionButton.addEventListener("click", () => {
+    const nextMotionEnabled = !motionEnabled;
+    motionPausedByUser = !nextMotionEnabled;
+    setMotionEnabled(nextMotionEnabled);
+  });
+
+  reducedMotionQuery.addEventListener("change", (event) => {
+    if (event.matches) {
+      setMotionEnabled(false);
+      return;
+    }
+
+    setMotionEnabled(!motionPausedByUser);
   });
 
   const resetView = () => {
@@ -256,4 +282,3 @@ World.create(container, {
   status.textContent = "The 3D world could not start. Check the browser console.";
   document.body.dataset.iwsdkReady = "error";
 });
-
