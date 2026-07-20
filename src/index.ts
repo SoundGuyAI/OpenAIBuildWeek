@@ -20,6 +20,15 @@ import {
 } from "@iwsdk/core";
 
 import { FloatingWord, FloatingWordSystem } from "./floating-word.js";
+import {
+  applyImmersiveVrUiState,
+  checkImmersiveVrSupport,
+  immersiveVrCheckingState,
+  immersiveVrLaunchingState,
+  launchImmersiveVr,
+  type ImmersiveVrState,
+  type ImmersiveVrSupportState,
+} from "./xr-support.js";
 import "./styles.css";
 
 const PATTERNS: Record<string, string[]> = {
@@ -146,7 +155,7 @@ World.create(container, {
     sceneUnderstanding: false,
     environmentRaycast: false,
   },
-}).then((world) => {
+}).then(async (world) => {
   const { camera } = world;
   camera.position.set(0, 1.6, 4.8);
   camera.rotation.set(0, 0, 0);
@@ -259,24 +268,52 @@ World.create(container, {
     camera.rotation.set(0, 0, 0);
   };
 
+  const applyXrState = (state: ImmersiveVrState) => {
+    applyImmersiveVrUiState(state, {
+      button: enterXrButton,
+      status,
+    });
+  };
+
+  let immersiveVrSupport: ImmersiveVrSupportState | undefined;
+
   resetButton.addEventListener("click", resetView);
-  enterXrButton.addEventListener("click", () => {
+  enterXrButton.addEventListener("click", async () => {
     if (world.visibilityState.value === VisibilityState.NonImmersive) {
-      void world.launchXR();
+      applyXrState(immersiveVrLaunchingState());
+      const result = await launchImmersiveVr(world, {
+        support: immersiveVrSupport,
+      });
+      applyXrState(result);
     } else {
       void world.exitXR();
     }
   });
 
   world.visibilityState.subscribe((visibilityState) => {
-    enterXrButton.textContent =
-      visibilityState === VisibilityState.NonImmersive ? "Enter VR" : "Exit VR";
+    if (visibilityState === VisibilityState.NonImmersive) {
+      if (immersiveVrSupport) applyXrState(immersiveVrSupport);
+      return;
+    }
+
+    if (world.session) {
+      applyXrState({
+        state: "active",
+        message: "Immersive VR is active.",
+        session: world.session,
+      });
+    }
   });
 
-  enterXrButton.disabled = false;
   resetButton.disabled = false;
   status.textContent = "Ready — explore the scene and grab a letter.";
   document.body.dataset.iwsdkReady = "true";
+
+  applyXrState(immersiveVrCheckingState());
+  immersiveVrSupport = await checkImmersiveVrSupport();
+  if (world.visibilityState.value === VisibilityState.NonImmersive) {
+    applyXrState(immersiveVrSupport);
+  }
 }).catch((error: unknown) => {
   console.error("IWSDK failed to initialize", error);
   status.textContent = "The 3D world could not start. Check the browser console.";

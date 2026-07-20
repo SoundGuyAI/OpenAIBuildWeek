@@ -1,0 +1,91 @@
+import { expect, test } from "@playwright/test";
+
+async function waitForScene(page: import("@playwright/test").Page) {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("body")).toHaveAttribute("data-iwsdk-ready", "true", {
+    timeout: 90_000,
+  });
+}
+
+test.describe("immersive VR availability feedback", () => {
+  test.setTimeout(240_000);
+
+  test.afterEach(async ({ page }) => {
+    if (page.isClosed()) return;
+    await page.goto("about:blank", { waitUntil: "commit", timeout: 10_000 });
+    await page.close({ runBeforeUnload: false });
+  });
+
+  test("keeps non-XR players in the browser with clear unsupported feedback", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      class UnsupportedXRSystem extends EventTarget {
+        isSessionSupported() {
+          return Promise.resolve(false);
+        }
+
+        requestSession() {
+          return Promise.reject(new DOMException("Unsupported", "NotSupportedError"));
+        }
+      }
+
+      Object.defineProperty(navigator, "xr", {
+        configurable: true,
+        value: new UnsupportedXRSystem(),
+      });
+    });
+
+    await waitForScene(page);
+
+    const enterVr = page.locator("#enter-xr");
+    await expect(enterVr).toHaveAttribute("data-xr-state", "unsupported");
+    await expect(enterVr).toBeDisabled();
+    await expect(enterVr).toHaveText("VR unavailable");
+    await expect(page.getByRole("status")).toContainText(
+      "desktop or touch controls",
+    );
+    await expect(page.locator("body")).toHaveAttribute(
+      "data-xr-state",
+      "unsupported",
+    );
+  });
+
+  test("turns a denied WebXR request into a retryable launch failure", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      class DeniedXRSystem extends EventTarget {
+        isSessionSupported() {
+          return Promise.resolve(true);
+        }
+
+        requestSession() {
+          return Promise.reject(
+            new DOMException("The user denied the session", "NotAllowedError"),
+          );
+        }
+      }
+
+      Object.defineProperty(navigator, "xr", {
+        configurable: true,
+        value: new DeniedXRSystem(),
+      });
+    });
+
+    await waitForScene(page);
+
+    const enterVr = page.locator("#enter-xr");
+    await expect(enterVr).toHaveAttribute("data-xr-state", "supported");
+    await enterVr.click();
+
+    await expect(enterVr).toHaveAttribute("data-xr-state", "launch-failed");
+    await expect(enterVr).toBeEnabled();
+    await expect(enterVr).toHaveText("Retry VR");
+    await expect(page.getByRole("status")).toContainText("blocked or cancelled");
+    await expect(page.locator("body")).toHaveAttribute(
+      "data-xr-state",
+      "launch-failed",
+    );
+  });
+});

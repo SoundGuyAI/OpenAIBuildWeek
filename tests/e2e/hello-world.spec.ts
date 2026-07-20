@@ -33,7 +33,10 @@ async function openExperience(page: Page) {
     timeout: 90_000,
   });
   await expect(page.getByRole("heading", { name: "IWSDK Hello World" })).toBeVisible();
-  await expect(page.locator("#enter-xr")).toBeEnabled();
+  await expect(page.locator("#enter-xr")).toHaveAttribute(
+    "data-xr-state",
+    /supported|unsupported/,
+  );
   await expect(page.locator("#reset-view")).toBeEnabled();
   await expect(page.getByRole("status")).toContainText("Ready");
 

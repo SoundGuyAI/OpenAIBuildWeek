@@ -2,7 +2,7 @@
 
 Branch: `codex/boilerplate`  
 Created: 2026-07-19  
-Status: baseline ready for PR; browser/XR follow-up pending
+Status: draft PR hardening; physical XR evidence pending
 
 ## Player outcome
 
@@ -16,6 +16,8 @@ works in desktop/mobile browsers and can enter VR.
 - [x] Letters use IWSDK interaction/grabbing components.
 - [x] A locomotion floor and desktop/mobile movement affordances exist.
 - [x] The page exposes Enter VR, float toggle, and reset controls.
+- [x] Unsupported WebXR and denied session launches provide clear fallback and
+  retry feedback.
 - [x] Feature branch, plan, evidence, design, and conversation conventions exist.
 - [x] Pull-request CI and GitHub Pages deployment workflows exist.
 - [x] Typecheck and production build pass.
@@ -31,8 +33,9 @@ works in desktop/mobile browsers and can enter VR.
 | --- | --- | --- | --- |
 | IWSDK project and scene | Orchestrator | root config, `src/` | build is interactive |
 | Agent/team harness | Orchestrator | `.agents/`, `docs/`, templates | loop is executable |
-| Browser E2E | QA | `tests/e2e/`, evidence | desktop/mobile pass |
-| CI/CD | Orchestrator | `.github/` | PR CI and Pages workflow valid |
+| Browser E2E | Browser QA expert | `tests/e2e/`, evidence | desktop/mobile pass |
+| XR failure states | IWSDK/XR expert | `src/xr-support.ts`, owned E2E | fallback and retry states pass |
+| CI/CD | CI/CD expert | `.github/`, owned note | PR CI and Pages workflow valid |
 
 ## Test matrix
 
@@ -40,6 +43,7 @@ works in desktop/mobile browsers and can enter VR.
 | --- | --- | --- | --- |
 | Desktop | Load, pause float, reset | Ready state, canvas, controls work | `evidence/boilerplate/` |
 | Mobile | Load at Pixel viewport | Touch movement pad is visible | automated E2E |
+| Browser without XR | Load or deny XR permission | Clear fallback or retry feedback | automated E2E |
 | VR/IWER | Enter session and grab a letter | Session enters; letter follows controller | pending runtime test |
 
 ## Risks

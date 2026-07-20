@@ -1,7 +1,7 @@
 # Browser QA: boilerplate
 
 Branch: `codex/boilerplate`  
-Baseline commit: `17762c9`  
+Commit: `29c507b`  
 Status: automated desktop/mobile pass; screenshots pending
 
 ## Environment
@@ -10,8 +10,8 @@ Status: automated desktop/mobile pass; screenshots pending
 - Node: `.nvmrc` (Node 24)
 - Browser: Playwright Chromium
 - Projects: Desktop Chrome and Pixel 7 emulation
-- Workflow run: `29740056164`
-- Job: `88344488695`
+- Workflow run: `29740887111`
+- Job: `88347125246`
 
 ## Results
 
