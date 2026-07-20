@@ -30,3 +30,20 @@ link to the replacement.
   scoring, a risk prototype, a smallest-complete-game definition, and an ordered
   cut ladder. Features that do not strengthen the arc or remove a demonstrated
   blocker should not enter the feature-freeze scope.
+
+## 2026-07-20 — Select Kaiju QA and protect the evidence loop
+
+- **Decision:** Implement Kaiju QA as the Education-track game: record a partial
+  baseline, add a fragile-tower edge case, expose an ambulance regression from
+  an over-broad guardrail, then require a targeted rule and a current 3/3 suite
+  before a separate Release action unlocks.
+- **Reason:** The concept worktree ranked it highest for immediate judge
+  comprehension, a memorable regression image, practical learning transfer,
+  and deterministic delivery. Guided instruction must end before the player's
+  final diagnosis so completion demonstrates a decision rather than tutorial
+  obedience.
+- **Consequence:** The protected core uses original primitive geometry,
+  authored outcomes, persistent evidence, no physics or live model call, and a
+  complete desktop/mobile path. The existing XR entry architecture is preserved,
+  but IWSDK/IWER/headset runtime certification is deferred until the project
+  owner approves running it on suitable hardware.

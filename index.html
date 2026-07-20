@@ -8,58 +8,434 @@
     />
     <meta
       name="description"
-      content="An interactive Hello World built with Meta's Immersive Web SDK."
+      content="Kaiju QA is a tabletop city-safety lab about testing small changes before releasing a helpful baby kaiju."
     />
-    <title>IWSDK Hello World</title>
+    <meta name="theme-color" content="#0B1620" />
+    <title>Kaiju QA - Test small. Help big.</title>
   </head>
   <body>
     <main id="app-shell">
-      <div id="scene-container" aria-label="Interactive 3D scene"></div>
+      <div
+        id="scene-container"
+        role="region"
+        aria-label="3D tabletop city simulation. All required actions are also available in the game controls."
+      ></div>
 
-      <section id="hud" aria-label="Experience controls">
-        <p class="eyebrow">Immersive Web SDK</p>
-        <h1>IWSDK Hello World</h1>
-        <p id="status" role="status">Loading the 3D world…</p>
-        <div class="button-row">
-          <button id="enter-xr" data-testid="enter-xr" type="button" disabled>
-            Enter VR
-          </button>
-          <button id="toggle-motion" data-testid="toggle-motion" type="button">
-            Pause float
-          </button>
-          <button id="reset-view" data-testid="reset-view" type="button" disabled>
-            Reset view
-          </button>
-          <a
-            id="concepts-link"
-            class="hud-link"
-            data-testid="concepts-link"
-            href="./docs/design/loop-engineer-concepts/index.html"
-            target="_blank"
-            rel="noopener"
-            aria-label="Open the Loop Engineer concept book in a new tab"
-          >
-            Explore concepts ↗
-          </a>
-        </div>
-        <p class="hint">
-          <span class="desktop-hint">
-            Move with WASD / arrows. Point, touch, or grab the letters.
-          </span>
-          <span class="mobile-hint">
-            Use the arrows to move. Touch a letter to interact.
-          </span>
-        </p>
-      </section>
+      <div
+        id="game-ui"
+        data-phase="tutorial"
+        data-running="false"
+        data-release-state="locked"
+        data-motion="full"
+      >
+        <header class="game-header">
+          <section id="mission-card" class="hud-panel" aria-labelledby="game-title">
+            <div class="brand-lockup">
+              <p class="eyebrow">City safety lab</p>
+              <h1 id="game-title">KAIJU QA</h1>
+              <p class="tagline">Test small. Help big.</p>
+            </div>
+            <p class="mission-copy">
+              <strong>Mission:</strong> Help people. Protect the city. Keep rescue
+              routes open.
+            </p>
+          </section>
 
-      <nav id="touch-controls" aria-label="Mobile movement controls">
-        <button type="button" data-key="KeyW" aria-label="Move forward">▲</button>
-        <div>
-          <button type="button" data-key="KeyA" aria-label="Move left">◀</button>
-          <button type="button" data-key="KeyS" aria-label="Move backward">▼</button>
-          <button type="button" data-key="KeyD" aria-label="Move right">▶</button>
+          <nav id="loop-rail" class="hud-panel" aria-label="QA release loop">
+            <ol>
+              <li data-step="goal" data-state="current" aria-current="step">
+                <span class="loop-node" aria-hidden="true">1</span>
+                <span class="loop-label">Goal</span>
+                <span class="loop-detail">Help safely</span>
+              </li>
+              <li data-step="act" data-state="future">
+                <span class="loop-node" aria-hidden="true">2</span>
+                <span class="loop-label">Act</span>
+                <span class="loop-detail">Run or change</span>
+              </li>
+              <li data-step="observe" data-state="future">
+                <span class="loop-node" aria-hidden="true">3</span>
+                <span class="loop-label">Observe</span>
+                <span class="loop-detail">Read results</span>
+              </li>
+              <li data-step="adjust" data-state="future">
+                <span class="loop-node" aria-hidden="true">4</span>
+                <span class="loop-label">Adjust</span>
+                <span class="loop-detail">Choose the smallest fix</span>
+              </li>
+              <li data-step="gate" data-state="future">
+                <span class="loop-node" aria-hidden="true">5</span>
+                <span class="loop-label">Gate</span>
+                <span class="loop-detail">Test all and release</span>
+              </li>
+            </ol>
+          </nav>
+
+          <nav class="utility-cluster" aria-label="Lab utilities">
+            <button id="enter-xr" type="button" disabled>Enter VR</button>
+            <button
+              id="toggle-motion"
+              type="button"
+              aria-pressed="false"
+              aria-label="Reduce motion"
+            >
+              Reduce motion
+            </button>
+             <button id="reset-lab" type="button">Reset lab</button>
+             <a
+               id="concepts-link"
+               class="hud-link"
+               href="./docs/design/loop-engineer-concepts/index.html"
+               target="_blank"
+               rel="noopener"
+             >
+               Concept book ↗
+             </a>
+           </nav>
+        </header>
+
+        <div class="hud-columns">
+          <div class="left-rail">
+            <section
+              id="guide-panel"
+              class="hud-panel"
+              data-state="active"
+              aria-labelledby="guide-title"
+            >
+              <header class="panel-heading guide-heading">
+                <div>
+                  <p class="panel-kicker">Training</p>
+                  <h2 id="guide-title">Guided test</h2>
+                </div>
+                <div class="guide-controls">
+                  <span id="guide-progress" aria-label="Guide step 1 of 5">1 / 5</span>
+                  <button
+                    id="toggle-guide"
+                    class="quiet-button"
+                    type="button"
+                    aria-controls="guide-body"
+                    aria-expanded="true"
+                  >
+                    Hide guide
+                  </button>
+                </div>
+              </header>
+
+              <div id="guide-body" class="guide-body">
+                <p class="next-action-label">Next action</p>
+                <p id="guide-copy">
+                  First, record what already works. Run the current behavior.
+                </p>
+                <button id="hint-button" class="secondary-button" type="button">
+                  Hint
+                </button>
+              </div>
+            </section>
+
+            <section
+              id="evidence-panel"
+              class="hud-panel"
+              aria-labelledby="evidence-title"
+            >
+              <header class="panel-heading">
+                <div>
+                  <p class="panel-kicker">Current build</p>
+                  <h2 id="evidence-title">Test evidence</h2>
+                </div>
+                <output id="coverage-status" class="coverage-chip">0 / 3 tested</output>
+              </header>
+
+              <p class="panel-intro">
+                Select a scenario to inspect its goal, route, and latest result.
+              </p>
+
+              <ul id="scenario-list" aria-label="City safety scenarios">
+                <li>
+                  <button
+                    id="scenario-car"
+                    class="scenario-card"
+                    type="button"
+                    data-scenario="car"
+                    data-status="untested"
+                    aria-pressed="false"
+                    aria-describedby="car-output"
+                  >
+                    <span class="scenario-card__topline">
+                      <span class="scenario-name">Stranded car</span>
+                      <span class="status-badge">
+                        <span class="status-shape" aria-hidden="true"></span>
+                        <span id="car-status">Untested</span>
+                      </span>
+                    </span>
+                    <span class="scenario-goal">
+                      Move the car to the service bay in time.
+                    </span>
+                    <output id="car-output" class="scenario-output">
+                      Run this scenario before release.
+                    </output>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    id="scenario-ambulance"
+                    class="scenario-card"
+                    type="button"
+                    data-scenario="ambulance"
+                    data-status="untested"
+                    aria-pressed="false"
+                    aria-describedby="ambulance-output"
+                  >
+                    <span class="scenario-card__topline">
+                      <span class="scenario-name">Emergency lane</span>
+                      <span class="status-badge">
+                        <span class="status-shape" aria-hidden="true"></span>
+                        <span id="ambulance-status">Untested</span>
+                      </span>
+                    </span>
+                    <span class="scenario-goal">
+                      Keep the crossing clear when the ambulance arrives.
+                    </span>
+                    <output id="ambulance-output" class="scenario-output">
+                      Run this scenario before release.
+                    </output>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    id="scenario-tower"
+                    class="scenario-card"
+                    type="button"
+                    data-scenario="tower"
+                    data-status="untested"
+                    aria-pressed="false"
+                    aria-describedby="tower-output"
+                  >
+                    <span class="scenario-card__topline">
+                      <span class="scenario-name">Fragile tower</span>
+                      <span class="status-badge">
+                        <span class="status-shape" aria-hidden="true"></span>
+                        <span id="tower-status">Untested</span>
+                      </span>
+                    </span>
+                    <span class="scenario-goal">
+                      Complete the carry route without touching the tower.
+                    </span>
+                    <output id="tower-output" class="scenario-output">
+                      Add and run this scenario before release.
+                    </output>
+                  </button>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="hero-stage" aria-hidden="true"></div>
+
+          <div class="right-rail">
+            <section class="hud-panel guardrail-panel" aria-labelledby="guardrail-title">
+              <fieldset
+                id="guardrail-fieldset"
+                data-state="locked"
+                aria-describedby="guardrail-help"
+                disabled
+              >
+                <legend id="guardrail-title">Choose a guardrail</legend>
+                <p id="guardrail-help">
+                  Compare scope. Select the smallest rule that protects every route.
+                </p>
+
+                <div class="guardrail-options">
+                  <label class="guardrail-option">
+                    <input
+                      id="guardrail-freeze-near-buildings"
+                      type="radio"
+                      name="guardrail"
+                      value="freeze-near-buildings"
+                    />
+                    <span class="guardrail-choice">
+                      <span class="radio-mark" aria-hidden="true"></span>
+                      <span>
+                        <span class="guardrail-name">Freeze near buildings</span>
+                        <span class="guardrail-scope">Every building buffer</span>
+                      </span>
+                    </span>
+                  </label>
+
+                  <label class="guardrail-option">
+                    <input
+                      id="guardrail-slow-while-carrying"
+                      type="radio"
+                      name="guardrail"
+                      value="slow-while-carrying"
+                    />
+                    <span class="guardrail-choice">
+                      <span class="radio-mark" aria-hidden="true"></span>
+                      <span>
+                        <span class="guardrail-name">Slow while carrying</span>
+                        <span class="guardrail-scope">Every carried object</span>
+                      </span>
+                    </span>
+                  </label>
+
+                  <label class="guardrail-option">
+                    <input
+                      id="guardrail-slow-striped-zones"
+                      type="radio"
+                      name="guardrail"
+                      value="slow-striped-zones"
+                    />
+                    <span class="guardrail-choice">
+                      <span class="radio-mark" aria-hidden="true"></span>
+                      <span>
+                        <span class="guardrail-name">Slow in striped zones</span>
+                        <span class="guardrail-scope">Marked hazard zones only</span>
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+            </section>
+
+            <section class="hud-panel history-panel" aria-labelledby="history-title">
+              <header class="panel-heading">
+                <div>
+                  <p class="panel-kicker">Persistent evidence</p>
+                  <h2 id="history-title">Attempt history</h2>
+                </div>
+              </header>
+              <p id="attempt-empty" class="empty-state">
+                Completed runs stay here for comparison.
+              </p>
+              <ol id="attempt-history" data-empty="true">
+                <li id="attempt-baseline" data-attempt-slot="baseline" hidden>
+                  <header>
+                    <span data-attempt-label>Baseline</span>
+                    <strong data-attempt-summary>Waiting</strong>
+                  </header>
+                  <div class="attempt-results">
+                    <span data-scenario="car" data-status="untested">
+                      Car <strong data-attempt-status="car">--</strong>
+                    </span>
+                    <span data-scenario="ambulance" data-status="untested">
+                      Lane <strong data-attempt-status="ambulance">--</strong>
+                    </span>
+                    <span data-scenario="tower" data-status="untested">
+                      Tower <strong data-attempt-status="tower">--</strong>
+                    </span>
+                  </div>
+                </li>
+                <li id="attempt-one" data-attempt-slot="1" hidden>
+                  <header>
+                    <span data-attempt-label>Attempt 1</span>
+                    <strong data-attempt-summary>Waiting</strong>
+                  </header>
+                  <div class="attempt-results">
+                    <span data-scenario="car" data-status="untested">
+                      Car <strong data-attempt-status="car">--</strong>
+                    </span>
+                    <span data-scenario="ambulance" data-status="untested">
+                      Lane <strong data-attempt-status="ambulance">--</strong>
+                    </span>
+                    <span data-scenario="tower" data-status="untested">
+                      Tower <strong data-attempt-status="tower">--</strong>
+                    </span>
+                  </div>
+                </li>
+                <li id="attempt-two" data-attempt-slot="2" hidden>
+                  <header>
+                    <span data-attempt-label>Attempt 2</span>
+                    <strong data-attempt-summary>Waiting</strong>
+                  </header>
+                  <div class="attempt-results">
+                    <span data-scenario="car" data-status="untested">
+                      Car <strong data-attempt-status="car">--</strong>
+                    </span>
+                    <span data-scenario="ambulance" data-status="untested">
+                      Lane <strong data-attempt-status="ambulance">--</strong>
+                    </span>
+                    <span data-scenario="tower" data-status="untested">
+                      Tower <strong data-attempt-status="tower">--</strong>
+                    </span>
+                  </div>
+                </li>
+              </ol>
+            </section>
+
+            <section id="action-dock" class="hud-panel" aria-label="Run and release controls">
+              <div class="lab-status" data-status="untested">
+                <span class="status-shape" aria-hidden="true"></span>
+                <div>
+                  <span class="status-label">Lab status</span>
+                  <p id="status" role="status" aria-live="polite" aria-atomic="true">
+                    Loading the tabletop lab...
+                  </p>
+                </div>
+              </div>
+
+              <div class="action-buttons">
+                <button
+                  id="primary-action"
+                  class="primary-button is-tutorial-target"
+                  type="button"
+                  data-action="run-baseline"
+                  data-highlighted="true"
+                >
+                  Run baseline
+                </button>
+                <button
+                  id="revise-guardrail"
+                  class="secondary-button"
+                  type="button"
+                  hidden
+                >
+                  Revise guardrail
+                </button>
+                <button
+                  id="release-button"
+                  class="release-button"
+                  type="button"
+                  aria-describedby="release-reason"
+                  disabled
+                >
+                  Release locked
+                </button>
+              </div>
+              <p id="release-reason">
+                Every required test must pass under the current guardrail.
+              </p>
+            </section>
+          </div>
         </div>
-      </nav>
+
+        <section
+          id="debrief-panel"
+          class="hud-panel"
+          role="region"
+          aria-labelledby="debrief-title"
+          tabindex="-1"
+          hidden
+        >
+          <p class="panel-kicker">3 pass / 0 regressions / targeted change</p>
+          <h2 id="debrief-title">Verified city guardian</h2>
+          <p id="debrief-copy">
+            You matched the guardrail to the striped hazard, preserved two earlier
+            passes, and reran the full suite.
+          </p>
+          <p class="debrief-transfer">
+            Add the missing case, make the smallest evidence-based change, then
+            rerun the full suite before release.
+          </p>
+          <button id="restart-button" class="primary-button" type="button">
+            Test again
+          </button>
+        </section>
+
+        <p
+          id="announcement"
+          class="visually-hidden"
+          aria-hidden="true"
+        ></p>
+      </div>
     </main>
     <script type="module" src="/src/index.ts"></script>
   </body>

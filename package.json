@@ -16,7 +16,8 @@
     "test:e2e": "npm run build && node scripts/run-e2e.mjs",
     "test:e2e:run": "node scripts/run-e2e.mjs",
     "test:e2e:headed": "npm run build && node scripts/run-e2e.mjs --headed",
-    "check": "npm run typecheck && npm run test:e2e",
+    "test:model": "node --experimental-strip-types --test tests/model/kaiju-qa-model.test.mjs",
+    "check": "npm run typecheck && npm run test:model && npm run test:e2e",
     "feature:new": "node scripts/new-feature.mjs"
   },
   "dependencies": {
