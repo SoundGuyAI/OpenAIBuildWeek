@@ -2,7 +2,14 @@
 
 Branch: `codex/loop-engineer-concepts`  
 Base reviewed: `origin/main` at `9b9d69244073c937bfb39ef18bf8da4d84ea997d`  
-Status: complete and independently approved; publication metadata pending
+Status: complete, independently approved, pushed, and opened as a draft PR
+
+## Publication
+
+- Content commit: `99cfc1e35c8ac3a87a78780cf9311388715f0cf8`
+- Remote branch: `origin/codex/loop-engineer-concepts`
+- Draft PR: <https://github.com/SoundGuyAI/OpenAIBuildWeek/pull/4>
+- Target: `main`
 
 ## Evidence manifest
 
