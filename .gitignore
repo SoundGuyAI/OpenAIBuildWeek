@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+*.tsbuildinfo
+
+# Build output
+dist/
+coverage/
+
+# Test output
+playwright-report/
+test-results/
+blob-report/
+
+# IWSDK runtime and generated files
+.iwsdk/
+.cert/
+pids/
+*.pid
+*.pid.lock
+public/ui/
+public/gltf/generated/
+public/glxf/
+
+# Generated local MCP/runtime configuration
+.mcp.json
+.cursor/mcp.json
+.vscode/mcp.json
+.codex/config.toml
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Logs and caches
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.tmp/
+.temp/
+.cache/
+
+# IDE and OS files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Keep feature evidence and conversation logs tracked intentionally.
+!evidence/**
+!docs/conversation/**
+

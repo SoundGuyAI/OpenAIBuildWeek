@@ -1,0 +1,46 @@
+{
+  "name": "openai-build-week-iwsdk-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "iwsdk dev up --open --foreground",
+    "dev:runtime": "vite",
+    "dev:down": "iwsdk dev down",
+    "dev:status": "iwsdk dev status",
+    "reference:status": "iwsdk reference status",
+    "reference:warmup": "iwsdk reference warmup",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "npm run build && node scripts/run-e2e.mjs",
+    "test:e2e:run": "node scripts/run-e2e.mjs",
+    "test:e2e:headed": "npm run build && node scripts/run-e2e.mjs --headed",
+    "check": "npm run typecheck && npm run test:e2e",
+    "feature:new": "node scripts/new-feature.mjs"
+  },
+  "dependencies": {
+    "@iwsdk/core": "0.4.2",
+    "three": "npm:super-three@0.181.0"
+  },
+  "devDependencies": {
+    "@iwsdk/cli": "0.4.2",
+    "@iwsdk/reference": "0.4.2",
+    "@iwsdk/vite-plugin-dev": "0.4.2",
+    "@playwright/test": "^1.55.0",
+    "@types/three": "*",
+    "typescript": "^5.5.0",
+    "vite": "^7.1.4",
+    "vite-plugin-mkcert": "^1.17.0"
+  },
+  "engines": {
+    "node": ">=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "onnxruntime-node@1.21.0": true,
+    "protobufjs@7.6.5": true,
+    "sharp@0.34.5": true,
+    "sharp@0.33.5": true
+  }
+}
