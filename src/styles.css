@@ -110,13 +110,22 @@ h2 { margin-bottom: 0; font-size: 1.15rem; }
 .loop-detail { font-size: 0.68rem; }
 
 .hud-columns { display: grid; grid-template-columns: minmax(17rem, 24rem) minmax(15rem, 1fr) minmax(17rem, 24rem); gap: 0.8rem; min-height: 0; pointer-events: none; }
-.left-rail, .right-rail { display: flex; flex-direction: column; gap: 0.8rem; min-height: 0; pointer-events: auto; }
+.left-rail, .right-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+  scrollbar-gutter: stable;
+}
 .left-rail > *, .right-rail > * { padding: 0.9rem; pointer-events: auto; }
 .hero-stage { min-height: 20rem; pointer-events: none; }
 .panel-heading { display: flex; justify-content: space-between; gap: 0.8rem; align-items: start; margin-bottom: 0.75rem; }
 .guide-body[hidden], #debrief-panel[hidden] { display: none; }
 #guide-copy { margin: 0.45rem 0 0.8rem; }
-.quiet-button { min-height: 2rem; padding: 0.35rem 0.6rem; font-size: 0.75rem; }
+.quiet-button { min-height: 2.75rem; padding: 0.35rem 0.6rem; font-size: 0.75rem; }
 
 #scenario-list { display: grid; gap: 0.55rem; margin: 0; padding: 0; list-style: none; }
 .scenario-card { display: grid; gap: 0.45rem; width: 100%; text-align: left; }
