@@ -29,6 +29,19 @@ Validation completed on 2026-07-20 after rebasing onto current `origin/main`:
   Chromium. This branch changes no gameplay/runtime file; the limitation is
   recorded rather than treated as concept-book certification.
 
+## Follow-up: game-to-concept-book link
+
+The existing IWSDK browser HUD now includes an **Explore concepts** link that
+opens `docs/design/loop-engineer-concepts/index.html` in a new tab. The production
+build copies that exact source directory into the same relative path under
+`dist`, so the link works from the repository, Vite development root, preview,
+and GitHub Pages without duplicating the concept-book source.
+
+Runtime/browser validation for this follow-up is intentionally deferred at the
+user's request because the current VM is resource constrained. Static checks
+cover the anchor target, accessible label, copy-script syntax, source existence,
+and scoped diff; the user will exercise the IWSDK page later.
+
 ## Acceptance criteria
 
 1. Exactly five concepts are mechanically, aesthetically, and narratively distinct while teaching a common Loop Engineering + SDLC learning model.

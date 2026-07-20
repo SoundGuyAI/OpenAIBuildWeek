@@ -103,3 +103,19 @@ Branch: `codex/loop-engineer-concepts`
   `99cfc1e35c8ac3a87a78780cf9311388715f0cf8`, pushed
   `codex/loop-engineer-concepts`, and opened draft PR
   <https://github.com/SoundGuyAI/OpenAIBuildWeek/pull/4> against `main`.
+
+## User prompt — link concept book from the game
+
+Logged: 2026-07-20T22:02:48.9571546Z
+
+Branch: `codex/loop-engineer-concepts`
+
+> link this concepts html as a button from the IWSDk game , after you do , commit and push to the PR but don't run iwsdk here i'll test it later. as i mentioned before this VM isn't strong enough for now until i clear out some processes myself.
+
+### Orchestrator constraints
+
+- Add a single player-visible link from the existing IWSDK browser HUD to the
+  concept book and include the concept-book files in the production build.
+- Do not launch IWSDK, a local server, browser E2E, or XR runtime validation on
+  this VM; the user will perform runtime testing later.
+- Use static inspection only, then commit and push the follow-up to draft PR #4.

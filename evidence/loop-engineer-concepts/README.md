@@ -59,3 +59,16 @@ LFS was intentionally not enabled. No third-party 3D pack is redistributed.
   the implementation thread's `/feedback` session ID, and a submission-day rules check.
 - The baseline gameplay E2E failure above remains outside this docs-only diff and
   is disclosed in the final review and PR.
+
+## Follow-up link evidence
+
+- The root IWSDK HUD contains an accessible `Explore concepts` anchor targeting
+  `./docs/design/loop-engineer-concepts/index.html` in a new tab.
+- `scripts/copy-concept-book.mjs` copies the canonical concept-book directory to
+  the identical relative path under `dist` after `vite build`.
+- Independent static review approved the relative URL, accessible anchor,
+  desktop/mobile styling, build command, and cross-platform copy script with no
+  blocking finding.
+- Per the user's explicit VM constraint, IWSDK, Vite build/preview, browser E2E,
+  and XR runtime checks were not run for this follow-up. Runtime verification is
+  deferred to the user's later test pass.

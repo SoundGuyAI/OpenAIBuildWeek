@@ -17,8 +17,14 @@ One active writer owns each path. The orchestrator alone owns the prompt log, th
 | QA-XR-01 · `019f815b-5695-7401-b67e-92285b2759a7` | XR QA expert | `evidence/loop-engineer-concepts/xr-qa.md` | Review proposed XR interaction/comfort mappings; record runtime as not applicable | Integrated proposal | Complete — conditional design-feasibility pass; runtime certification deferred |
 | QA-XP-01 · `019f815b-5824-70e0-8a96-b0759f1751e0` | Experience-quality expert | `evidence/loop-engineer-concepts/experience-review.md` | Visual hierarchy, accessibility, clarity, comfort, performance review | Integrated deliverables | Complete — four blockers found; all resolved and closed by final review |
 | REVIEW-01 · `019f817d-511f-7321-860f-08dc69dee0ee` | Independent reviewer | `evidence/loop-engineer-concepts/review.md` | Diff/plan/research/evidence review with blocking findings clearly marked | All validation evidence | Complete — APPROVE, no blocking findings |
+| FOLLOWUP-LINK-01 · orchestrator | Shared HUD/build integration | `index.html`, `src/styles.css`, `package.json`, `scripts/copy-concept-book.mjs` | Add an accessible concept-book button and preserve its path in `dist` | Published concept book | Complete — static verification only; user deferred runtime testing |
+| FOLLOWUP-REVIEW-01 · `019f818e-5fdc-7470-8e02-d9eda121ff47` | Independent static reviewer | Read-only follow-up diff | Verify source/build link parity, semantics, styling, mobile wrapping, and cross-platform copy behavior without runtime execution | Follow-up integration | Complete — APPROVE, no blocking issues |
 
 ## Skipped roles
 
 - Runtime gameplay implementation agents are deferred because this branch intentionally produces design artifacts only.
 - Physical-headset QA is deferred until one concept is selected and implemented.
+- A separate implementation agent was not dispatched for the one-link follow-up
+  because it is an urgent, tightly coupled edit across shared HUD and build
+  integration files, which remain orchestrator-owned. Browser and IWSDK runtime
+  QA are deferred by explicit user request due to VM resource limits.
