@@ -1,0 +1,47 @@
+# Agent assignments: game concept proposals
+
+Branch: `codex/design-game-proposals`
+Updated: 2026-07-20
+Status: complete; both final independent gates passed
+
+## Orchestrator-only paths
+
+- `docs/conversation/2026-07-20-game-concepts.md`
+- `plans/game-concept-proposals/PLAN.md`
+- `plans/game-concept-proposals/AGENT_ASSIGNMENTS.md`
+- `evidence/game-concept-proposals/README.md`
+- Canonical proposal integration, Azure Flux calls, Git operations, and final
+  acceptance
+
+## Dispatch table
+
+| Agent                                  | Role                               | Exclusive output                                                                                               | Finish condition                                                                                | Status                                                                            |
+| -------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `019f7f7e-600e-7602-b1df-d2b1d646645e` | Market/originality researcher      | `plans/game-concept-proposals/agent-notes/market-originality.md`                                               | Comparable-game risks and whitespace patterns for 20 candidate territories                      | Complete; canonical addendum included                                             |
+| `019f7f7e-88fd-7dd2-89cc-ac4fbe26a731` | WebXR mechanics director           | `plans/game-concept-proposals/agent-notes/mechanics-platform-fit.md`                                           | 20 cross-platform mechanics with input and comfort mappings                                     | Complete                                                                          |
+| `019f7f7e-b849-7ae1-ab87-63763d97a14f` | Narrative and creative director    | `plans/game-concept-proposals/agent-notes/narrative-worlds.md`                                                 | Distinct fantasies, tones, stakes, and names                                                    | Complete                                                                          |
+| `019f7f7e-f8a6-7473-9fbf-ac268a3c4368` | Art director                       | `plans/game-concept-proposals/agent-notes/art-direction.md`                                                    | Visual system, concept-art prompts, iconography, and palette                                    | Complete                                                                          |
+| `019f7f7f-48d7-7871-9641-f184a663e953` | Comedy and marketing director      | `plans/game-concept-proposals/agent-notes/hooks-and-shareability.md`                                           | Memorable hooks, funny beats, demo moments, and audience pitches                                | Complete                                                                          |
+| `019f7f7f-93f8-75d0-b708-c0995593f62f` | Accessibility and comfort reviewer | `plans/game-concept-proposals/agent-notes/accessibility-comfort.md`                                            | Mobile/XR feasibility and comfort constraints per concept family                                | Complete                                                                          |
+| Azure Codex CLI                        | Proposal content editor            | `docs/design/game-concepts/proposals.json`, `docs/design/game-concepts/WEBXR_GAME_PROPOSALS.md`                | Synthesize the locked 20 into canonical structured data and visual-first Markdown               | Blocked by Windows sandbox helper, then stalled without writing files; terminated |
+| `019f7fa3-1493-7340-9070-abd2b62c0613` | Proposal content editor            | `docs/design/game-concepts/proposals.json`, `docs/design/game-concepts/WEBXR_GAME_PROPOSALS.md`                | Synthesize the locked 20 into canonical structured data and visual-first Markdown               | Complete                                                                          |
+| Azure Codex CLI                        | PDF and infographic engineer       | `scripts/build-game-proposals-pdf.py`, `docs/design/game-concepts/infographics/**`                             | Build an eight-page ReportLab proposal and semantic SVG infographic sources                     | Stalled without writing files; terminated                                         |
+| `019f7fb6-7479-7712-ac58-8373aa60086f` | PDF and infographic engineer       | `scripts/build-game-proposals-pdf.py`, `docs/design/game-concepts/infographics/**`                             | Build an eight-page ReportLab proposal and semantic SVG infographic sources                     | Blocked after repeated bounded waits; orchestrator took over                      |
+| Orchestrator                           | First PDF/infographic integration  | Generated PDF and QA evidence                                                                                  | Produce the initial eight-page artifact for independent review                                  | Complete; superseded by accessible rebuild                                         |
+| `019f7fdb-45eb-7311-9eda-e7642182d32d` | Independent design reviewer        | `evidence/game-concept-proposals/review.md`                                                                    | Review originality, distinctness, Loop Engineer fidelity, platform parity, and proposal clarity | Complete; blocked first draft                                                      |
+| `019f7fdb-71c6-70c0-8c08-3b2778f160fb` | Independent visual/PDF reviewer    | `evidence/game-concept-proposals/visual-review.md`                                                             | Review rendered pages, generated art, infographics, accessibility, and artifact health          | Complete; blocked first draft                                                      |
+| `019f7ff0-1d5f-75a1-85d0-b26e9fee8fe3` | SDLC/SDLR curriculum editor        | Mechanics and narrative specialist notes                                                                      | Remove invented SDLR expansion and teach both SDLC and SDLR through loop engineering            | Complete                                                                          |
+| `019f7ff0-e9bd-7d92-9fd4-219bca9969c3` | Market research correction         | `plans/game-concept-proposals/agent-notes/market-originality.md`                                               | Remove incorrect AgentCraft source and correct SDLC/SDLR framing                                | Complete                                                                          |
+| `019f7ff0-a4f0-7912-a2d3-52d17226e7cc` | Semantic SVG repair                | Two numbered plot SVGs                                                                                         | Restore high-contrast concept identifiers without changing chart semantics                      | Complete                                                                          |
+| `019f7ff6-9468-7cf3-96aa-d162c2ce242a` | Cross-discipline consistency editor | Art, marketing, and accessibility specialist notes                                                           | Apply SDLC/SDLR correction without invented acronym stages                                      | Complete                                                                          |
+| `019f7ff4-b0a2-7911-b57d-f4e2af65ec9e` | Artifact reproducibility expert    | Conversion, hash scripts, and reproducibility documentation                                                    | Pin deterministic WebP processing and verify final artifact provenance                          | Complete                                                                          |
+| `019f7ff3-0521-7fc3-8aaf-e5b31931ca93` | Accessible PDF implementation      | `scripts/build-game-proposals-pdf.mjs`                                                                         | Build semantic eight-page tagged PDF with art callouts and complete copy                        | Complete; orchestrator fixed shortlist numbering and integrated                   |
+| `019f8006-999c-7be1-8abd-d9f0d6867ea2` | Final independent design reviewer  | `evidence/game-concept-proposals/review.md`                                                                    | Re-run originality, fidelity, parity, and clarity gate after remediation                        | Passed; no commit/push blockers                                                    |
+| `019f8006-d855-7f10-9993-ce0d628e7afc` | Final visual/artifact reviewer     | `evidence/game-concept-proposals/visual-review.md`                                                             | Re-run rendered PDF, accessibility, provenance, and artifact-health gate                         | Passed; no commit/push blockers                                                    |
+
+## Ownership rules
+
+- Specialists may read broadly but write only their assigned note.
+- The orchestrator synthesizes the 20 canonical concepts and owns all shared
+  proposal and evidence files.
+- No specialist creates branches, commits, or modifies application code.

@@ -42,6 +42,10 @@ pnpm-debug.log*
 .tmp/
 .temp/
 .cache/
+.tools/
+tmp/
+__pycache__/
+*.py[cod]
 
 # IDE and OS files
 .idea/
@@ -59,4 +63,3 @@ Thumbs.db
 # Keep feature evidence and conversation logs tracked intentionally.
 !evidence/**
 !docs/conversation/**
-
