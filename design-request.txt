@@ -1,0 +1,79 @@
+create a new branch for design docs. createa 20 unique WebXR games ideas that would work on both desktop/mobile and an XR headset. these have to be original and unique and totally different from each other. 
+the output should be a few short pages long  poposal document that includes a few images generated with azure flux (see instuctions in c:\unityproj\azuretemp) for game concept, and inforgaphics to explain the game and the game loop and a few porposed visuals, 
+the game proposals should be very visual and easily understandatable before readin the description text even. 
+once you made all these, commit and push this branch. make sure to enable git LFS if there are big files. 
+use as many subagents as you see fir to create these, market reeaserecher to see if these games are similar, narrative and creative directors, art director, comedians, markering person, whatevr
+do it so it's easily mergable and won't conflict with the other branch. perhaps it could be brancing from the boilerplate branch and not from main
+
+
+
+---
+
+
+create a new worktree and in it setup a new branch for some new  design docs. 
+createa 5  unique WebXR games ideas that would work on both desktop/mobile and an XR headset. 
+these have to be original and unique and totally different from each other - but all share a few basic criteria.
+
+They are all different varaitiosn of a game called "Loop Engineer":
+it's an educational game in 3D that teaches you the concepts of Loop Engineering and SDLC (look these up so you can build a flow on how to teach these.)
+this needs to win the devpost comeptition: https://openai.devpost.com/
+you can also start preparitng all the submission documents that we will need to submit when you're designing. make sure to read the requirements.
+
+
+the game could  use free 3d assets available only that the agents and downlaod and incporrate to the game,
+they should come from free CC licensed sources like https://quaternius.com/ and we can use these for deisgn descition.
+this game should be able to be built in 4 hours using codex and GPT 5.6
+
+the output should be a few short pages long  poposal document in .md and html  that includes a few images generated with azure flux (see instuctions in c:\unityproj\azuretemp) for game concept, 
+and inforgaphics to explain the game and the game loop and a few porposed visuals, 
+
+the game proposals should be very visual and easily understandatable before readin the description text even. 
+once you made all these, commit and push this branch. make sure to enable git LFS if there are big files. 
+use as many subagents as you see fit to create these: market reeaserecher to see if these games are similar, narrative and creative directors, art director, comedians, markering person, whatevr.
+
+do it so it's easily mergable and won't conflict with the other branches. 
+
+the outout should be an html file that i can open without a server and see pages for each of the variations of this educational game so we can choose one to implement.
+
+once your'e done working, commit push the branch and make a PR.
+
+
+---
+create a new worktree and in it setup a new branch for some new video for the devpost submission
+i want to make a video showing how Kaiju QA game works (see the design in the  the worktree/branch loop-engineering-concept)
+
+the visausl and assets coudl come from free CC licensed sources like https://quaternius.com/  
+it shoudl have a voice over. 
+if you need images generated use  azure flux (see instuctions in c:\unityproj\azuretemp)
+
+install the skill from 
+https://hyperframes.heygen.com/ 
+use this skill to create a viedo for the loop engineer game that was desigened. 
+ this needs to be the video tath needs to be to  win the devpost comeptition: https://openai.devpost.com/
+
+
+use as many subagents as you see fit to create these: market reeaserecher , film director,  narrative and creative directors, comedy writer, art director, comedians, markering person, whatevr.
+
+once your'e done working, commit push the branch and make a PR.
+do it so it's easily mergable and won't conflict with the other branches. 
+
+avoid running iwsdk it can create lags on this machine
+
+---
+
+
+create a new worktree and in it setup a new branch for working on the implemenation of   Kaiju QA (see the design in the  the worktree/branch loop-engineering-concept)
+
+the visausl and assets coudl come from free CC licensed sources like https://quaternius.com/  
+if you need images generated use  azure flux (see instuctions in c:\unityproj\azuretemp)
+
+ this needs to be an educational game will   win the devpost comeptition: https://openai.devpost.com/
+
+ the game should have a very easy to follow tutorial explaining what to do step by step and then the game loop itself.
+
+use as many subagents as you see fit to create these: game designer, engineers, market reeaserecher ,  director,  narrative and creative directors, comedy writer, art director, comedians, markering person, whatevr.
+
+once your'e done working, commit push the branch and make a PR.
+do it so it's easily mergable and won't conflict with the other branches. 
+
+avoid running iwsdk it can create lags on this machine if you don't have to, and if you need to let me know first so ill prepare or maybe we can run it on another machine that is stronger. but let me know if you need to run it, but i would rather you push and open a PR first when you're done working and then we can make fixes to it.
