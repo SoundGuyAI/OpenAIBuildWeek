@@ -2,7 +2,7 @@
 
 Branch: `codex/design-game-proposals`
 Created: 2026-07-20
-Status: complete; independent design and visual gates passed
+Status: complete; proposal, gallery, licensing, and integration gates passed
 
 ## Outcome
 
@@ -41,8 +41,11 @@ distinct game concepts that share one codebase across desktop, mobile, and XR.
 
 ## Constraints
 
-- Do not modify application source, package configuration, or existing feature
-  evidence.
+- Do not modify application source or existing feature evidence. The gallery
+  follow-up may add only the minimal package-script wiring needed to generate
+  `public/designs/index.html` during the existing production build.
+- Do not run IWSDK, the IWSDK dev server, game E2E, or an XR runtime on this VM;
+  it is approved only for documentation and standalone static-gallery work.
 - Optimize for hackathon feasibility while preserving genuinely different game
   identities.
 - Treat physical-headset comfort and mobile usability as first-class design
@@ -58,3 +61,29 @@ distinct game concepts that share one codebase across desktop, mobile, and XR.
 - Verify the checked-in SHA-256 provenance manifest after the final build.
 - Inspect generated image sizes before deciding whether Git LFS is necessary.
 - Run an independent editorial/originality review before publication.
+
+## Follow-up: interactive design gallery
+
+- [x] Generate a self-contained `public/designs/index.html` from canonical
+      proposal data and approved art rather than maintaining duplicate content.
+- [x] Make all 20 concepts browsable by search, category, originality risk, and
+      shortlist status.
+- [x] Keep the page useful at desktop, mobile, and narrow viewport sizes.
+- [x] Provide visible keyboard focus, semantic controls, reduced-motion support,
+      meaningful image alternatives, and a no-JavaScript content path.
+- [x] Link to the full Markdown proposal and downloadable PDF.
+- [x] Add the generator to the normal production build so GitHub Pages publishes
+      the gallery at `/designs/`.
+- [x] Capture desktop and mobile standalone-browser evidence.
+- [x] Pass independent gallery review.
+
+## Follow-up: free asset starter kits
+
+- [x] Recommend a primary and optional supporting free asset pack for every one
+      of the 20 concepts.
+- [x] Prioritize coherent Quaternius CC0 packs and use other free libraries only
+      when they materially improve the fit.
+- [x] Record source URL, license, intended use, WebXR suitability, and required
+      custom work for every recommendation.
+- [x] Add the recommendations to the proposal source and interactive gallery.
+- [x] Pass independent licensing/editorial review.

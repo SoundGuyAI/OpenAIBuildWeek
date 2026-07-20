@@ -2,7 +2,7 @@
 
 Branch: `codex/design-game-proposals`
 Created: 2026-07-20
-Status: complete; independent design and visual gates passed
+Status: complete; proposal, gallery, licensing, and integration gates passed
 
 ## Artifact set
 
@@ -17,6 +17,9 @@ Status: complete; independent design and visual gates passed
 - Deterministic WebP conversion: `scripts/convert-concept-art.ps1`
 - SHA-256 writer/checker: `scripts/hash-game-proposal-assets.ps1`
 - Provenance manifest: `docs/design/game-concepts/assets/SHA256SUMS`
+- Interactive gallery source: `public/designs/index.html`
+- Gallery generator: `scripts/build-game-concepts-gallery.mjs`
+- Structured free-pack recommendations: `docs/design/game-concepts/asset-recommendations.json`
 
 ## Validation results
 
@@ -33,10 +36,11 @@ Status: complete; independent design and visual gates passed
 | PDF access         | English, tagged structure, outline, semantic source, meaningful image alt text  | `pdfinfo` plus builder assertions               |
 | PDF text           | All 20 concept titles extract; no ellipsis characters or truncated copy         | `pypdf` extraction assertion                    |
 | Visual QA          | No clipped cards, ambiguous galleries, overlap, or illegible transitions        | `pdf-contact-sheet.webp` and page inspection    |
-| Reproducibility    | 13 final source/binary artifacts match checked-in SHA-256 values                 | hash script in `-Mode Check`                    |
+| Reproducibility    | 15 final source/binary artifacts match checked-in SHA-256 values                 | hash script in `-Mode Check`                    |
 | Typecheck          | Pass                                                                             | `npm run typecheck`                             |
 | Production build   | Pass; existing large-chunk warning only                                          | `npm run build`                                 |
 | Browser regression | 5/6 pass; desktop boot remains in XR `checking` on this VM                       | `npm run test:e2e:run`                          |
+| Design gallery      | 20 cards, 20 dialogs, 40 official free-pack links, desktop/mobile layouts       | generator assertions and static Edge renders   |
 
 ## Visual QA iterations
 
@@ -78,3 +82,43 @@ instead of resolving to `supported` or `unsupported`. A focused CI-mode rerun
 failed the same assertion on both attempts. This matches the previously noted
 VM/headset-runtime limitation; the trace and screenshots remain in ignored
 local Playwright output. No physical-headset claim is made from this machine.
+
+The owner subsequently prohibited all further IWSDK, game E2E, and XR runtime
+execution on this VM because it can cause the machine to become stuck. The
+gallery was therefore validated as a standalone generated HTML file rather than
+through the game runtime.
+
+## Interactive gallery evidence
+
+- `gallery-desktop.webp` - desktop hero and visual navigation.
+- `gallery-mobile.webp` - narrow responsive layout and filter controls.
+- `gallery-atlas.webp` - full 20-card atlas with primary asset-pack labels.
+- `gallery-loop-engineer-detail.webp` - deep-linked concept detail showing the
+  complete loop, platform controls, and two free asset recommendations.
+- `gallery-keyboard-focus.webp` - visible focus treatment on the gallery search
+  field during keyboard navigation.
+- `gallery-zero-results.webp` - settled zero-result state with recovery guidance
+  after a search that matches no concept.
+- `gallery-no-javascript.webp` - JavaScript-disabled rendering with complete
+  inline concept details and enhancement-only controls removed.
+
+Static validation confirms exactly 20 unique concepts, 20 unique core verbs,
+20 detail dialogs, and 40 asset-pack links. The generated page embeds all five
+approved concept plates and has no network dependency for its UI. Direct static
+Edge/CDP inspection (without IWSDK, a dev server, or the game runtime) also
+confirmed:
+
+- no page-level horizontal overflow at 1440 x 1000;
+- the Loop Engineer deep link opens the expected dialog and asset section;
+- searching for `train` returns only Ghostline Dispatcher;
+- Arrow Right moves both selection and focus between visual-plate tabs;
+- `prefers-reduced-motion: reduce` is recognized by the page stylesheet;
+- JavaScript-disabled mode hides the interactive gallery and search controls
+  while exposing 20 complete concept sections with loop, controls, both packs,
+  custom gaps, comfort, differentiation, scope, and risk; and
+- a no-match search displays an explicit empty state and recovery instruction.
+
+The repository's Playwright gallery specification remains intentionally unrun
+on this VM. It must be executed later on the designated safe browser/XR-capable
+machine; no IWSDK, application dev server, game E2E, or XR runtime was started
+for this evidence pass.

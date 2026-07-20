@@ -105,6 +105,7 @@ fixed order with UTF-8 (no BOM) and LF line endings. It covers:
 - `proposals.json`;
 - all five SVG infographics;
 - `WEBXR_GAME_PROPOSALS.md`;
+- `asset-recommendations.json` and the generated `public/designs/index.html`;
 - `output/pdf/webxr-game-concept-proposals.pdf`.
 
 Verify an existing manifest without rewriting it:

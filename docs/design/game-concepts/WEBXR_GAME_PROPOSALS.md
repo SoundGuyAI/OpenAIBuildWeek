@@ -469,3 +469,42 @@ development across SDLC and SDLR using loop engineering. In parallel, keep
 **Gravity Loom** as the low-text, high-spectacle fallback. Both can prove their
 central promise with one room, one visible loop, no backend, and no required
 locomotion.
+
+## Free asset starter kits
+
+The interactive gallery at `public/designs/index.html` includes a verified
+primary and supporting free pack for every concept. The structured source is
+`asset-recommendations.json`; detailed fit, format, optimization, and custom-work
+notes live in the three `plans/game-concept-proposals/agent-notes/assets-*.md`
+research files.
+
+| # | Concept | Primary free pack | Supporting pack |
+| ---: | --- | --- | --- |
+| 01 | Loop Engineer | Quaternius Ultimate Modular Sci-Fi Pack | Quaternius Ultimate Animated Character Pack |
+| 02 | Echo Cartographer | Kenney Modular Cave Kit | Quaternius Ultimate Stylized Nature Pack |
+| 03 | Gravity Loom | Quaternius Ultimate Space Kit | Kenney Space Kit |
+| 04 | Pocket Weather Bureau | Quaternius Ultimate Nature Pack | Quaternius Modular Platformer Pack |
+| 05 | Choir Engine | Kenney Factory Kit | iPoly3D Concert Pack on Poly Pizza |
+| 06 | Museum of Stillness | Quaternius Background Posed Humans Pack | Kenney Furniture Kit |
+| 07 | Ghostline Dispatcher | Quaternius Modular Train Pack | Kenney Train Kit |
+| 08 | Reverse Archaeology | Quaternius Ultimate Modular Ruins Pack | Quaternius Fantasy Props MegaKit (free Standard subset) |
+| 09 | Shadowwright | Quaternius Platformer Game Kit | Kenney Prototype Kit |
+| 10 | Minute Garden | Quaternius Stylized Nature MegaKit (free Standard subset) | Quaternius Ultimate Crops Pack |
+| 11 | Portal Paparazzi | Quaternius Downtown City MegaKit (free Standard subset) | Quaternius Ultimate Monsters |
+| 12 | Gesture Linguist | Quaternius Animated Alien Pack | Quaternius Universal Animation Library (free Standard subset; verify desired clips) |
+| 13 | Tiny Treaty Table | Quaternius Ultimate Fantasy RTS | Quaternius 3D Card Kit - Fantasy (free Standard subset) |
+| 14 | Dream Assembly Line | Kenney Factory Kit | Quaternius Sci-Fi Essentials Kit (free Standard subset) |
+| 15 | The Unreliable Stage | Quaternius Ultimate Animated Character Pack | Quaternius Ultimate House Interior Pack |
+| 16 | Message in a Moon | Quaternius Ultimate Space Kit | Quaternius Ultimate Modular Sci-Fi Pack |
+| 17 | Second-Hand Sun | Quaternius Ultimate House Interior Pack | Quaternius Ultimate Stylized Nature Pack |
+| 18 | Invisible Zoo Keeper | Quaternius Ultimate Animated Animal Pack | Quaternius Ultimate Stylized Nature Pack |
+| 19 | Origami Rescue | Quaternius Modular Streets Pack | Quaternius Ultimate Buildings Pack |
+| 20 | Size Thief | Quaternius Ultimate House Interior Pack | Kenney Furniture Kit |
+
+Quaternius and Kenney selections are CC0 on their official pages. Six named
+Quaternius products above provide a free Standard subset while their complete
+Pro/Source catalog is paid; do not assume an item from the full catalog is in
+the free archive. The listed Poly Pizza bundle is also explicitly CC0, but Poly
+Pizza licensing otherwise varies by model. Recheck and archive each downloaded
+license when importing an asset, convert selected models to GLB as needed, and
+ship only the small subset used by the vertical slice.

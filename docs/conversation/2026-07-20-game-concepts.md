@@ -56,3 +56,57 @@ Branch: `codex/design-game-proposals`
   expansion that was not supplied.
 - Reframed the lesson around specification, implementation, testing, review,
   evidence, feedback, and repeated improvement across the software lifecycle.
+
+## User prompt - add an easy-to-browse design gallery
+
+Logged: 2026-07-20
+Branch: `codex/design-game-proposals`
+
+> when you're done make some nice index html that we can see the vairous designs easily
+
+## Orchestrator plan - add an easy-to-browse design gallery
+
+- Keep the canonical proposal JSON and generated concept plates as the source of
+  truth.
+- Add a polished, responsive, keyboard-accessible gallery at `/designs/` in the
+  GitHub Pages build without replacing the game's root `index.html`.
+- Use dedicated visual-design, implementation, browser-QA, and independent
+  review roles with disjoint write scopes.
+- Commit and push the follow-up to the existing design-proposal PR after the
+  gallery passes desktop and mobile browser verification.
+
+## User prompt - suggest free asset packs for every design
+
+Logged: 2026-07-20
+Branch: `codex/design-game-proposals`
+
+> For each design suggest assets packs to use from this site https://quaternius.com/ or other free assets
+
+## Orchestrator plan - suggest free asset packs for every design
+
+- Verify current pack names, download pages, formats, and licensing from the
+  source sites; prioritize Quaternius CC0 packs.
+- Give every concept a small, coherent prototype kit rather than an unranked
+  resource dump: primary pack, supporting pack, what each supplies, and the
+  irreducible custom art or shader work.
+- Prefer CC0 sources such as Quaternius and Kenney. Clearly label any source
+  where licensing varies per model and require per-asset verification.
+- Surface the recommendations in the canonical design proposal and interactive
+  gallery, with durable source links and a license-check date.
+
+## User prompt - do not run IWSDK on this machine
+
+Logged: 2026-07-20
+Branch: `codex/design-game-proposals`
+
+> please don't run any iwsk on this machine it casus it to get stuck
+
+## Orchestrator outcome - do not run IWSDK on this machine
+
+- Treat this VM as documentation and static-gallery-only for the remainder of
+  this work.
+- Do not run IWSDK, its dev server, the game/browser E2E suite, or any XR
+  runtime on this machine.
+- Validate the gallery directly from its standalone generated HTML using static
+  parsing and direct browser file rendering only.
+- Leave game and physical-headset validation to the separate XR-capable machine.

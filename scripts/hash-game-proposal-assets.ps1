@@ -27,12 +27,14 @@ $artifactPaths = @(
     "docs/design/game-concepts/assets/generated/04-weather-ecology-light-cycles.webp",
     "docs/design/game-concepts/assets/generated/05-music-photography-language-improv.webp",
     "docs/design/game-concepts/proposals.json",
+    "docs/design/game-concepts/asset-recommendations.json",
     "docs/design/game-concepts/infographics/originality-map.svg",
     "docs/design/game-concepts/infographics/platform-braid.svg",
     "docs/design/game-concepts/infographics/scope-risk-matrix.svg",
     "docs/design/game-concepts/infographics/shortlist-funnel.svg",
     "docs/design/game-concepts/infographics/universal-loop.svg",
     "docs/design/game-concepts/WEBXR_GAME_PROPOSALS.md",
+    "public/designs/index.html",
     "output/pdf/webxr-game-concept-proposals.pdf"
 )
 
