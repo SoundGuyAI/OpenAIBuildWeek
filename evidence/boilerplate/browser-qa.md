@@ -2,7 +2,7 @@
 
 Branch: `chore/boilerplate-post-merge-review`
 Deployed base commit: `be6dd7136a91d4062ba59c3e0d4c838b1bf21804`
-Status: remote screenshot capture implemented; final artifacts pending follow-up CI
+Status: remote desktop/mobile CI passed; screenshots captured and reviewed
 
 ## Environment
 
@@ -13,6 +13,9 @@ Status: remote screenshot capture implemented; final artifacts pending follow-up
 - Successful main deployment run: `29748804444`
 - Validation job: `88373560719`
 - Publish job: `88374012610`
+- Follow-up screenshot run: `29751524684`
+- Follow-up validation job: `88382979088`
+- Screenshot artifact: `browser-evidence-29751524684-1`
 
 ## Prior successful main deployment
 
@@ -41,13 +44,11 @@ also disables CSS animations for the screenshot. The test uses Playwright's
 native PNG output; exact filenames are stable across CI retries, so a successful
 follow-up run produces a single canonical desktop/mobile pair.
 
-To preserve the generated files, the orchestrator must add or update a GitHub
-Actions artifact step to upload `test-results/evidence/` on successful runs.
-After that workflow integration, run the two configured Chromium projects and
-download the PNG files. The orchestrator will convert them to
+The orchestrator added a success-artifact step, downloaded the resulting PNGs,
+visually inspected them as image files, and converted them to
 `evidence/boilerplate/01-desktop.webp` and
 `evidence/boilerplate/02-mobile.webp` to match the repository evidence
-convention.
+convention. No browser was launched locally.
 
 ## Automated coverage
 
@@ -57,7 +58,30 @@ convention.
 | Mobile | IWSDK ready state, visible scene container, four-button touch navigation, responsive layout, no horizontal overflow, no captured runtime or critical asset-loading errors | Passed on merged `main` in run `29748804444` |
 | WebXR unavailable | Enter VR is disabled with clear desktop/touch fallback guidance | Passed on desktop and mobile profiles in run `29748804444` |
 | WebXR denied | Enter VR becomes a retry control with permission guidance | Passed on desktop and mobile profiles in run `29748804444` |
-| Screenshot capture | Deterministic desktop/mobile PNG files after successful assertions | Implemented; pending follow-up CI run and artifact upload |
+| Screenshot capture | Deterministic desktop/mobile PNG files after successful assertions | Pass; run `29751524684` uploaded both files after 6 tests passed in 53.1s |
+
+## Screenshot observations
+
+### Desktop — pass with residual interaction gaps
+
+`01-desktop.webp` shows the complete `HELLO WORLD` word, floor/grid, readable
+HUD, desktop input instructions, unsupported-VR fallback, paused-motion state,
+and Reset view control at the 1280 by 720 evidence resolution. No obvious
+overlap or clipping is visible in this captured state.
+
+### Mobile — fail for initial composition
+
+`02-mobile.webp` shows a readable HUD and all four movement controls, but the
+initial 3D word is substantially cropped beyond both horizontal edges in the
+Pixel 7 profile. Only the middle portion of `HELLO WORLD` is visible. This is
+direct player-visible evidence that the initial camera/word composition does
+not preserve the complete player outcome on the tested mobile viewport.
+
+The automated mobile assertions still pass because they verify readiness,
+controls, DOM overflow, and captured runtime errors; they do not assert that the
+3D subject fits the rendered viewport. Treat mobile initial composition as a
+blocking product finding until fixed and recaptured, or explicitly accepted by
+the human owner as a documented limitation.
 
 ## What the screenshots will prove
 
@@ -85,11 +109,14 @@ validation.
 
 - `npm run typecheck` — Pass (exit code 0); `tsc --noEmit` reported no
   diagnostics on 2026-07-20.
+- `npm run build` — Pass; 493 modules transformed with the known large-chunk
+  warning.
 - Playwright, Chromium, and the page were not invoked locally.
 
-## Pending artifacts
+## Artifacts
 
-- Remote `01-desktop.png` and `02-mobile.png` from the follow-up CI run
-- Converted repository evidence: `01-desktop.webp` and `02-mobile.webp`
-- Successful CI artifact containing `test-results/evidence/`
-- VR/IWER and physical-headset evidence in `xr-qa.md`
+- `01-desktop.webp` — captured remotely; desktop composition pass.
+- `02-mobile.webp` — captured remotely; mobile composition fail due to
+  horizontal cropping.
+- GitHub Actions artifact `browser-evidence-29751524684-1` — original PNGs.
+- VR/IWER and physical-headset evidence remain pending in `xr-qa.md`.

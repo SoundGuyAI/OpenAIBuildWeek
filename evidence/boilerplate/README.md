@@ -25,18 +25,21 @@ Created: 2026-07-19
 | 05 | WebXR unavailable/denied | Player gets fallback or retry feedback | Unsupported and denied-launch cases passed on both browser profiles; 6 total tests passed in 44.5s | Pass | Actions run `29748804444` |
 | 06 | Pages deployment | Main build publishes through the configured Pages workflow | Build, test, artifact upload, and deployment completed; hosted document returned HTTP 200 | Pass | Actions run `29748804444` |
 | 07 | Hosted critical assets | Script, stylesheet, WASM, and worker assets resolve under the repository base path | Document plus six sampled critical assets returned HTTP 200 with expected content types | Pass | Post-merge HTTP verification, 2026-07-20 |
-| 08 | Desktop/mobile screenshots | Preserve player-visible desktop and mobile states | Pending follow-up GitHub Actions artifact capture | Pending | `01-desktop.webp`, `02-mobile.webp` |
-| 09 | IWER XR entry/grab | Enter XR and move a letter | Not run under the no-local-browser/no-headset constraint | Not run | `xr-qa.md`; future `03-vr.webp` |
+| 08 | Desktop screenshot | Preserve the player-visible initial desktop state | Full word, HUD, floor, and instructions are visible at 1280 by 720 | Pass | `01-desktop.webp`, run `29751524684` |
+| 09 | Mobile screenshot | Preserve the player-visible initial mobile state | HUD and movement controls are readable, but the 3D word is cropped beyond both horizontal edges | Fail | `02-mobile.webp`, run `29751524684` |
+| 10 | IWER XR entry/grab | Enter XR and move a letter | Not run under the no-local-browser/no-headset constraint | Not run | `xr-qa.md`; future `03-vr.webp` |
 
 ## Known limitations
 
 - Physical Quest verification requires a connected team headset.
 - Successful XR session setup, scale/origin, locomotion, controller/hand input,
   grabbing, exit, and re-entry remain unverified in IWER and on hardware.
+- The Pixel 7 evidence screenshot shows the initial `HELLO WORLD` composition
+  cropped horizontally; mobile player-visible acceptance remains open.
 - This post-merge review intentionally does not run Chromium or IWSDK locally.
   GitHub Actions is the authoritative browser runner.
 - The initial push-triggered Pages run failed before the repository setting was
   enabled. The subsequent main-branch run `29748804444` passed and deployed the
   merge commit successfully.
-- The dependency graph currently has no committed lockfile; installs use the
-  declared semver ranges and are not fully reproducible.
+- `package-lock.json` is committed and the GitHub Actions workflows use
+  `npm ci`; the production dependency audit reported zero vulnerabilities.

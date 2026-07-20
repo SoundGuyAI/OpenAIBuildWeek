@@ -17,13 +17,13 @@ phone verification.
 - [x] Verify the hosted document and critical static assets over HTTPS.
 - [x] Confirm typecheck, production build, and desktop/mobile E2E passed on the
   deployed commit in GitHub Actions.
-- [ ] Capture desktop and mobile player-visible screenshots on GitHub Actions
+- [x] Capture desktop and mobile player-visible screenshots on GitHub Actions
   and preserve them as feature evidence.
-- [ ] Complete a static experience-quality assessment with measured versus
+- [x] Complete a static experience-quality assessment with measured versus
   device-dependent findings clearly separated.
-- [ ] Reconcile the evidence manifest and reports with the merge SHA,
+- [x] Reconcile the evidence manifest and reports with the merge SHA,
   deployment run, hosted URL, and remaining limitations.
-- [ ] Obtain an independent post-merge review of the actual follow-up diff and
+- [x] Obtain an independent post-merge review of the actual follow-up diff and
   evidence.
 
 ### Non-goals

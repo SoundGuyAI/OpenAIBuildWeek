@@ -27,7 +27,7 @@ Status: post-merge non-local review in progress; XR/device QA pending
 | `019f7fe9-eb9a-76b2-9488-80734f5d33a7` | Browser E2E expert | `tests/e2e/hello-world.spec.ts`, `evidence/boilerplate/browser-qa.md` | Add deterministic GitHub Actions desktop/mobile screenshot capture and document its exact coverage without local browser execution | Complete; orchestrator integrated success-artifact upload |
 | `019f7fea-1476-73f2-98e8-fdd417655d02` | Experience quality expert | `evidence/boilerplate/experience-review.md` | Static accessibility, comfort, input, and performance review that clearly labels device-dependent gaps | Complete; 3 P1, 6 P2, and 1 P3 findings recorded |
 | `019f7fec-d507-7191-bca5-af4fe86246c4` | XR QA expert | `evidence/boilerplate/xr-qa.md` | Audit deterministic XR recovery coverage and record the exact successful-session, IWER, and headset gaps without running a browser | Complete; XR gate remains failed for missing runtime evidence |
-| `post-merge-independent-review` | Independent reviewer | `evidence/boilerplate/review.md` | Review the final follow-up diff, CI artifacts, deployment evidence, DoD coverage, and residual XR/device limitations | Pending integrated evidence |
+| `019f7ffa-718b-7d50-9b1d-a63486c78cf9` | Independent reviewer | `evidence/boilerplate/review.md` | Review the final follow-up diff, CI artifacts, deployment evidence, DoD coverage, and residual XR/device limitations | Complete; PR #2 safe as evidence follow-up, product verification incomplete |
 
 ## Post-merge orchestration notes
 
