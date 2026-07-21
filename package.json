@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "iwsdk dev up --open --foreground",
+    "dev:no-open": "iwsdk dev up --foreground",
     "dev:runtime": "vite",
     "dev:down": "iwsdk dev down",
     "dev:status": "iwsdk dev status",
