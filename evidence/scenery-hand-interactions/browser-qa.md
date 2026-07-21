@@ -98,3 +98,19 @@ The verdict remains conditional because portrait presentation is still below a
 polished bar and native touch does not yet directly cover the lever and other
 critical controls. Controller and articulated-hand claims are outside this
 browser certification and must remain open until XR QA passes.
+
+## 2026-07-21 vehicle-visibility regression follow-up
+
+- Reproduced the report in the rebuilt initial Training Yard: the service-car
+  collider, halo, and tutorial arrow rendered, but the car mesh did not.
+- Inspected all three shipped vehicle GLBs and found every vehicle material was
+  exported as alpha-masked with a zero alpha factor, causing full mesh discard.
+- Applied an opt-in opaque-material repair only to car, SUV, and emergency
+  vehicle clones. Buildings and other authored transparent materials are not
+  modified.
+- Visually confirmed the blue service car and white SUV in
+  `05-vehicles-restored.png` with the Dino and buildings unchanged.
+- Validation passed: typecheck, 24/24 model tests, production build, and the
+  focused desktop/mobile browser smoke (3 applicable passes, 3 expected skips,
+  zero request/HTTP/page errors). The first sandboxed browser launch failed at
+  macOS process startup; the clean self-managed-preview rerun passed.

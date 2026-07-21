@@ -20,7 +20,7 @@
     "test:e2e:smoke": "node scripts/run-e2e.mjs --grep \"recovers an invalid canvas drop|drags the fixture with native CDP touch|keeps non-XR players\"",
     "test:e2e:campaign": "node scripts/run-e2e.mjs --project desktop-chromium --grep \"completes all four districts\"",
     "test:e2e:headed": "npm run build && node scripts/run-e2e.mjs --headed",
-    "test:model": "node --experimental-strip-types --test tests/model/kaiju-qa-model.test.mjs tests/model/camera-navigation.test.mjs tests/model/draggable-callout.test.mjs tests/model/control-fixtures.test.mjs tests/model/mr-placement.test.mjs",
+    "test:model": "node --experimental-strip-types --test tests/model/kaiju-qa-model.test.mjs tests/model/camera-navigation.test.mjs tests/model/draggable-callout.test.mjs tests/model/control-fixtures.test.mjs tests/model/imported-materials.test.mjs tests/model/mr-placement.test.mjs",
     "test:fast": "npm run typecheck && npm run test:model",
     "test:preflight": "npm run build && npm run test:e2e:smoke",
     "check": "npm run typecheck && npm run test:model && npm run test:e2e",

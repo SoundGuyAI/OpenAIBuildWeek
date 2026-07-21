@@ -53,6 +53,7 @@ import {
   createRuleRack,
   createRunTestsLever,
 } from "./control-fixtures.js";
+import { forceOpaqueImportedMaterial } from "./imported-materials.js";
 
 export type SceneLevelId =
   | "training-yard"
@@ -468,6 +469,7 @@ function prepareImportedModel(
   object: Object3D,
   ownedMaterials: MeshStandardMaterial[],
   roughness = 0.64,
+  forceOpaque = false,
 ): void {
   object.traverse((child) => {
     if (!(child instanceof Mesh)) return;
@@ -480,6 +482,7 @@ function prepareImportedModel(
       const material = entry.clone() as MeshStandardMaterial;
       if ("roughness" in material) material.roughness = roughness;
       if ("metalness" in material) material.metalness = Math.min(material.metalness, 0.12);
+      if (forceOpaque) forceOpaqueImportedMaterial(material);
       material.needsUpdate = true;
       ownedMaterials.push(material);
       return material;
@@ -1051,7 +1054,10 @@ export function createKaijuQaScene(
     rotation = Math.PI / 2,
   ): Group => {
     const model = cloneAsset(key);
-    prepareImportedModel(model, importedMaterials, 0.5);
+    // The Quaternius vehicle export marks every otherwise-opaque material as
+    // alpha-masked with opacity zero. Repair only these vehicle clones so real
+    // transparent materials elsewhere retain their authored behavior.
+    prepareImportedModel(model, importedMaterials, 0.5, true);
     fitObject(model, size);
     model.position.set(x, 0.035, z);
     model.rotation.y = rotation;
@@ -1514,7 +1520,7 @@ export function createKaijuQaScene(
 
   const serviceCar = new Group();
   const serviceCarModel = cloneAsset("vehicleCar");
-  prepareImportedModel(serviceCarModel, importedMaterials, 0.58);
+  prepareImportedModel(serviceCarModel, importedMaterials, 0.58, true);
   // This is the player's first prop and must read clearly against the pale
   // tabletop from both its home ring and the street socket.
   fitObject(serviceCarModel, 0.64);

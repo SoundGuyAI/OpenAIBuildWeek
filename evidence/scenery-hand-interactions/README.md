@@ -12,6 +12,8 @@ This folder contains the fresh evidence for `fix/scenery-hand-interactions`.
   present; see `xr-qa.md` for exactly what it does and does not certify.
 - `04-iwer-controller-lever.png` — post-baseline IWER state after exact car snap,
   exclusive two-controller lever ownership, threshold pull, and release.
+- `05-vehicles-restored.png` — rebuilt Training Yard with the blue service car
+  and white district SUV visibly rendered after the vehicle-material repair.
 
 ## Independent reports
 
@@ -30,7 +32,7 @@ npm run build
 npm run test:e2e:run
 ```
 
-The integrated pass completed with 23/23 model tests, a successful production
+The latest integrated pass completed with 24/24 model tests, a successful production
 build, and 6/6 applicable Playwright campaign tests (the other 6 scenarios are
 intentional capability skips). The browser run covered the complete desktop
 campaign, repeated lever/stamp/rule operation, and native touch on the first
@@ -42,6 +44,9 @@ mobile prop without page, request, or HTTP errors.
   animated assembly; procedural eyes and the floating procedural hat are gone.
 - Scenery coherence: shipped Quaternius/Kenney models replace ambiguous props;
   authored materials are preserved and remaining primitives are structural.
+- Vehicle visibility: Quaternius vehicle clones narrowly repair the source
+  files' zero-alpha masked materials; the car and SUV are visibly restored in
+  `05-vehicles-restored.png` without changing other imported transparency.
 - Manipulation: props, fixtures, cartridges, lever, and stamp register both
   `RayInteractable` and `PokeInteractable`; screen, controller-ray, and direct
   touch samples share constrained ownership/release logic.
