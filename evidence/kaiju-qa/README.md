@@ -59,6 +59,7 @@ Status: PR feedback and route-layering follow-up complete locally; push and CI a
 | `09-mr-controller-drag.webp` | 800x800 | XR controller manipulation after workbench placement |
 | `10-mr-reentry.webp` | 800x800 | MR re-entry with one persistent workbench and preserved tutorial state |
 | `11-route-layering-fixed.webp` | 1208x602 | School Crossing route ribbons obey depth and disappear behind the kaiju/buildings instead of drawing over them |
+| `12-task-arrows-fixed.webp` | 1440x900 | Stage 5 yellow source and cyan destination 3D arrows point down with the smaller cues instead of sideways |
 
 All committed images are WebP files below 120 KB. Temporary PNGs, traces, and
 browser-session state remain ignored under `output/playwright/`.

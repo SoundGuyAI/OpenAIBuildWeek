@@ -107,5 +107,8 @@ Status: complete on `feature/kaiju-qa`; publication/CI confirmation follows this
   non-depth-writing, eliminating always-on-top roads over the kaiju/buildings.
 - [x] Preserve the supplied route-layering screenshots and capture a fixed
   School Crossing frame as `evidence/kaiju-qa/11-route-layering-fixed.webp`.
+- [x] Rotate only the imported large 3D source/destination arrow models downward
+  while leaving the smaller procedural cues aligned; capture the fixed Stage 5
+  frame as `evidence/kaiju-qa/12-task-arrows-fixed.webp`.
 - [x] Rerun typecheck, 23/23 model tests, build, and the serialized browser suite
   with 6 passes, 6 expected skips, and clean runtime telemetry.

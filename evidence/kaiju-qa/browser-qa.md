@@ -57,6 +57,7 @@ The focused model coverage verifies:
 - `02-mobile.webp`: 360x740 portrait frame after the mobile FOV/reachability fix.
 - `04-campaign-complete.webp`: final four-district completion frame.
 - `11-route-layering-fixed.webp`: fixed School Crossing route-depth frame.
+- `12-task-arrows-fixed.webp`: Stage 5 source/destination arrows aligned downward.
 
 ## Command record
 

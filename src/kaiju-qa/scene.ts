@@ -1333,10 +1333,13 @@ export function createKaijuQaScene(
   speechPanel.mesh.position.copy(speechDesktopHome);
   root.add(speechPanel.mesh);
 
-  const tutorialArrow = cloneAsset("labArrow");
-  prepareImportedModel(tutorialArrow, importedMaterials, 0.46);
-  fitObject(tutorialArrow, 0.32);
-  tintModel(tutorialArrow, palette.yellow);
+  const tutorialArrow = new Group();
+  const tutorialArrowModel = cloneAsset("labArrow");
+  prepareImportedModel(tutorialArrowModel, importedMaterials, 0.46);
+  fitObject(tutorialArrowModel, 0.32);
+  tintModel(tutorialArrowModel, palette.yellow);
+  tutorialArrowModel.rotation.z = Math.PI / 2;
+  tutorialArrow.add(tutorialArrowModel);
   const pointerCone = mesh(
     ownGeometry(new ConeGeometry(0.105, 0.22, 16)),
     ownMaterial(new MeshBasicMaterial({
@@ -1363,10 +1366,13 @@ export function createKaijuQaScene(
   tutorialArrow.visible = false;
   root.add(tutorialArrow);
 
-  const destinationArrow = cloneAsset("labArrow");
-  prepareImportedModel(destinationArrow, importedMaterials, 0.46);
-  fitObject(destinationArrow, 0.29);
-  tintModel(destinationArrow, palette.cyan);
+  const destinationArrow = new Group();
+  const destinationArrowModel = cloneAsset("labArrow");
+  prepareImportedModel(destinationArrowModel, importedMaterials, 0.46);
+  fitObject(destinationArrowModel, 0.29);
+  tintModel(destinationArrowModel, palette.cyan);
+  destinationArrowModel.rotation.z = Math.PI / 2;
+  destinationArrow.add(destinationArrowModel);
   const destinationCone = mesh(
     ownGeometry(new ConeGeometry(0.1, 0.21, 16)),
     ownMaterial(new MeshBasicMaterial({
