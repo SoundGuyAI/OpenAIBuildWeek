@@ -1,151 +1,156 @@
-# Independent review: kaiju-qa
+# Independent final review: Kaiju QA
 
-Review date: 2026-07-20 UTC
+Review date: 2026-07-21 UTC
 Branch: `feature/kaiju-qa`
-Scope: latest corrected working-tree state; this review changed only this file.
+Scope: latest working-tree state after the narration and screen-drag fixes. This
+review changed only this file and did not run new validation or perform branch,
+commit, push, or merge operations.
 
-## Verdict
+## Publication verdict
 
-**APPROVE FOR PR / MERGE FROM THE STATIC CODE-REVIEW SCOPE.** No code blocker
-remains. The prior P1 attempt-retention defect is resolved, its intended
-behavior is covered by the pure model suite, and the authored browser test now
-asserts all three retained labels.
+**CONDITIONAL APPROVE — no remaining source, model, asset, IWSDK, or evidenced
+experience blocker was found. The feature is approved for commit and PR
+publication; final merge/public release remains gated on a clean PR CI run.**
 
-This is not browser, mobile-device, assistive-technology, or XR runtime
-certification. Those sign-offs remain explicitly deferred by the owner and
-must stay deferred in product and competition claims until their respective
-runtime gates are executed.
+The failed-to-complete local E2E wrapper is classified as a runner/process-pool
+problem rather than a demonstrated application defect. CI is still a required
+release gate, not an optional follow-up. Physical Quest 3 testing remains a
+bounded residual and does not invalidate the completed Quest 3 IWER software
+path.
 
-## Blocking findings
+## Genuine remaining blockers
 
-None in the reviewed code, model, static UI, IWSDK integration, or authored
-test changes.
+**None identified in the reviewed latest source and evidence.**
 
-## Resolved prior blocker
+Any reproducible application failure from the clean CI run becomes a new
+blocker and supersedes this approval. The pending commit is normal publication
+sequencing per the owner's instruction; it is not treated as a defect in this
+review. The PR must, of course, contain the exact reviewed files rather than the
+older remote branch tip.
 
-The history policy is now centralized in
-`src/kaiju-qa/game-model.ts::selectAttemptHistory()`:
+## Prior blockers resolved
 
-- retain the baseline attempt;
-- retain the first `freeze-near-buildings` suite, which is the guided broad-rule
-  ambulance regression;
-- retain the latest suite;
-- remove duplicate slots when the guided regression is also the latest suite.
+### Neutral learning choice and narration
 
-`src/index.ts` renders this selector directly. The sixth model test exercises
-the multi-wrong-choice path and proves the retained guardrails are
-`[null, "freeze-near-buildings", "slow-striped-zones"]`. The authored E2E path
-also requires three visible attempt rows labeled `Baseline`,
-`FREEZE NEAR BUILDINGS`, and `SLOW IN STRIPED ZONES`. This satisfies the
-persistent-evidence learning and product contract that caused the earlier
-changes-requested verdict.
+`src/index.ts::narrationFor()` now returns no cue for broad, alternate, or
+targeted cartridge installation. The answer-giving `targeted` clip is therefore
+not played during the neutral choice. Broad and alternate results play the
+authored regression cue only after the player runs the evidence, while a fresh
+passing suite unlocks release.
 
-## Non-blocking findings
+The model and presentation now agree on the learning contract:
 
-1. **Runtime sign-off is still absent by design.** The expanded Playwright suite
-   typechecks and now covers the full desktop/mobile loop, retained history,
-   keyboard focus recovery, mobile geometry/tap targets, reduced motion, and
-   broad request/HTTP diagnostics. It was not executed, so none of those
-   authored assertions may be reported as runtime passes yet.
+- the guided comparison demonstrates the broad rule once;
+- the handoff exposes all three written cartridge scopes without naming the
+  correct candidate;
+- either wrong candidate is accepted and produces its own persistent
+  regression;
+- the release-lock explanation does not reveal the target rule;
+- release requires one fresh complete 3/3 suite under the passing rule.
 
-2. **Production payload remains a measured-release risk.** The build succeeds
-   but emits the known large-chunk warning: the main minified bundle is about
-   1.71 MB and Havok WASM is about 2.09 MB (about 664 kB gzip). Cold-cache mobile
-   transfer and time-to-first-action still require browser measurement. This is
-   not a correctness blocker for this feature PR.
+This closes the experience report's former B1 blocker.
 
-3. **Evidence manifest bookkeeping trails the latest test count.** The top-level
-   evidence README still records the older `5 tests passed` result while the
-   current suite passes 6/6. That orchestrator-owned summary should be refreshed
-   before evidence freeze; the underlying test and this independent review are
-   accurate.
+### IWSDK interaction compliance
 
-## Corrected-state assessment
+The custom `Raycaster` has been removed. IWSDK `RayInteractable` remains
+responsible for object hit targeting, pointer/controller event delivery, and
+pointer capture. For screen drags only, the already-delivered normalized pointer
+coordinates are converted into a camera ray solely to intersect the active
+object's existing drag plane; that ray is not used to search, select, or capture
+scene targets. XR continues to use the ray supplied by the IWSDK event.
 
-- **Tutorial and state transitions:** Pass by source and model inspection. The
-  baseline is visibly partial, tower staging precedes failure, the guided broad
-  rule produces the ambulance regression, independent choices preserve agency,
-  and reset returns to the canonical initial state.
-- **Release gate:** Pass. Guardrail changes stale previous evidence, only a
-  latest complete targeted 3/3 suite unlocks Release, and release remains a
-  separate one-shot action.
-- **Persistent evidence:** Pass after correction. Baseline, guided freeze
-  regression, and latest player suite remain available for comparison even
-  after an additional wrong independent choice.
-- **UI/model/scene wiring:** Pass statically. DOM and world-space proxies use the
-  shared intent/model path; the scene projects deterministic outcomes and does
-  not calculate rules or release eligibility.
-- **IWSDK API and lifecycle:** Pass statically. Gameplay objects use
-  `world.createTransformEntity`; interaction follows the
-  `Interactable`/`Pressed` qualification pattern; geometry and materials are
-  pooled outside update work and disposed once on final teardown; reset/retry
-  do not rebuild the world.
-- **Accessibility/static behavior:** Pass for the reviewed source contract. The
-  debrief is non-modal, only one exposed polite live status remains, focus is
-  restored to meaningful controls after core transitions, selected scenarios
-  have semantic and visible state, statuses are not color-only, and reduced
-  motion removes the release scale change.
-- **Test quality:** Pass for merge-level static/model coverage. Six deterministic
-  model tests cover the central rules, immutability, reset, and retained-history
-  regression. The E2E additions are relevant and well targeted, but remain
-  authored rather than executed.
-- **Competition fit and claims:** Pass statically. The README presents a clear
-  Education-category judge path, bounded learning claims, deterministic local
-  architecture, Codex/GPT-5.6 collaboration, asset policy, and an honest XR
-  limitation. No secret, credential, backend, account, or live-model dependency
-  was found in the reviewed feature paths.
+On pinned IWSDK 0.4.2, `RayInteractable` is the component used by the existing
+ECS query and is equivalent to the documented `Interactable` alias. The scene
+uses `world.createTransformEntity`, keeps physics and locomotion disabled,
+allocates drag temporaries outside the update loop, preserves one scene across
+reset and XR re-entry, and tears down owned listeners/entities/resources only
+on final disposal. No substantive IWSDK rule blocker remains.
 
-## QA-report remediation status
+### Visual causality and accessible source path
 
-The browser and experience reports now include explicit post-review addenda.
-They preserve the original independent findings as history while stating which
-source/test findings were remediated and which runtime conclusions remain
-unverified. This resolves the prior evidence-honesty concern without rewriting
-the original QA record. The XR report remains appropriately conditional and
-does not claim immersive gameplay certification.
+The latest scene keeps current and prior routes visible, distinguishes blocked
+and late regressions, marks hazard protection, renders neutral written rule
+scopes, and preserves the comparison after animation ends and under reduced
+motion. This closes the former visual-causality blocker by source inspection.
 
-## Exact checks run
+The source also contains an equivalent keyboard and switch-control path,
+semantic instruction/rule/evidence/release summaries, visible focus treatment,
+captions, non-color status words/shapes, and one exposed polite live region.
+Native CDP touch placement completed without page or viewport scrolling. Quest
+3 IWER verified controller-ray prop and rule placement, invalid-drop recovery,
+lever pulls, the release stamp, first-district completion, XR exit/re-entry, and
+post-re-entry progression.
 
-| Check | Result |
+## Required CI gate — not a current source blocker
+
+The clean PR runner must execute the serialized production E2E command and
+return a final reporter result. The local final wrapper attempts were disrupted
+by slow IWSDK/Chromium startup, external command ceilings, orphaned browser
+processes, and a saturated process pool. Focused runs established real invalid
+drop behavior and native touch/no-scroll behavior; an earlier complete
+four-district campaign used real canvas drags, lever pulls, and stamp presses.
+No application exception, failed request, or HTTP error was established in the
+completed focused evidence.
+
+CI should confirm:
+
+- the complete four-district real-drag campaign on the committed source;
+- invalid-drop return followed by a valid retry;
+- native touch placement and scroll lock;
+- mocked unsupported/denied XR fallback tests;
+- no application page error, failed request, HTTP error, or unexpected console
+  error.
+
+If CI passes, this review imposes no further publication hold. If CI exposes a
+reproducible product failure, that failure is blocking until corrected.
+
+## Non-blocking residuals and bounded claims
+
+- **Physical headset:** Quest 3 IWER certifies the requested software/controller
+  lifecycle, not physical optics, tracking quality, reach, haptics, comfort,
+  thermal behavior, or sustained 72/90 Hz performance. Do not claim physical
+  Quest 3 certification without a device run.
+- **Accessibility certification:** keyboard, switch, semantic, caption, focus,
+  and reduced-motion implementations are present, but a full NVDA/VoiceOver
+  campaign and dedicated switch-user validation are not recorded. Publish the
+  accessible path, but avoid claiming formal AT certification or complete
+  parity until those runs exist.
+- **Touch breadth:** native touch placement and no-scroll behavior passed; the
+  entire campaign, cancellation, reset, and every utility layout were not
+  independently replayed through touch. This is a follow-up coverage gap, not a
+  demonstrated defect in the shared interaction/reducer path.
+- **Performance:** the production build passes with the known large
+  JavaScript/Havok payload warning. Cold-cache mobile and headset startup remain
+  unmeasured.
+- **XR diagnostics:** retain the active-session renderer resize warning and old
+  reload-time destroyed-entity warnings as watch items. The verified exit and
+  re-entry lifecycle did not reproduce player-visible state loss.
+- **Asset provenance:** Quaternius/Kenney CC0 assets and Kokoro narration have
+  detailed source, license, format, and checksum records. The FLUX backdrop has
+  an exact prompt/model/hash but no preserved provider-terms snapshot and uses
+  JPEG bytes under a `.png` name. Keep it outside CC0 claims and retain the
+  documented distribution caveat.
+
+## Validation evidence accepted
+
+| Check | Final-review classification |
 | --- | --- |
 | `npm run typecheck` | Pass |
-| `npm run test:model` | Pass - 6 tests, 0 failures |
-| `npm run build` | Pass - 494 modules; known large-chunk warning |
-| `git diff --check` | Pass - no whitespace errors |
+| `npm run test:model` | Pass, 8/8 |
+| `npm run build` | Pass; known bundle-size warning |
+| `git diff --check` | Pass in the reviewed working tree |
+| Invalid desktop drop | Real interaction observed; authored recovery retry retained |
+| Native CDP touch / no-scroll | Pass |
+| Complete desktop real-drag campaign | Earlier redesign-loop pass; final committed rerun delegated to CI |
+| Quest 3 IWER controller/lifecycle | Pass; physical headset pending |
+| Final local E2E wrapper | Incomplete because of host startup/process issues |
 
-Not run, by explicit constraint: Playwright, Vite preview, IWSDK runtime,
-IWER/reference tooling, browser, mobile device, assistive technology, and
-headset sessions.
+## Merge and publication classification
 
-## Scope and ownership compliance
+**Code-review verdict: APPROVE.**
 
-The plan, assignment manifest, prompt log, specialist notes, evidence manifest,
-and independent QA reports are present. Changed implementation, shared, and
-test paths remain consistent with the recorded owners. The final reviewer
-changed only `evidence/kaiju-qa/review.md`; no source, test, branch, or commit
-operation was performed. No conflict marker or whitespace error was found.
+**PR verdict: APPROVE after the reviewed worktree is committed.**
 
-## Residual risks and deferred release gates
-
-- Run the production Playwright matrix before claiming desktop/mobile behavior,
-  screenshots, console/network cleanliness, or keyboard/touch runtime parity.
-- Run an assistive-technology pass before making screen-reader or broader
-  accessibility claims.
-- Measure cold-cache startup and weakest-device performance before the mobile
-  release gate.
-- Keep immersive XR described only as a preserved, statically reviewed entry
-  path. Controller rays, complete in-world actions/evidence, exit/re-entry,
-  visibility ordering, seated reach, comfort, readability, and frame rate are
-  uncertified.
-- Hosted deployment, public demo/video, repository licensing, and final
-  submission artifacts remain release-candidate work outside this code review.
-
-## Merge / PR verdict
-
-**PR verdict: APPROVE.** The latest corrected state has no remaining code
-blocker and is mergeable from the independent static/code-review perspective.
-Browser/mobile/AT/XR sign-offs remain deferred and must not be inferred from
-this approval.
-
-Path: `evidence/kaiju-qa/review.md`
-Verdict: **APPROVE - no code blocker remains; runtime certification deferred.**
+**Publication verdict: CONDITIONAL APPROVE — publish/merge after clean required
+CI. Physical-headset and formal assistive-technology certification remain
+explicit residuals, not automatic blockers.**

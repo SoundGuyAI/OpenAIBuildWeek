@@ -1,227 +1,98 @@
-# Experience/accessibility/product QA review: kaiju-qa
+# Independent experience retest: Kaiju QA
 
-Verdict: **CONDITIONAL / NOT READY TO SIGN OFF**.
+Review date: 2026-07-21 UTC
 
-## Post-review remediation (orchestrator, 2026-07-20)
+Branch: `feature/kaiju-qa`
 
-The findings below are retained as the independent review record. The current
-source now removes the false modal contract (`role="region"`), exposes one live
-status region instead of duplicate announcements, restores keyboard focus to
-the next meaningful control after core transitions, adds a visible selected
-scenario keyline, broadens request diagnostics, authors keyboard/mobile
-Playwright coverage, preserves the guided broad-regression attempt, and removes
-release scaling in reduced-motion mode. Static blockers B1/H3/H4 are therefore
-remediated in source. Browser, assistive-technology, mobile-device, performance,
-and XR runtime confirmation remains deferred, so the overall experience verdict
-stays conditional rather than signed off.
+Verdict: **CONDITIONAL APPROVE — no current experience or source blocker;
+clean PR CI remains the publication gate.**
 
-The source presents a coherent, unusually teachable QA loop: baseline evidence,
-missing edge case, useful failure, regression, targeted choice, full-suite gate,
-and release. The final choice is genuinely player-controlled after the guided
-experiment. Static inspection also found one accessibility blocker and several
-high-risk items that need runtime/device confirmation. No browser, IWSDK, or
-headset runtime was started for this review.
+This retest reviews the latest shared working-tree source and supplied post-fix
+browser/XR evidence. No IWSDK runtime was started for this review. No source,
+test, asset, manifest, branch, commit, or screenshot was changed.
 
-## Evidence boundary
+## Final gate summary
 
-- **Verified from source:** HTML semantics, state-machine transitions, CSS rules,
-  scene construction, package/build artifacts, and the current working-tree diff.
-- **Static inference only:** actual visual legibility, touch hit testing, focus
-  order in rendered layouts, screen-reader announcements, animation comfort,
-  frame rate, network transfer time, and real-device behavior.
-- **Not reviewed as runtime evidence:** the sibling browser/XR evidence files are
-  still marked pending; no screenshots or test results were available to verify.
+| Gate | Current result |
+| --- | --- |
+| B1 - neutral, player-owned rule choice | **Pass.** The neutral three-cartridge handoff remains intact, and broad, alternate, and targeted installation cues now return no narration. Regression narration reports evidence without naming the answer. |
+| B2 - persistent visual regression and fix | **Pass.** Persistent current/prior routes, pass/fail/late/blocked markers, hazard protection, and distinct scope geometry visibly embody the regression and targeted recovery after motion ends. |
+| B3 - keyboard/switch/semantic plus touch/XR parity | **Pass for the experience gate.** Keyboard world actions, native focusable switch-action buttons, semantic instruction/rule/evidence/release text, native touch drag with zero sampled page scroll, and the supplied Quest 3 IWER controller campaign evidence cover the required interaction modes. |
+| Mobile utility and narration fixes | **Pass.** Utility icons and accessible labels survive runtime updates, compact controls no longer expose overflowing mobile text, regression cues are evidence-first, and rule installation no longer leaks the intended solution. |
 
-## What is working well
+## Closed experience blockers
 
-- **Tutorial clarity:** the five-step guide has one explicit primary action per
-  step, progress text, hint escalation, hide/resume support, and short causal
-  copy. The model rejects out-of-order tutorial actions with explanatory text.
-- **Agency after tutorial:** `independent` state enables all three guardrails;
-  the model preserves attempts, marks evidence stale on a changed guardrail,
-  allows revision, and unlocks release only for the targeted current 3/3 pass.
-- **Cognitive load/comedy:** the mission, loop rail, scenario cards, attempt
-  history, and kind failure language make the lesson inspectable. The baby
-  kaiju/rescue framing is warm without making failure punitive. This is a good
-  Devpost Education fit because the mechanic demonstrates the claim rather than
-  merely describing QA vocabulary.
-- **Non-color cues:** status text is explicit (`PASS`, `FAIL`, `REGRESSION`,
-  `STALE`, etc.); shapes and borders vary by status; scenario goals and outputs
-  provide additional meaning. This is supported statically, not verified with
-  a color-vision or contrast tool.
-- **Reduced motion:** the system preference and in-product toggle both update
-  `data-motion`; the scene receives the setting and uses an authored scale/pose
-  path. CSS suppresses transition/animation duration. Runtime comfort remains
-  unverified.
+### B1 - The rule decision is now player-owned
 
-## Ranked findings
+After the guided broad-rule demonstration, the expected target is an unnamed
+rule choice. All candidate cartridges expose their scope, wrong broad and
+alternate choices are accepted and produce distinct regressions, and release
+copy does not name the correct cartridge. `narrationFor()` now returns `null`
+for every rule-install visual cue while retaining the authored regression cue
+for the resulting failed suite. Narration-on and narration-muted players
+therefore receive the same evidence-led decision.
 
-### Blocking
+### B2 - Regression and recovery remain visually embodied
 
-**B1 — False modal semantics and incomplete keyboard/screen-reader containment.**
+The tabletop preserves current and prior route traces, actor positions,
+prior-pass badges, and large result markers. A wrong rule simultaneously shows
+the new hazard protected and an established behavior blocked or late. The
+targeted rule restores the complete route set. The causal story is persistent,
+non-color-only, and remains available under reduced motion.
 
-`#debrief-panel` is `role="dialog" aria-modal="true"`, is focused on release,
-and contains the final action, but the underlying controls are not inert, hidden,
-or focus-trapped. A keyboard user can tab into the still-active game behind the
-dialog; a screen reader may be told that background content is unavailable while
-the DOM still exposes it. This can make the release result confusing or allow
-state changes behind the final debrief. (Static source finding: `index.html:401-423`,
-`src/index.ts:448-453`; no AT runtime verification.)
+### B3 - Equivalent accessible and cross-input paths are present
 
-**Retest:** release with keyboard only; confirm focus enters the dialog, Tab and
-Shift+Tab remain within it, Escape behavior is defined, the background is not
-reachable, and focus returns predictably after “Test again.” Run an NVDA or Voice
-Over pass and verify the release announcement, dialog heading, and button are
-read once in a sensible order. If the background is intentionally interactive,
-remove `aria-modal` and implement a non-modal status panel instead.
+The focused scene supports arrow-key candidate navigation and Enter/Space
+activation for place, choose, run, release, advance, and reset-related flow.
+The DOM also exposes native focusable buttons for the same current actions and
+preserves focus when the action set changes. Semantic text names the current
+instruction, every rule scope, scenario evidence status, and release-lock
+reason; one polite live region carries announcements.
 
-### High
+Native touch placement and no-scroll sampling passed. The supplied Quest 3
+IWER controller campaign passed the controller interaction path. These results
+close the prior experience-parity blocker; assistive-technology certification
+and physical-device behavior remain residual validation rather than current
+experience source blockers.
 
-**H1 — Static payload is large for the promised short, local experience.**
+## Resolved SDK nomenclature finding
 
-The current `dist` contains approximately 2.09 MB `HavokPhysics*.wasm`, 1.71 MB
-main JS, 423 KB `inter` JS, and 198 KB worker JS before compression (about 4.5 MB
-among the largest listed assets). This conflicts with the product goal of a
-small deterministic tabletop unless the browser cache or transfer compression
-materially changes the first-load experience. It also suggests physics/runtime
-weight despite the game’s no-physics design. (Verified from the existing `dist`
-artifact; network transfer and whether Havok is needed are not verified.)
+The earlier P1 finding treated `RayInteractable` as a custom or disallowed
+interaction path. The installed pinned IWSDK 0.4.2 declaration proves the
+opposite: `RayInteractable` is the canonical ray-target component and
+`Interactable` is declared as its deprecated alias with the instruction to use
+`RayInteractable` instead. The current source therefore uses the SDK component
+directly for screen, touch, and XR hit targeting and event delivery.
 
-**Retest:** measure cold-cache mobile first load on a throttled 4G profile,
-record compressed transfer, time-to-first-action, and total JS/WASM fetched.
-Remove or lazy-load unused physics/runtime chunks if the game does not need
-them. Set a budget suitable for the judging path and fail CI when exceeded.
+`registerManipulation()` derives a camera ray only after IWSDK has selected and
+captured a screen pointer target. That ray intersects the already-active
+object's drag plane to convert two-dimensional pointer motion into tabletop
+movement; it does not search for, select, or capture scene targets. XR continues
+to consume the controller ray delivered by IWSDK. No hand-rolled normal
+interaction raycaster remains, so P1 is closed.
 
-**H2 — Mobile layout is plausible but not proven at the smallest useful sizes.**
+## Non-blocking residuals
 
-The responsive rules stack the HUD and make the action dock sticky, but the
-five-step rail intentionally has 6rem minimum columns and horizontal overflow;
-the action stack is long and the 3D canvas is touch-action disabled. This may be
-usable, but it risks excessive scrolling, obscured sticky content, or a narrow
-viewport where the evidence board is below the fold. (Static inference from
-`src/styles.css:154-172`; no browser/device verification.)
+- **Clean-CI browser confirmation:** the latest local wrapper was defeated by
+  the saturated VM browser/runtime process pool. Existing desktop campaign,
+  invalid-drop, touch, typecheck, model, and build evidence found no current
+  gameplay failure. A clean serialized CI result remains the appropriate final
+  confirmation after P1 is corrected.
+- **Physical Quest 3 testing:** IWER evidence does not certify real optics,
+  tracking, reach, haptics, comfort, thermal behavior, controller loss, or
+  sustained headset frame rate.
+- **Assistive technology and responsive extremes:** NVDA/VoiceOver, 200% text
+  zoom, and small-landscape completion would strengthen certification but are
+  not publication blockers given the current native semantic and keyboard paths.
+- **Judge-facing proof:** a clean thumbnail-readable regression/fix comparison
+  would improve the publication story, although the persistent implementation
+  now satisfies the underlying experience gate.
 
-**Retest:** at 320x568, 360x640, 390x844, landscape phone, and tablet, complete
-the entire loop with touch. Confirm every action is visible or reachable without
-losing context, no horizontal page overflow exists outside the intentionally
-scrollable loop rail, sticky controls do not cover content, and all essential
-labels remain readable at 200% text zoom.
+## Final publication verdict
 
-**H3 — Focus order and focus recovery are not specified for state changes.**
-
-The source adds visible focus styling and focuses guardrail inputs after revise,
-but does not explicitly move focus to the newly relevant primary action after
-each tutorial transition, to the changed evidence after a run, or back to a
-stable control after reset. The live region may announce changes while keyboard
-users remain physically positioned on a now-disabled or semantically stale
-control. (Static inference; exact browser focus behavior unverified.)
-
-**Retest:** complete baseline, stage tower, run tower, select/run each wrong
-guardrail, revise, rerun, release, and reset using Tab/Enter/Space only. At every
-transition record focused element, announcement, and next logical action; ensure
-there is no focus loss and no disabled-control dead end.
-
-**H4 — Screen-reader live regions are duplicated and potentially noisy.**
-
-Both `#status` and visually hidden `#announcement` are polite atomic live
-regions, and both are assigned the same announcement on each render. This can
-produce duplicate speech for every action. The status is also the visible lab
-status, so it should not need a second identical announcer unless the two have
-distinct purposes. (Static source finding: `index.html:360-362`, `425-430`,
-`src/index.ts:476-477`.)
-
-**Retest:** with NVDA/VoiceOver, perform the full loop and count announcements.
-Use one live region for the concise state change, or make the second region
-non-live and verify that detailed visible status remains available.
-
-### Medium
-
-**M1 — Tutorial copy is clear but the 3D causal proof may be spectator-dependent.**
-
-The model and HUD make the regression legible in text, while `scene.ts` provides
-route traces, status materials, and authored cues. A spectator at thumbnail size
-may still miss why the ambulance regressed unless the changed route, blocked
-lane, and before/after row are simultaneously prominent. (Static inference;
-visual proof is unverified.)
-
-**Retest:** record a 30–60 second silent spectator capture at desktop and mobile
-sizes. Without narration, ask an uninvolved viewer to answer: what changed,
-which earlier behavior regressed, and why the striped-zone choice is targeted.
-Require all three answers from the frame/HUD alone.
-
-**M2 — “Inspect” exists but its information scent is weak in source.**
-
-Scenario cards expose `aria-pressed` and dispatch an inspect action, but the
-markup does not visibly identify a selected state beyond the generic button
-styles shown here, and the announcement is only “Scenario: STATUS.” A learner
-may not understand that selecting a card changes the scene/evidence comparison.
-(Static inference; rendered selected state not verified.)
-
-**Retest:** inspect each scenario by mouse, keyboard, and touch; verify a strong
-selected affordance, focused route/highlight, and a concise explanation of what
-changed. Confirm the same information is announced to assistive technology.
-
-**M3 — XR and scene-scale claims remain intentionally unverified.**
-
-The existing immersive entry path is preserved and scene code creates world-space
-control proxies, but no headset, re-entry, reachability, comfort, or spectator
-scale test was run. This is acceptable under the explicit no-runtime constraint,
-but the submission must not imply certified VR quality from this review.
-
-**Retest:** on supported headset/browser, enter and exit XR, re-enter after
-backgrounding, activate every world-space proxy, confirm controls are reachable
-without awkward bending, and verify that the 3D scene does not occlude the DOM
-lesson or cause discomfort at default scale.
-
-**M4 — Build/Devpost readiness has visible evidence gaps.**
-
-The README says browser evidence, public URL, demo video, feedback session, and
-repository license are still pending. The plan also expects desktop/mobile
-artifacts, but the current browser evidence file is pending. The educational
-impact claim is appropriately modest, but the final submission needs a concrete
-playable link and a short proof video showing the independent decision and
-release gate.
-
-**Retest:** populate browser evidence with command, commit, browser, viewport,
-artifacts, and errors; provide a public URL and a silent/voiced demo that shows
-the full causal arc; verify the license/provenance checklist before Devpost.
-
-### Nice-to-have
-
-**N1 — Add a persistent “why locked” relationship between release and evidence.**
-
-The lock reason is present as text, but linking it to the failing/stale scenario
-with a focusable action would reduce search cost, especially on mobile and for
-new learners.
-
-**N2 — Add a non-visual cue for the live 3D event timing.**
-
-The authored scene cues are helpful for sighted players. A short, deduplicated
-announcement such as “Ambulance lane blocked: regression” at the event moment
-would improve parity, provided it does not repeat the later evidence update.
-
-## Retest gate / acceptance checklist
-
-Do not call this experience-ready until all of the following are recorded:
-
-1. Modal dialog focus containment and screen-reader pass are green (B1).
-2. Keyboard-only full loop passes with focus/announcement notes (H3/H4).
-3. Cold-cache mobile performance and payload measurements meet an agreed budget
-   (H1), with unused physics weight removed or justified.
-4. 320px-width, landscape, touch, 200% zoom, and reduced-motion checks pass
-   without obscured controls (H2).
-5. An uninvolved spectator can explain the regression and targeted fix from a
-   short capture (M1).
-6. Browser artifacts, public demo URL/video, and Devpost/license readiness are
-   attached to the evidence set (M4).
-7. XR remains explicitly labelled “deferred/unverified” until a separate runtime
-   review is completed (M3).
-
-## Final path and verdict
-
-Path: `C:/UnityProj/OpenAIBuildWeek-kaiju-qa/evidence/kaiju-qa/experience-review.md`
-
-Verdict: **CONDITIONAL — strong instructional/product concept and a promising
-static implementation, but not independently QA-approved until the modal
-accessibility issue, keyboard/AT behavior, payload/mobile checks, and evidence
-gaps are retested.**
+**CONDITIONAL APPROVE.** All prior experience blockers and the mobile/narration
+remediation pass this retest. The pinned SDK evidence closes P1, and the
+narration toggle now exposes the correct inverse action while muted. Commit the
+reviewed worktree and require the clean serialized PR CI run before merge or
+public release. Physical-headset testing remains explicitly optional for this
+PR and required only for a claim of physical Quest 3 certification.

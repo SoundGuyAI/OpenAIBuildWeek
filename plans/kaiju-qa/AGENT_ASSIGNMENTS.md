@@ -2,7 +2,7 @@
 
 Branch: `feature/kaiju-qa`
 Created: 2026-07-20T21:49:25.986Z
-Status: complete; ready for draft PR
+Status: publication freeze; clean PR CI pending
 
 ## Orchestrator-only paths
 
@@ -39,3 +39,21 @@ Status: complete; ready for draft PR
 - Subagents do not create branches, commit, push, merge, or modify manifests.
 - The orchestrator updates status and agent IDs after every dispatch/return.
 - Implementation and independent review have different owners.
+
+## Redesign iteration assignments
+
+| Agent ID | Expert role | Exclusive write scope | Status |
+| --- | --- | --- | --- |
+| Ptolemy (`019f8203-f71b-7b43-9a85-98f4780be659`) | Campaign/state engineer | `src/kaiju-qa/game-model.ts`, `tests/model/kaiju-qa-model.test.mjs` | Complete; four-level deterministic campaign, superseded by the neutral-choice refinement now passing 8/8 model tests |
+| Linnaeus (`019f8203-a149-7c22-8fc8-5bb9016971b7`) | Narration/audio engineer | `src/kaiju-qa/narration.ts`, `src/kaiju-qa/narration-manifest.ts`, `scripts/generate-narration.mjs`, `docs/assets/AUDIO_CREDITS.md`, `public/audio/narration/` | Complete; 12 Kokoro cues generated and verified |
+| Meitner (`019f81ef-348e-7dd0-bf7b-16bcfd582c48`) | Art director and asset researcher | Read-only audit | Complete; Quaternius/Kenney asset and art-bible recommendations delivered |
+| Turing (`019f81ef-363c-77e0-af50-3d7d58ddc899`) | IWSDK interaction architect | Read-only audit | Complete; shared pointer/ray direct-manipulation architecture and QA matrix delivered |
+| Kuhn (`019f822c-2d5c-7241-84ba-fb311137126a`) | UI/accessibility engineer | `index.html`, `src/styles.css` | Complete; minimal full-screen shell with compact utilities and captions |
+| Maxwell (`019f822c-2da9-7ba1-8d63-5cc714b24e89`) | Asset/provenance engineer | `scripts/prepare-kaiju-qa-assets.py`, `public/assets/kaiju-qa/**`, `docs/assets/KAIJU_QA_ASSETS.md` | Complete; 23 GLBs validated, compact Kenney lab set expanded, provenance and FLUX prompt documented; reusable source cache preserved under `source-assets/kaiju-qa/` |
+| Orchestrator | Scene/integration owner | `src/kaiju-qa/scene.ts`, `src/kaiju-qa/assets.ts`, `src/kaiju-qa/canvas-panel.ts`, `src/index.ts`, shared HTML/CSS/config, prompt/plan/evidence manifests | Complete pending commit, PR update, and clean CI |
+| Helmholtz (`019f827d-cf54-7c23-a5e3-87389607eb8f`) | Browser/touch E2E verifier | `tests/e2e/hello-world.spec.ts`, `evidence/kaiju-qa/browser-qa.md` | Complete; invalid-drop and native CDP touch passed, full real-drag campaign authored for final rerun |
+| Fermat (`019f827d-d038-7692-be2b-ab3c25f328de`) | XR controller-ray verifier | `evidence/kaiju-qa/xr-qa.md`, `evidence/kaiju-qa/03-vr.webp` | Complete; Quest 3 IWER controller campaign and exit/re-entry passed; physical headset remains a residual gap |
+| Darwin (`019f827d-d2db-7742-b092-4833d4b15616`) | Experience/art/audio reviewer | `evidence/kaiju-qa/experience-review.md` | Complete; prior blockers remediated, pinned-SDK nomenclature finding corrected, conditional approve pending clean CI |
+| Poincare (`019f82cb-bee4-7730-b9cd-ebde70c03529`) | Learning-choice engineer | `src/kaiju-qa/game-model.ts`, `tests/model/kaiju-qa-model.test.mjs` | Complete; neutral rule choice and 8/8 model tests |
+| Averroes (`019f82d5-129f-7450-a361-56536cefb6cd`) | Causal-visual engineer | `src/kaiju-qa/scene.ts`, `src/kaiju-qa/canvas-panel.ts` | Complete; persistent causal routes/results, neutral cartridges, stronger districts and celebration |
+| Orchestrator + Locke (`019f82e7-a628-74e1-bdb2-57f78352dc60`) | Accessible-input/mobile implementation and review | `src/index.ts`, `index.html`, `src/styles.css` (orchestrator); read-only review (Locke) | Complete; keyboard and switch controls, semantic evidence, one live region, mobile utility fixes, and inverse narration action label |

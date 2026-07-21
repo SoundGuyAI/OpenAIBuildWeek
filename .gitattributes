@@ -1,0 +1,4 @@
+# Preserve downloaded third-party source packs and vendor license records
+# byte-for-byte; their original whitespace is part of the retained evidence.
+source-assets/kaiju-qa/** -text -whitespace
+public/assets/kaiju-qa/licenses/*.txt -text -whitespace

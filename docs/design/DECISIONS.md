@@ -47,3 +47,36 @@ link to the replacement.
   complete desktop/mobile path. The existing XR entry architecture is preserved,
   but IWSDK/IWER/headset runtime certification is deferred until the project
   owner approves running it on suitable hardware.
+
+## 2026-07-20 — Replace the dashboard prototype with a tactile campaign
+
+- **Supersedes:** The primitive-art, dashboard-control, single-level, and
+  runtime-deferral consequences of “Select Kaiju QA and protect the evidence
+  loop.” The educational state model and evidence gate remain protected.
+- **Decision:** Make grab, move, place, pull, and press the primary verbs on
+  desktop, touch, and XR. Teach them through a nine-stage world-space tutorial,
+  then transfer the evidence loop across School Crossing, Harbor Load, and
+  Storm Shift. Use documented Quaternius/Kenney assets, authored lighting and
+  animation, a supporting FLUX backdrop, and offline Kokoro narration.
+- **Reason:** The owner’s runtime review found the flat primitive scene,
+  desktop buttons, detached guide, and single short loop below the concept-art
+  quality bar and unsuitable for a convincing XR educational game.
+- **Consequence:** DOM controls are secondary utilities only. Every gameplay
+  action must work through IWSDK interaction entities; browser tests must send
+  real pointer/touch events; IWER controller testing is approved and required;
+  imported/generated media must retain source, license, prompt, and generation
+  provenance.
+
+## 2026-07-20 — Use the canonical IWSDK 0.4.2 ray-interaction component
+
+- **Supersedes:** The repository prose and early Kaiju SDK note that require the
+  deprecated `Interactable` alias spelling.
+- **Decision:** Kaiju QA uses `RayInteractable` for SDK-owned hit targeting and
+  pointer/controller event delivery. Screen-pointer ray math is limited to
+  moving an already captured object on its drag plane; it never performs scene
+  target discovery.
+- **Reason:** The installed pinned SDK declaration marks `Interactable` as a
+  deprecated alias and explicitly directs consumers to `RayInteractable`.
+- **Consequence:** Review should evaluate behavior against the canonical 0.4.2
+  component contract. A future repository-wide documentation cleanup can
+  replace stale alias guidance independently of this feature branch.

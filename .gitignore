@@ -11,6 +11,8 @@ coverage/
 playwright-report/
 test-results/
 blob-report/
+.playwright-cli/
+output/
 
 # IWSDK runtime and generated files
 .iwsdk/
@@ -42,6 +44,8 @@ pnpm-debug.log*
 .tmp/
 .temp/
 .cache/
+scripts/__pycache__/
+.local/
 
 # IDE and OS files
 .idea/

@@ -1,78 +1,75 @@
 # Evidence: kaiju-qa
 
 Branch: `feature/kaiju-qa`
-Review date: 2026-07-20 UTC
-Status: deterministic/static checks pass; browser and XR runtime intentionally deferred
+Review date: 2026-07-20/21 UTC
+Status: tactile redesign publication-frozen; clean serialized PR CI is the remaining merge gate
 
 ## Build under test
 
-- Build commit: `9cf55998c99b49b69b9f7a08c5220516fa8b4b0d`
 - Base: `origin/main` at `effe276bdc3287492a8e273e648b8e930ce8fda8`
 - IWSDK: `0.4.2`
-- Node: `v22.18.0`
-- Operating system: Windows / PowerShell
+- Runtime: `https://localhost:8081/` through the IWSDK development server
 - Worktree: `C:/UnityProj/OpenAIBuildWeek-kaiju-qa`
-- Runtime constraint: no `iwsdk dev`, IWER, Playwright, Vite preview, browser,
-  or headset execution was started, per the user's explicit preference to finish
-  and publish the PR first.
+- Final publication target: draft PR #5
 
-## Results
+## Implemented proof points
 
-| ID | Test | Expected | Observed | Result | Artifact |
-| --- | --- | --- | --- | --- | --- |
-| 01 | `npm run test:model` | Baseline, edge case, two regressions, stale evidence, targeted pass, release gate, reset, guide, immutability, and retained history are deterministic | 6 tests passed, 0 failed | Pass | `tests/model/kaiju-qa-model.test.mjs` |
-| 02 | `npm run typecheck` | All TypeScript, including authored Playwright specs, compiles | Exit 0 | Pass | Command output in task log |
-| 03 | `npm run build` | Production static bundle and merged concept book complete | 494 modules transformed; build completed; concept book copied | Pass with existing large-chunk warning | `dist/` (ignored build output) |
-| 04 | `git diff --check` | No whitespace errors | No errors | Pass | Git command output |
-| 05 | Desktop/mobile Playwright suite | Complete tutorial, wrong-choice recovery, targeted 3/3, release, reset, keyboard focus, mobile layout, reduced motion, XR fallback mocks | Authored and typechecked; not executed locally | Deferred | `tests/e2e/hello-world.spec.ts`, `tests/e2e/xr-support.spec.ts` |
-| 06 | Independent browser QA | Review selectors, diagnostics, matrix, and runtime gap | Static review completed; runtime sign-off blocked until CI/stronger machine executes Playwright | Conditional | `browser-qa.md` |
-| 07 | Experience/accessibility QA | Review tutorial, agency, copy, keyboard/touch semantics, non-color cues, motion, spectator clarity | Static review completed; false modal, duplicate live region, focus recovery, selected-state, diagnostics, test coverage, and reduced-motion findings were remediated after review | Conditional pending runtime | `experience-review.md` |
-| 08 | XR QA | Verify API/lifecycle patterns and document runtime gaps without starting IWSDK | Static API review passed; full XR gameplay/readability/comfort remains uncertified | Conditional | `xr-qa.md` |
-| 09 | Independent final review | Review latest diff, plan, QA reports, ownership, and checks | Approved for PR/merge from static code-review scope; no code blocker remains | Pass with runtime gates deferred | `review.md` |
+- One direct-manipulation path for screen pointers, native touch, and XR rays.
+- Invalid-drop recovery, physical test lever, rule cartridge dock, and release stamp.
+- Nine-stage Training Yard tutorial and three transfer districts.
+- Persistent world-space evidence board, instruction pop-up, arrow, sockets,
+  authored animation, particles, lighting, and stage-specific scenery.
+- Animated Quaternius hero, Quaternius city/vehicle assets, Kenney Factory Kit
+  lab props, and a documented Azure FLUX laboratory backdrop.
+- Reusable Kenney/Quaternius download sources and license records under
+  `source-assets/kaiju-qa/`; the machine-specific download virtualenv is ignored.
+- Twelve offline Kokoro narration WAVs with captions, mute, replay, unlock, and
+  visibility pause.
 
-## Acceptance coverage
+## Validation results
 
-- Pure state and release rules: model tests.
-- Desktop/mobile player path: authored Playwright test; execution deferred.
-- Keyboard focus recovery: authored desktop Playwright test; execution deferred.
-- Mobile overflow, landscape, tap targets, reduced motion: authored Playwright
-  checks; execution deferred.
-- Runtime console/page/network cleanliness: broad Playwright diagnostics authored;
-  execution deferred.
-- XR entry/error path: existing helper preserved and mocked tests authored;
-  IWER/headset execution deferred.
+| ID | Check | Expected | Current result | Artifact |
+| --- | --- | --- | --- | --- |
+| 01 | `npm run typecheck` | TypeScript and test sources compile | Pass after final source cleanup | Command output |
+| 02 | `npm run test:model` | Campaign, tutorial, regressions, recovery, gates, reset, and immutability are deterministic | Pass, 8/8 | `tests/model/kaiju-qa-model.test.mjs` |
+| 03 | `npm run build` | Production bundle and concept book complete | Pass on the publication-frozen source; existing IWSDK large-chunk warning remains | `dist/` (ignored) |
+| 04 | `git diff --check` | No whitespace errors | Pass; line-ending conversion warnings only | Git output |
+| 05 | Desktop/touch Playwright | Actual canvas interactions complete recovery and campaign; native touch does not scroll | Conditional pass: invalid-drop and native-touch/no-scroll observed; complete real-drag campaign passed earlier; clean final reporter delegated to PR CI | `browser-qa.md` |
+| 06 | IWER XR | Controller ray can grab, move, release, operate lever/stamp, and re-enter | Pass in Quest 3 IWER; physical headset remains untested | `xr-qa.md` |
+| 07 | Experience review | Tutorial, visual, audio, motion, accessibility, and fun-factor have no blocker | Conditional approve; no source/experience blocker, clean CI required | `experience-review.md` |
+| 08 | Independent final review | Diff, tests, evidence, merge safety, and residual risks approved | Conditional approve; merge/public release waits for clean CI | `review.md` |
 
-## Known limitations
+## Visual evidence
 
-- No desktop/mobile screenshots are claimed in this branch because producing
-  them requires the IWSDK-backed browser runtime that the user asked not to run
-  on this machine before the PR.
-- Browser QA cannot sign off until CI or another machine runs
-  `npm run test:e2e:run` after the production build.
-- Immersive XR has unlabeled geometric control proxies but no complete readable
-  world-space evidence board. Do not market the full game as XR-certified.
-- IWER/headset entry, controller rays, exit/re-entry, visibility ordering,
-  seated reach, comfort, and performance are untested.
-- IWSDK's production bundle still emits a large JavaScript chunk and Havok WASM
-  despite physics being disabled. Cold-cache mobile transfer requires runtime
-  measurement and future optimization.
-- Public deployment, YouTube demo, Codex `/feedback` session ID, and repository
-  license remain final Devpost submission tasks outside this feature PR.
+| Artifact | What it proves |
+| --- | --- |
+| `01-desktop.webp` | Desktop composition, modeled assets, world-space tutorial, evidence board, direct-manipulation staging, shadows, and lab backdrop |
+| `02-mobile.webp` | Portrait camera framing, readable coaching/caption, visible draggable objects, and secondary utility controls |
+| `03-vr.webp` | IWER/XR session evidence when controller capture succeeds |
+| `04-campaign-complete.webp` | Storm Shift completion, final evidence board, celebration state, and four-district completion |
 
-## Recommended post-PR runtime gate
+All committed screenshots are below 2 MB. Generated browser traces, temporary
+screenshots, and `.playwright-cli/` state remain ignored.
 
-On CI or a stronger browser-capable machine:
+## Known boundaries
+
+- IWER can validate WebXR session and controller plumbing but cannot certify
+  physical headset comfort, reach, tracking quality, or device performance.
+- IWSDK still emits Havok WASM and a large JavaScript chunk even though gameplay
+  physics is disabled. This is a known SDK/bundle optimization opportunity.
+- Public deployment, demo video, final Devpost submission copy, and a
+  repository-wide license choice are outside this gameplay PR.
+
+## Reproduction
 
 ```bash
 npm ci
-npx playwright install --with-deps chromium
 npm run typecheck
-npm run build
 npm run test:model
+npm run build
 npm run test:e2e:run
 ```
 
-If that run passes, copy `test-results/evidence/01-desktop.png` and
-`02-mobile.png` into this evidence folder (converting to WebP if desired), add
-the exact commit/browser/device data, and update the browser/XR reports in a
-follow-up commit.
+For local XR verification, start `npm run dev`, confirm `npm run dev:status`,
+enter IWER with a Quest 3 profile, then follow the exact controller commands and
+limitations recorded in `xr-qa.md`.

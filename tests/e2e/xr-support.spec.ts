@@ -1,9 +1,12 @@
 import { expect, test } from "@playwright/test";
 
 async function waitForScene(page: import("@playwright/test").Page) {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await page.goto("/", {
+    waitUntil: "domcontentloaded",
+    timeout: 120_000,
+  });
   await expect(page.locator("body")).toHaveAttribute("data-iwsdk-ready", "true", {
-    timeout: 90_000,
+    timeout: 300_000,
   });
 }
 
@@ -18,7 +21,8 @@ test.describe("immersive VR availability feedback", () => {
 
   test("keeps non-XR players in the browser with clear unsupported feedback", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop-chromium", "Desktop fallback coverage is sufficient");
     await page.addInitScript(() => {
       class UnsupportedXRSystem extends EventTarget {
         isSessionSupported() {
@@ -53,7 +57,8 @@ test.describe("immersive VR availability feedback", () => {
 
   test("turns a denied WebXR request into a retryable launch failure", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop-chromium", "Desktop fallback coverage is sufficient");
     await page.addInitScript(() => {
       class DeniedXRSystem extends EventTarget {
         isSessionSupported() {

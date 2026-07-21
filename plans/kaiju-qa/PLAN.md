@@ -2,147 +2,130 @@
 
 Branch: `feature/kaiju-qa`
 Created: 2026-07-20T21:49:25.986Z
-Status: ready for draft PR; browser/XR runtime gates deferred by owner constraint
+Status: tactile redesign publication-frozen; clean serialized PR CI pending
 
-## Player outcome
+## Player promise
 
-In a playful three-minute tabletop simulation, a first-time learner follows a
-step-by-step tutorial, catches a baby kaiju's edge-case failure and regression,
-then chooses the smallest safe guardrail and releases a verified city guardian.
+A first-time learner can understand Kaiju QA without presenter narration,
+complete a nine-action tactile tutorial, and then transfer the evidence-driven
+loop across three new districts. Desktop, touch, and XR use the same verbs:
+grab, move, place, pull, and press.
 
-## Source prompt
+## Sources and decisions
 
-- Exact request and follow-up: `docs/conversation/2026-07-20-kaiju-qa.md`
-- Read-only concept reference:
-  `C:/UnityProj/OpenAIBuildWeek-loop-engineer-concepts/docs/design/loop-engineer-concepts/PROPOSALS.md`
-- Competition: OpenAI Build Week, Education category.
+- Exact requests and follow-ups: `docs/conversation/2026-07-20-kaiju-qa.md`
+- Concept reference:
+  `C:/UnityProj/OpenAIBuildWeek-loop-engineer-concepts/docs/design/loop-engineer-concepts/`
+- Asset provenance: `docs/assets/KAIJU_QA_ASSETS.md`
+- Audio provenance: `docs/assets/AUDIO_CREDITS.md`
+- The owner's redesign request supersedes the original dashboard/button plan.
+- Local IWSDK, browser, touch, and IWER testing are now approved.
 
 ## Learning spine
 
-1. **Goal** — help stranded people without damaging the city or blocking rescue.
-2. **Act** — run the current behavior or authorize one bounded guardrail.
-3. **Observe** — inspect the route, scenario result, and persistent test evidence.
-4. **Adjust** — add an edge case or select a more targeted guardrail.
-5. **Gate** — run the full regression suite, then release only when every test passes.
+1. **Stage** the current case in the world.
+2. **Run** the current behavior before changing it.
+3. **Observe** persistent scenario evidence.
+4. **Change** one explicit rule.
+5. **Regress** every earlier pass as well as the new edge case.
+6. **Release** only while one current targeted-rule run passes every scenario.
 
-The tutorial demonstrates the controls and the first over-broad change. The
-player-controlled game loop begins at diagnosis: compare evidence, choose among
-guardrails, rerun the suite, and decide whether the build is safe to release.
+The tutorial deliberately demonstrates an over-broad rule and its regression.
+Later districts preserve the loop while changing the fixture, hazard, rule
+language, environment, and scenery.
 
 ## Acceptance criteria
 
-- [ ] A cold player sees the goal and first highlighted action immediately and
-  can advance the tutorial without presenter narration.
-- [ ] Tutorial steps are explicit, single-action, dismissible, and resumable;
-  each step highlights one relevant control and explains why the action matters.
-- [ ] The authored baseline shows the kaiju safely moving a stalled car while
-  the ambulance lane stays clear, records two passes plus one untested tower,
-  and remains visibly partial rather than declaring the build ready.
-- [ ] Adding the fragile-tower scenario and rerunning produces an obvious,
-  non-punitive failure with persistent evidence.
-- [ ] The broad `FREEZE NEAR BUILDINGS` guardrail protects the tower but blocks
-  an ambulance, making the regression legible in motion, shape, text, and color.
-- [ ] The player then chooses among three neutral guardrail options. `FREEZE
-  NEAR BUILDINGS` regresses the ambulance, `SLOW WHILE CARRYING` regresses the
-  timed rescue, and only `SLOW IN STRIPED ZONES` preserves both earlier passes.
-- [ ] Invalid or incomplete choices explain what evidence is missing and allow
-  one-action retry without reloading or replaying the whole tutorial.
-- [ ] A passing suite unlocks a separate Release action and a celebratory hero
-  transformation; release cannot occur while any scenario is failing or untested.
-- [ ] Desktop mouse/keyboard and mobile touch expose the same rules, decisions,
-  evidence, retry, reset, and result. Keyboard focus and visible focus states work.
-- [ ] Essential state is never color-only; every pass/fail/untested state also
-  uses icon, label, shape, and/or motion.
-- [ ] Reduced-motion users receive authored state transitions without camera
-  motion, shaking, or rapid animation.
-- [ ] The critical path is deterministic, local, static-host compatible, and
-  requires no account, backend, model call, downloaded asset, or physics.
-- [ ] The existing WebXR entry/recovery path remains available. Runtime/IWER and
-  physical-headset verification are explicitly deferred unless the user approves it.
+- [x] The primary game is direct 3D manipulation, not desktop-only gameplay
+  buttons or menus.
+- [x] Desktop mouse, mobile touch, and XR rays feed the same interaction entities
+  and game intents.
+- [x] Invalid drops animate back home and never corrupt campaign state.
+- [x] Training Yard teaches nine single-action stages with a world-space pop-up,
+  animated arrow, source highlight, destination socket, narration, and captions.
+- [x] The baseline, edge-case failure, broad-rule regression, targeted repair,
+  fresh full-suite pass, and release gate are visible and deterministic.
+- [x] School Crossing, Harbor Load, and Storm Shift provide three distinct
+  transfer levels with their own fixtures, scenarios, rules, and scenery.
+- [x] A wrong broad or alternate rule produces a recoverable regression; the
+  player can replace it without replaying the campaign.
+- [x] A release press is rejected until all required evidence is fresh and
+  passing under the targeted rule.
+- [x] Essential status uses words, icons/shapes, motion, and color rather than
+  color alone.
+- [x] Reduced motion removes nonessential choreography without hiding causality.
+- [x] Offline Kokoro narration has synchronized captions, mute, replay, autoplay
+  unlock, and visibility pause.
+- [x] The hero and environment use documented Quaternius/Kenney assets, authored
+  lighting and shadows, animation, particles, and a documented FLUX backdrop.
+- [x] The critical campaign is local, deterministic, static-host compatible,
+  and independent of physics, accounts, backends, or runtime model calls.
+- [x] Focused browser/touch interaction, IWER controller verification, evidence
+  capture, and independent review are complete; the clean full E2E reporter is
+  an explicit PR CI merge gate.
 
 ## Non-goals
 
-- Live GPT/model inference, free-form prompting, procedural city generation, or networking.
-- Destruction physics, navmesh/pathfinding, continuous locomotion, or room-scale play.
-- A large external asset pack; the protected core uses original primitive geometry.
-- Multiple levels, progression economy, leaderboard, combat, or fail-state humiliation.
-- Starting the IWSDK dev runtime, IWER, or a headset session on this machine without approval.
+- Live GPT inference, free-form prompting, networking, accounts, or telemetry.
+- Combat, destruction, physics simulation, locomotion, or room-scale reach.
+- A progression economy, leaderboard, punitive fail screen, or hidden scoring.
+- Marketing physical-headset comfort/performance as certified from IWER alone.
 
-## Architecture and API choices
+## Architecture
 
-- Preserve IWSDK `0.4.2`, Vite, and the existing robust XR support helper.
-- Keep gameplay rules in a pure TypeScript state machine so the most important
-  educational transitions are deterministic and testable independently of rendering.
-- Build the miniature city and kaiju from shared primitive geometries/materials
-  through `world.createTransformEntity`; use authored interpolation/state poses,
-  not physics.
-- Add new feature modules under `src/kaiju-qa/`; keep `src/index.ts`,
-  `index.html`, and `src/styles.css` as the only shared integration surfaces.
-- Use semantic DOM controls as the reliable desktop/mobile interaction layer,
-  with large targets, keyboard support, live regions, and responsive layout.
-- Preserve visible attempt history in the scene and HUD. Use short labels and a
-  five-step loop rail so spectators can understand the lesson at thumbnail size.
-- Use no external art for the merge-safe core. If a later polish pass imports
-  CC0 or generated assets, it must add source/license/provenance records first.
-
-## Work breakdown
-
-| Task | Owner/agent | Write scope | Depends on | Done when |
-| --- | --- | --- | --- | --- |
-| Game/tutorial design | discovery-game-design | `plans/kaiju-qa/agent-notes/game-design.md` | Logged prompt | Beat sheet, decisions, recovery, and acceptance advice are concrete |
-| Competition/market strategy | discovery-competition | `plans/kaiju-qa/agent-notes/competition-strategy.md` | Logged prompt | Judging fit, differentiation, demo hooks, and claim guardrails are documented |
-| Learning design | discovery-learning | `plans/kaiju-qa/agent-notes/learning-design.md` | Logged prompt | Tutorial and debrief teach transfer, not vocabulary recall |
-| Narrative/comedy | discovery-writing | `plans/kaiju-qa/agent-notes/narrative-comedy.md` | Logged prompt | Short final copy is funny, kind, and instructional |
-| Art direction | discovery-art | `plans/kaiju-qa/agent-notes/art-direction.md` | Logged prompt | Code-native scene language, palette, motion, and asset policy are defined |
-| IWSDK architecture | discovery-sdk | `plans/kaiju-qa/agent-notes/sdk-research.md` | Logged prompt | Safe APIs, integration seams, and deferred XR risks are documented |
-| Pure game model | implementation-model | `src/kaiju-qa/game-model.ts` | Integrated discovery | State transitions and guardrail outcomes implement the learning spine |
-| Procedural 3D scene | implementation-scene | `src/kaiju-qa/scene.ts` | Integrated discovery | Tabletop, kaiju, scenarios, evidence traces, and authored poses are exposed via a small API |
-| UI structure and visual system | implementation-ui | `index.html`, `src/styles.css` | Integrated discovery | Responsive tutorial/game HUD and accessible controls are complete |
-| App integration | orchestrator | `src/index.ts`, shared config, plan/evidence manifests | Model, scene, UI | Full loop runs and existing XR support is preserved |
-| Browser automation | browser-test-author | `tests/e2e/kaiju-qa.spec.ts` | Integrated app | Happy path, wrong-choice recovery, release gate, keyboard, and mobile layout are asserted |
-| Independent browser QA | browser-qa | `evidence/kaiju-qa/browser-qa.md`, screenshots | Build + tests | Desktop/mobile path and diagnostics are independently reviewed |
-| Experience review | experience-qa | `evidence/kaiju-qa/experience-review.md` | Integrated build | Accessibility, tutorial clarity, motion, performance, and spectator legibility are ranked |
-| XR review | xr-qa | `evidence/kaiju-qa/xr-qa.md` | Integrated build | Static review completed and runtime gap recorded without starting IWSDK |
-| Independent review | final-reviewer | `evidence/kaiju-qa/review.md` | Checks + evidence | Diff, plan, ownership, risks, and merge safety are reviewed |
+- `src/kaiju-qa/game-model.ts` is the pure reducer and campaign source of truth.
+- `src/kaiju-qa/scene.ts` creates the IWSDK world, interaction proxies,
+  animation, level dressing, tutorial guidance, evidence board, and debug target
+  projection.
+- `src/kaiju-qa/assets.ts` and `public/assets/kaiju-qa/` provide documented local
+  GLB/texture assets with no runtime CDN dependency.
+- `src/kaiju-qa/narration.ts` and `narration-manifest.ts` provide offline audio
+  playback and captions from `public/audio/narration/`.
+- `src/index.ts` integrates the reducer, scene, accessibility utilities,
+  narration, responsive camera, and IWSDK XR lifecycle.
+- IWSDK `RayInteractable` owns screen, touch, and XR target discovery and event
+  delivery. Screen drag math derives a camera ray only after capture to move the
+  active object on its drag plane; XR uses the controller ray supplied by IWSDK.
+- Rendering and audio respond to accepted reducer transitions; neither can
+  mutate pass/fail or release eligibility.
 
 ## Test matrix
 
-| Surface | Scenario | Expected result | Evidence |
-| --- | --- | --- | --- |
-| Desktop Chromium | Complete tutorial, induce regression, choose targeted guardrail, release | Full deterministic arc passes with no runtime/critical request errors | Playwright + `01-desktop.webp` |
-| Desktop keyboard | Tab/Enter/Space through every required control, use retry/reset | Visible focus and same semantic loop without pointer | Playwright assertions |
-| Mobile Chromium | Complete the same loop at touch viewport, rotate/resize once | Large controls, readable evidence, no horizontal overflow | Playwright + `02-mobile.webp` |
-| Reduced motion | Emulate `prefers-reduced-motion: reduce` and complete a run | No shakes/rapid motion; outcomes remain clear | Playwright assertion |
-| VR/IWER | Static API/interaction review only in this PR | Existing entry path preserved; runtime validation marked deferred by user constraint | `xr-qa.md` |
+| Surface | Required behavior | Durable proof |
+| --- | --- | --- |
+| Pure model | Four districts, nine-stage tutorial, regressions, stale evidence, recovery, gates, reset, immutability | `tests/model/kaiju-qa-model.test.mjs` |
+| Desktop Chromium | Invalid drop, real canvas drag/place, lever, cartridge swap, release stamp, all four districts | Playwright + `evidence/kaiju-qa/01-desktop.webp` |
+| Mobile Chromium | Native touch drag/release, no page scroll, readable scene/pop-up/caption, utility controls remain secondary | Playwright + `evidence/kaiju-qa/02-mobile.webp` |
+| XR / IWER | Enter, controller-ray grab/move/release, lever, stamp, exit/re-entry, scene hierarchy | `evidence/kaiju-qa/xr-qa.md` + `03-vr.webp` when capture succeeds |
+| Accessibility | Captions, mute/replay, reduced motion, focus visibility, non-color results, responsive layout | Browser QA + experience review |
+| Production | Typecheck, production build, full E2E, no critical console/page/network failures | Command log in evidence manifest |
 
-## Risks and rollback
+## Risks and mitigations
 
-- **IWSDK runtime is intentionally not started.** Mitigate with pure model tests,
-  TypeScript/build checks, browser automation where feasible, and a clear XR gap.
-- **Browser E2E may still initialize IWSDK indirectly.** If it materially lags the
-  machine, stop before runtime tests, preserve build evidence, push the PR, and
-  record the deferred command rather than violating the user's priority.
-- **Tutorial can become a click-through lecture.** Keep each step under two short
-  sentences, attach it to an observable scene change, and give the player the
-  final diagnosis/guardrail choice.
-- **3D spectacle can obscure the lesson.** Protect the evidence board, route
-  traces, scenario labels, and release gate before particles or decorative props.
-- **Shared-file conflicts.** New logic and scene code live in feature-specific
-  modules; shared edits are limited to the app entry, HTML, CSS, and one new spec.
-- **Rollback/cut ladder:** remove particles and decorative city props; simplify
-  animation to pose changes; reduce wrong guardrails from three to two; never cut
-  baseline, edge case, regression, targeted fix, full-suite gate, tutorial, or retry.
+- **IWER is not a physical headset.** Record controller/session evidence precisely
+  and retain a physical comfort/performance gap.
+- **3D coordinate tests can become brittle.** Discover screen targets through the
+  read-only debug projection, but execute actual pointer/touch events on canvas.
+- **Large assets can hurt mobile start-up.** Keep selected GLBs compact, local,
+  and documented; reuse materials/geometries and avoid hot-loop allocation.
+- **Spectacle can obscure the lesson.** Protect the world-space instruction,
+  arrow, evidence board, sockets, and captions before decorative particles.
+- **Shared-file conflicts.** Feature logic and assets live under Kaiju-specific
+  paths; shared integration changes are limited and rebased before publication.
 
-## Review checklist
+## Completion checklist
 
-- [x] Prompt and assumptions logged
-- [x] Agent scopes remained disjoint or were explicitly reassigned
-- [x] Typecheck
-- [x] Deterministic model tests (6/6)
-- [x] Production build
-- [ ] Browser E2E — authored and typechecked; execution deferred to CI/stronger machine
-- [x] Desktop/mobile runtime evidence limitation recorded explicitly
-- [x] XR static review and runtime limitation recorded
-- [x] Evidence manifest complete
-- [x] Independent review complete; no code blocker remains
-- [x] Draft PR opened from `feature/kaiju-qa` to `main`: GitHub PR #5
+- [x] Every user prompt and decision logged
+- [x] Specialist ownership recorded with disjoint write scopes
+- [x] Four-level deterministic campaign implemented
+- [x] Direct manipulation implemented across pointer, touch, and XR-ray paths
+- [x] CC0/generated asset and audio provenance complete
+- [x] Model suite passes 8/8
+- [x] Typecheck passes after final source cleanup
+- [x] Production build passes on final source state
+- [ ] Clean serialized browser/touch E2E reporter passes in PR CI
+- [x] XR report and evidence updated from IWER controller run
+- [x] Independent final review has no source blocking finding; clean CI remains its merge gate
+- [x] Final screenshots copied to `evidence/kaiju-qa/`
+- [ ] Branch rebased, committed, pushed, and PR #5 updated
+- [ ] Telegram completion notification sent after publication
