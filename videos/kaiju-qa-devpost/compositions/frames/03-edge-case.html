@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>03 Edge Case</title>
+  </head>
+  <body>
+    <template id="03-edge-case-template">
+      <style>
+        @font-face {
+          font-family: "Archivo Black";
+          src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 400;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 100 800;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "Space Grotesk";
+          src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 300 700;
+          font-display: block;
+        }
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          container-type: size;
+          color: #f5f1e8;
+          font-synthesis: none;
+        }
+
+        #root,
+        #root * {
+          box-sizing: border-box;
+        }
+
+        .clip {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .ground-layer {
+          overflow: hidden;
+          background: #0b1220;
+        }
+
+        .ground-rail-left {
+          position: absolute;
+          inset: 0 auto auto 0;
+          width: 1.35cqw;
+          height: 900px;
+          background: #5bd7d1;
+        }
+
+        .ground-rail-right {
+          position: absolute;
+          inset: 0 0 auto auto;
+          width: 0.95cqw;
+          height: 900px;
+          background: #ff6b5e;
+        }
+
+        .ground-keepout-rule {
+          position: absolute;
+          left: 0;
+          top: 892px;
+          width: 100%;
+          height: 8px;
+          background: #263449;
+        }
+
+        .content-layer {
+          height: 900px;
+          overflow: hidden;
+          font-family: "Space Grotesk";
+        }
+
+        .topbar {
+          position: absolute;
+          z-index: 20;
+          top: 38px;
+          left: 64px;
+          right: 64px;
+          height: 54px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #f5f1e8;
+          font-family: "JetBrains Mono";
+          font-size: 20px;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          will-change: transform, opacity;
+        }
+
+        .topbar-label {
+          display: inline-flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .topbar-label::before {
+          content: "";
+          display: block;
+          width: 34px;
+          height: 8px;
+          background: #5bd7d1;
+        }
+
+        .topbar-pill {
+          min-width: 252px;
+          padding: 10px 22px;
+          border: 4px solid #f5f1e8;
+          border-radius: 999px;
+          background: #263449;
+          text-align: center;
+        }
+
+        .shared-title {
+          position: absolute;
+          z-index: 18;
+          top: 102px;
+          left: 96px;
+          right: 96px;
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+          gap: 0.32em;
+          margin: 0;
+          color: #f5f1e8;
+          font-family: "Archivo Black";
+          font-size: 4.2cqw;
+          font-weight: 400;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+
+        .shared-title-accent {
+          color: #5bd7d1;
+        }
+
+        .test-stage {
+          position: absolute;
+          z-index: 8;
+          top: 205px;
+          left: 96px;
+          width: 1728px;
+          height: 430px;
+          overflow: hidden;
+          border: 8px solid #f5f1e8;
+          background: #263449;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity, border-color;
+        }
+
+        .stage-chip {
+          position: absolute;
+          z-index: 5;
+          top: 18px;
+          left: 22px;
+          padding: 10px 16px 9px;
+          background: #f5f1e8;
+          color: #0b1220;
+          font-family: "JetBrains Mono";
+          font-size: 18px;
+          font-weight: 650;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .stage-meta {
+          position: absolute;
+          z-index: 5;
+          top: 24px;
+          right: 24px;
+          color: #d5d5d5;
+          font-family: "JetBrains Mono";
+          font-size: 17px;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .arena {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        #f03-socket,
+        #f03-tower,
+        #f03-tower-top-a,
+        #f03-tower-top-b,
+        #f03-kaiju-run,
+        #f03-broken-route,
+        #f03-break-x {
+          transform-box: fill-box;
+          will-change: transform, opacity;
+        }
+
+        #f03-socket,
+        #f03-tower,
+        #f03-break-x {
+          transform-origin: 50% 50%;
+        }
+
+        #f03-tower-top-a,
+        #f03-tower-top-b {
+          transform-origin: 50% 100%;
+        }
+
+        #f03-broken-route {
+          transform-origin: 0% 50%;
+        }
+
+        .tower-block {
+          stroke: #f5f1e8;
+          stroke-width: 7;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .verdict-stage {
+          position: absolute;
+          z-index: 12;
+          top: 662px;
+          left: 96px;
+          width: 1728px;
+          height: 206px;
+          display: flex;
+          align-items: stretch;
+          gap: 72px;
+          perspective: 1800px;
+          transform-style: preserve-3d;
+        }
+
+        .verdict-card {
+          position: relative;
+          flex: 1 1 0;
+          min-width: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 230px;
+          align-items: center;
+          gap: 24px;
+          padding: 22px 34px 22px 42px;
+          border: 8px solid #f5f1e8;
+          background: #263449;
+          transform-origin: 50% 50%;
+          transform-style: preserve-3d;
+          will-change: transform, opacity;
+        }
+
+        .verdict-card-left {
+          box-shadow: 18px 18px 0 #5bd7d1;
+        }
+
+        .verdict-card-right {
+          box-shadow: -18px 18px 0 #ff6b5e;
+        }
+
+        .card-accent {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 18px;
+        }
+
+        .verdict-card-left .card-accent {
+          left: 0;
+          background: #b7e35a;
+        }
+
+        .verdict-card-right .card-accent {
+          right: 0;
+          background: #ff6b5e;
+        }
+
+        .card-copy {
+          min-width: 0;
+          will-change: transform, opacity;
+        }
+
+        .card-kicker {
+          margin: 0 0 7px;
+          color: #d5d5d5;
+          font-family: "JetBrains Mono";
+          font-size: 18px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .card-headline {
+          margin: 0;
+          color: #f5f1e8;
+          font-family: "Archivo Black";
+          font-size: 3.35cqw;
+          font-weight: 400;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .card-detail {
+          margin: 10px 0 0;
+          font-family: "JetBrains Mono";
+          font-size: 18px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .verdict-card-left .card-detail {
+          color: #b7e35a;
+        }
+
+        .verdict-card-right .card-detail {
+          color: #ff6b5e;
+        }
+
+        .card-evidence {
+          display: block;
+          width: 220px;
+          height: 92px;
+          overflow: visible;
+        }
+
+        #f03-pass-rail,
+        #f03-fail-rail {
+          transform-box: fill-box;
+          transform-origin: 0% 50%;
+          will-change: transform, opacity;
+        }
+
+        .verdict-badge {
+          position: absolute;
+          z-index: 8;
+          top: 64px;
+          width: 78px;
+          height: 78px;
+          display: grid;
+          place-items: center;
+          border: 6px solid #f5f1e8;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        .badge-pass {
+          left: calc(50% - 75px);
+          background: #b7e35a;
+        }
+
+        .badge-fail {
+          left: calc(50% - 3px);
+          background: #ff6b5e;
+        }
+
+        .badge-icon {
+          width: 52px;
+          height: 52px;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="03-edge-case"
+        data-start="0"
+        data-width="1920"
+        data-height="1080"
+        data-duration="10.5"
+      >
+        <div
+          id="f03-ground"
+          class="clip ground-layer"
+          data-start="0"
+          data-duration="10"
+          data-track-index="0"
+        >
+          <div class="ground-rail-left"></div>
+          <div class="ground-rail-right"></div>
+          <div class="ground-keepout-rule"></div>
+        </div>
+
+        <div
+          id="f03-content"
+          class="clip content-layer"
+          data-start="0"
+          data-duration="10"
+          data-track-index="1"
+        >
+          <div id="f03-topbar" class="topbar">
+            <div class="topbar-label">Test district / edge case</div>
+            <div class="topbar-pill">03 / evidence</div>
+          </div>
+
+          <h1 id="f03-title" class="shared-title">
+            <span>Same helpful</span>
+            <span class="shared-title-accent">behavior</span>
+          </h1>
+
+          <div id="f03-test-stage" class="test-stage">
+            <div class="stage-chip">Fragile tower</div>
+            <div class="stage-meta">repeat run / locked angle</div>
+
+            <svg
+              class="arena"
+              viewBox="0 0 1728 430"
+              aria-label="Kaiju repeats the retained car route toward a fragile tower"
+              role="img"
+            >
+              <g id="f03-socket">
+                <rect
+                  x="1188"
+                  y="66"
+                  width="430"
+                  height="316"
+                  fill="#0b1220"
+                  stroke="#f5f1e8"
+                  stroke-width="6"
+                  stroke-dasharray="18 14"
+                />
+                <line x1="1403" y1="82" x2="1403" y2="366" stroke="#5bd7d1" stroke-width="4" opacity="0.45" />
+                <line x1="1204" y1="224" x2="1602" y2="224" stroke="#5bd7d1" stroke-width="4" opacity="0.45" />
+                <rect x="1210" y="340" width="386" height="22" fill="#5bd7d1" opacity="0.24" />
+              </g>
+
+              <g id="f03-route-intact">
+                <path
+                  d="M 118 320 L 386 320 L 530 250 L 756 250 L 884 190 L 1038 190 L 1160 246"
+                  fill="none"
+                  stroke="#5bd7d1"
+                  stroke-width="22"
+                  stroke-linecap="square"
+                  stroke-linejoin="miter"
+                />
+                <path
+                  d="M 118 320 L 386 320 L 530 250 L 756 250 L 884 190 L 1038 190 L 1160 246"
+                  fill="none"
+                  stroke="#f5f1e8"
+                  stroke-width="4"
+                  stroke-linecap="square"
+                  stroke-dasharray="18 18"
+                  opacity="0.65"
+                />
+                <g transform="translate(995 148)">
+                  <rect x="0" y="18" width="96" height="42" fill="#b7e35a" stroke="#f5f1e8" stroke-width="5" />
+                  <rect x="24" y="0" width="48" height="26" fill="#263449" stroke="#f5f1e8" stroke-width="5" />
+                  <circle cx="22" cy="64" r="12" fill="#0b1220" stroke="#f5f1e8" stroke-width="5" />
+                  <circle cx="76" cy="64" r="12" fill="#0b1220" stroke="#f5f1e8" stroke-width="5" />
+                </g>
+              </g>
+
+              <g id="f03-broken-route">
+                <path
+                  d="M 938 190 L 1008 190 L 1050 144 L 1096 236 L 1140 166 L 1190 246"
+                  fill="none"
+                  stroke="#ff6b5e"
+                  stroke-width="22"
+                  stroke-linecap="square"
+                  stroke-linejoin="miter"
+                />
+                <path
+                  d="M 938 190 L 1008 190 L 1050 144 L 1096 236 L 1140 166 L 1190 246"
+                  fill="none"
+                  stroke="#f5f1e8"
+                  stroke-width="4"
+                  stroke-dasharray="14 14"
+                  opacity="0.8"
+                />
+              </g>
+
+              <g id="f03-break-x">
+                <rect x="1150" y="206" width="80" height="80" fill="#ff6b5e" stroke="#f5f1e8" stroke-width="6" />
+                <path d="M 1170 226 L 1210 266 M 1210 226 L 1170 266" fill="none" stroke="#0b1220" stroke-width="12" />
+              </g>
+
+              <g id="f03-kaiju-run">
+                <g transform="translate(146 266)">
+                  <path d="M 22 61 C -12 54 -35 37 -48 16 C -17 24 6 22 30 10 Z" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6" />
+                  <ellipse cx="48" cy="66" rx="48" ry="58" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6" />
+                  <circle cx="62" cy="20" r="42" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6" />
+                  <circle cx="48" cy="12" r="6" fill="#0b1220" />
+                  <circle cx="74" cy="12" r="6" fill="#0b1220" />
+                  <path d="M 48 32 Q 61 41 77 31" fill="none" stroke="#0b1220" stroke-width="5" stroke-linecap="round" />
+                  <path d="M 15 22 L 2 2 L 28 8 Z M 13 48 L -8 34 L 18 31 Z M 20 76 L -2 72 L 20 58 Z" fill="#ff6b5e" stroke="#f5f1e8" stroke-width="4" />
+                  <rect x="15" y="106" width="24" height="34" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6" />
+                  <rect x="61" y="106" width="24" height="34" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6" />
+                  <rect x="82" y="60" width="42" height="20" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6" />
+                </g>
+              </g>
+
+              <g id="f03-tower">
+                <g>
+                  <rect class="tower-block" x="1330" y="286" width="130" height="94" fill="#0b1220" />
+                  <circle cx="1395" cy="333" r="11" fill="#5bd7d1" />
+                </g>
+                <g>
+                  <rect class="tower-block" x="1274" y="196" width="120" height="90" fill="#ff6b5e" />
+                  <circle cx="1334" cy="241" r="10" fill="#0b1220" />
+                </g>
+                <g>
+                  <rect class="tower-block" x="1396" y="196" width="120" height="90" fill="#0b1220" />
+                  <circle cx="1456" cy="241" r="10" fill="#5bd7d1" />
+                </g>
+                <g id="f03-tower-top-a">
+                  <rect class="tower-block" x="1248" y="106" width="120" height="90" fill="#0b1220" />
+                  <circle cx="1308" cy="151" r="10" fill="#ff6b5e" />
+                </g>
+                <g id="f03-tower-top-b">
+                  <rect class="tower-block" x="1402" y="106" width="120" height="90" fill="#ff6b5e" />
+                  <circle cx="1462" cy="151" r="10" fill="#0b1220" />
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="verdict-stage">
+            <article id="f03-card-left" class="verdict-card verdict-card-left">
+              <div class="card-accent"></div>
+              <div id="f03-card-left-copy" class="card-copy">
+                <p class="card-kicker">Control</p>
+                <h2 class="card-headline">Car: pass</h2>
+                <p class="card-detail">Route retained</p>
+              </div>
+              <svg class="card-evidence" viewBox="0 0 220 92" aria-hidden="true">
+                <g id="f03-pass-rail">
+                  <path d="M 12 58 L 196 58" fill="none" stroke="#5bd7d1" stroke-width="16" />
+                  <path d="M 12 58 L 196 58" fill="none" stroke="#f5f1e8" stroke-width="4" stroke-dasharray="16 12" />
+                  <rect x="82" y="24" width="62" height="30" fill="#b7e35a" stroke="#f5f1e8" stroke-width="5" />
+                  <circle cx="96" cy="60" r="9" fill="#0b1220" stroke="#f5f1e8" stroke-width="4" />
+                  <circle cx="132" cy="60" r="9" fill="#0b1220" stroke="#f5f1e8" stroke-width="4" />
+                </g>
+              </svg>
+            </article>
+
+            <article id="f03-card-right" class="verdict-card verdict-card-right">
+              <div class="card-accent"></div>
+              <div id="f03-card-right-copy" class="card-copy">
+                <p class="card-kicker">Edge case</p>
+                <h2 class="card-headline">Tower: fail</h2>
+                <p class="card-detail">Path broken</p>
+              </div>
+              <svg class="card-evidence" viewBox="0 0 220 92" aria-hidden="true">
+                <g id="f03-fail-rail">
+                  <path d="M 12 58 L 66 58 L 92 26 L 118 76 L 146 34 L 202 58" fill="none" stroke="#ff6b5e" stroke-width="16" />
+                  <path d="M 12 58 L 66 58 L 92 26 L 118 76 L 146 34 L 202 58" fill="none" stroke="#f5f1e8" stroke-width="4" stroke-dasharray="13 11" />
+                  <rect x="176" y="18" width="36" height="36" fill="#ff6b5e" stroke="#f5f1e8" stroke-width="5" />
+                  <path d="M 184 26 L 204 46 M 204 26 L 184 46" fill="none" stroke="#0b1220" stroke-width="7" />
+                </g>
+              </svg>
+            </article>
+
+            <div id="f03-badge-pass" class="verdict-badge badge-pass">
+              <svg class="badge-icon" viewBox="0 0 52 52" aria-hidden="true">
+                <path d="M 8 27 L 20 39 L 44 13" fill="none" stroke="#0b1220" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter" />
+              </svg>
+            </div>
+
+            <div id="f03-badge-fail" class="verdict-badge badge-fail">
+              <svg class="badge-icon" viewBox="0 0 52 52" aria-hidden="true">
+                <path d="M 11 11 L 41 41 M 41 11 L 11 41" fill="none" stroke="#0b1220" stroke-width="9" stroke-linecap="square" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set(
+          [
+            "#f03-topbar",
+            "#f03-title",
+            "#f03-test-stage",
+            "#f03-socket",
+            "#f03-route-intact",
+            "#f03-tower",
+            "#f03-kaiju-run",
+            "#f03-broken-route",
+            "#f03-break-x",
+            "#f03-card-left",
+            "#f03-card-right",
+            "#f03-card-left-copy",
+            "#f03-card-right-copy",
+            "#f03-pass-rail",
+            "#f03-fail-rail",
+            "#f03-badge-pass",
+            "#f03-badge-fail",
+          ],
+          { opacity: 0 },
+        );
+        gsap.set("#f03-broken-route", { scaleX: 0.05 });
+        gsap.set(["#f03-pass-rail", "#f03-fail-rail"], { scaleX: 0.05 });
+        gsap.set(["#f03-badge-pass", "#f03-badge-fail"], { scale: 0 });
+
+        // Scene 1: the edge-case socket, retained route, and fragile tower arrive.
+        tl.fromTo(
+          "#f03-topbar",
+          { opacity: 0, y: -24 },
+          { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" },
+          0.02,
+        );
+        tl.fromTo(
+          "#f03-test-stage",
+          { opacity: 0, y: 24, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.58, ease: "power3.out" },
+          0.04,
+        );
+        tl.fromTo(
+          "#f03-tower",
+          { opacity: 0, y: -48, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" },
+          0.08,
+        );
+        tl.fromTo(
+          "#f03-socket",
+          { opacity: 0, scale: 0.9 },
+          { opacity: 1, scale: 1, duration: 0.62, ease: "power3.out" },
+          0.16,
+        );
+        tl.fromTo(
+          "#f03-route-intact",
+          { opacity: 0 },
+          { opacity: 0.28, duration: 0.65, ease: "power2.out" },
+          0.18,
+        );
+        tl.fromTo(
+          "#f03-title",
+          { opacity: 0, y: -72 },
+          { opacity: 1, y: 0, duration: 0.78, ease: "power3.out" },
+          0.34,
+        );
+
+        // Scene 2: the kaiju repeats the exact retained route toward the tower.
+        tl.fromTo(
+          "#f03-kaiju-run",
+          { opacity: 0, x: -80, y: 28, scale: 0.92 },
+          { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.36, ease: "power3.out", immediateRender: false },
+          2.0,
+        );
+        tl.to("#f03-kaiju-run", { x: 286, y: 0, duration: 0.82, ease: "power2.inOut" }, 2.36);
+        tl.to("#f03-kaiju-run", { x: 520, y: -70, duration: 0.82, ease: "power2.inOut" }, 3.18);
+        tl.to("#f03-kaiju-run", { x: 736, y: -70, duration: 0.78, ease: "power2.inOut" }, 4.0);
+        tl.to("#f03-kaiju-run", { x: 908, y: -26, duration: 0.62, ease: "power2.inOut" }, 4.78);
+
+        // Scene 3: the different result lands; two blocks tip and the route breaks.
+        tl.fromTo(
+          "#f03-tower-top-a",
+          { rotation: 0, x: 0, y: 0 },
+          { rotation: -28, x: -44, y: 56, duration: 0.55, ease: "power3.inOut", immediateRender: false },
+          5.4,
+        );
+        tl.fromTo(
+          "#f03-tower-top-b",
+          { rotation: 0, x: 0, y: 0 },
+          { rotation: -36, x: -92, y: 94, duration: 0.58, ease: "power3.inOut", immediateRender: false },
+          5.48,
+        );
+        tl.to("#f03-test-stage", { borderColor: "#ff6b5e", duration: 0.28, ease: "power2.out" }, 5.4);
+        tl.to("#f03-route-intact", { opacity: 0.1, duration: 0.28, ease: "power1.out" }, 5.4);
+        tl.fromTo(
+          "#f03-broken-route",
+          { opacity: 0, scaleX: 0.05 },
+          { opacity: 1, scaleX: 1, duration: 0.52, ease: "power3.out", immediateRender: false },
+          5.48,
+        );
+        tl.fromTo(
+          "#f03-break-x",
+          { opacity: 0, scale: 0 },
+          { opacity: 1, scale: 1, duration: 0.42, ease: "power3.out", immediateRender: false },
+          5.78,
+        );
+
+        // Scene 4: mirrored split-tilt evidence cards arrive, punctuate, then hold.
+        tl.fromTo(
+          "#f03-card-left",
+          { opacity: 0, x: -420, scale: 0.85, rotationY: 24 },
+          { opacity: 1, x: 0, scale: 1, rotationY: 12, duration: 0.86, ease: "power3.out", immediateRender: false },
+          7.2,
+        );
+        tl.fromTo(
+          "#f03-card-right",
+          { opacity: 0, x: 420, scale: 0.85, rotationY: -24 },
+          { opacity: 1, x: 0, scale: 1, rotationY: -12, duration: 0.86, ease: "power3.out", immediateRender: false },
+          7.38,
+        );
+        tl.fromTo(
+          "#f03-card-left-copy",
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.52, ease: "power2.out", immediateRender: false },
+          7.68,
+        );
+        tl.fromTo(
+          "#f03-card-right-copy",
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.52, ease: "power2.out", immediateRender: false },
+          7.84,
+        );
+        tl.fromTo(
+          "#f03-pass-rail",
+          { opacity: 0, scaleX: 0.05 },
+          { opacity: 1, scaleX: 1, duration: 0.48, ease: "power3.out", immediateRender: false },
+          8.02,
+        );
+        tl.fromTo(
+          "#f03-fail-rail",
+          { opacity: 0, scaleX: 0.05 },
+          { opacity: 1, scaleX: 1, duration: 0.48, ease: "power3.out", immediateRender: false },
+          8.18,
+        );
+        tl.fromTo(
+          "#f03-badge-pass",
+          { opacity: 0, scale: 0 },
+          { opacity: 1, scale: 1, duration: 0.48, ease: "back.out(1.4)", immediateRender: false },
+          8.52,
+        );
+        tl.fromTo(
+          "#f03-badge-fail",
+          { opacity: 0, scale: 0 },
+          { opacity: 1, scale: 1, duration: 0.48, ease: "back.out(1.4)", immediateRender: false },
+          8.74,
+        );
+
+        window.__timelines["03-edge-case"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

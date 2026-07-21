@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Archivo Black";
+          src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 400;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 100 800;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "Space Grotesk";
+          src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 300 700;
+          font-display: block;
+        }
+
+        #root {
+          --canvas: #0b1220;
+          --panel: #263449;
+          --ink: #f5f1e8;
+          --ink-muted: #d5d5d5;
+          --pass: #b7e35a;
+          --blocked: #ff6b5e;
+          --amber: #ffd24a;
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          container-type: size;
+          color: var(--ink);
+          font-family: "Space Grotesk";
+        }
+
+        #root,
+        #root * {
+          box-sizing: border-box;
+        }
+
+        .clip {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .background-layer {
+          background: var(--canvas);
+        }
+
+        .stage-layer {
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .physical-shell {
+          position: absolute;
+          left: 3.333cqw;
+          top: 11.111cqh;
+          width: 93.333cqw;
+          height: 61.111cqh;
+          overflow: hidden;
+          transform-origin: 50% 100%;
+          will-change: transform;
+        }
+
+        .shell-frame {
+          position: absolute;
+          inset: 0;
+          z-index: 20;
+          border: 0.4cqw solid var(--ink);
+          pointer-events: none;
+        }
+
+        .world-svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .dof-layer {
+          --dof: 0px;
+          filter: blur(var(--dof));
+          will-change: filter, opacity;
+        }
+
+        #f05-ambulance,
+        #f05-blocked-route,
+        #f05-stop-bars,
+        #f05-beacon-glow {
+          transform-box: fill-box;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        #f05-blocked-route {
+          transform-origin: 0% 50%;
+        }
+
+        #f05-stop-bars {
+          transform-origin: 50% 100%;
+        }
+
+        .evidence-rail {
+          position: absolute;
+          left: 5cqw;
+          top: 13.7cqh;
+          z-index: 30;
+          display: flex;
+          gap: 1.05cqw;
+          align-items: stretch;
+          will-change: transform, opacity;
+        }
+
+        .evidence-card {
+          display: flex;
+          align-items: center;
+          min-width: 20cqw;
+          min-height: 4.8cqw;
+          padding: 0.72cqw 1.05cqw;
+          border: 0.4cqw solid var(--ink);
+          font-family: "JetBrains Mono";
+          font-size: 1.42cqw;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          line-height: 1;
+          text-transform: uppercase;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+
+        .evidence-card::before {
+          width: 0.72cqw;
+          height: 0.72cqw;
+          margin-right: 0.72cqw;
+          border: 0.2cqw solid var(--canvas);
+          background: currentColor;
+          content: "";
+        }
+
+        .evidence-card.pass {
+          background: var(--pass);
+          color: var(--canvas);
+        }
+
+        .evidence-card.blocked {
+          background: var(--blocked);
+          color: var(--canvas);
+        }
+
+        .phrase-stack {
+          position: absolute;
+          left: 5cqw;
+          top: 7.8cqh;
+          z-index: 40;
+          display: flex;
+          width: 90cqw;
+          min-height: 28cqh;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 0.35cqw;
+        }
+
+        .phrase-line {
+          display: block;
+          width: max-content;
+          max-width: 100%;
+          color: var(--ink);
+          font-family: "Archivo Black";
+          font-size: 4.9cqw;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          line-height: 0.86;
+          text-transform: uppercase;
+          white-space: nowrap;
+          will-change: transform, filter, opacity;
+        }
+
+        .phrase-line .accent {
+          color: var(--blocked);
+        }
+
+        .final-thesis {
+          position: absolute;
+          left: 5cqw;
+          top: 10.6cqh;
+          z-index: 50;
+          display: flex;
+          width: 90cqw;
+          min-height: 18cqh;
+          align-items: center;
+          justify-content: center;
+          color: var(--blocked);
+          font-family: "Archivo Black";
+          font-size: 7.4cqw;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          line-height: 0.88;
+          text-align: center;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="05-regression"
+        data-width="1920"
+        data-height="1080"
+        data-duration="11.5"
+        data-fps="30"
+      >
+        <div
+          id="f05-background"
+          class="clip background-layer"
+          data-start="0"
+          data-duration="11"
+          data-track-index="0"
+          aria-hidden="true"
+        ></div>
+
+        <section
+          id="f05-stage"
+          class="clip stage-layer"
+          data-start="0"
+          data-duration="11"
+          data-track-index="1"
+        >
+          <div id="f05-physical-shell" class="physical-shell">
+            <svg
+              class="world-svg"
+              viewBox="0 0 1792 660"
+              role="img"
+              aria-label="An ambulance stops at a broad safety field while a green tower remains standing and a kaiju stays frozen behind it."
+            >
+              <g id="f05-sky-context" class="dof-layer" data-depth="2">
+                <rect x="0" y="0" width="1792" height="450" fill="#263449"></rect>
+                <rect x="1254" y="0" width="538" height="660" fill="#ffd24a" opacity="0.065"></rect>
+                <g stroke="#d5d5d5" stroke-width="3" opacity="0.16">
+                  <line x1="1350" y1="0" x2="1350" y2="660"></line>
+                  <line x1="1450" y1="0" x2="1450" y2="660"></line>
+                  <line x1="1550" y1="0" x2="1550" y2="660"></line>
+                  <line x1="1650" y1="0" x2="1650" y2="660"></line>
+                  <line x1="1750" y1="0" x2="1750" y2="660"></line>
+                </g>
+                <line
+                  x1="1254"
+                  y1="0"
+                  x2="1254"
+                  y2="660"
+                  stroke="#ffd24a"
+                  stroke-width="10"
+                  stroke-dasharray="28 18"
+                  opacity="0.9"
+                ></line>
+              </g>
+
+              <g id="f05-kaiju" class="dof-layer" data-depth="3" opacity="0.82">
+                <path
+                  d="M 878 452 C 852 423 856 380 902 350 L 892 314 L 934 330 L 961 284 L 986 332 L 1030 306 L 1020 354 C 1063 371 1088 412 1074 452 Z"
+                  fill="#0b1220"
+                  stroke="#d5d5d5"
+                  stroke-width="8"
+                  stroke-linejoin="miter"
+                ></path>
+                <path
+                  d="M 884 411 C 831 402 792 421 748 449 C 798 446 839 454 886 452 Z"
+                  fill="#0b1220"
+                  stroke="#d5d5d5"
+                  stroke-width="8"
+                  stroke-linejoin="miter"
+                ></path>
+                <path
+                  d="M 918 448 L 901 503 L 955 503 L 968 448 M 1014 448 L 1018 503 L 1072 503 L 1051 443"
+                  fill="#0b1220"
+                  stroke="#d5d5d5"
+                  stroke-width="8"
+                  stroke-linejoin="miter"
+                ></path>
+                <circle cx="1006" cy="368" r="8" fill="#ff6b5e"></circle>
+              </g>
+
+              <g id="f05-tower">
+                <path
+                  d="M 1488 450 L 1510 144 L 1658 144 L 1680 450 Z"
+                  fill="#0b1220"
+                  stroke="#f5f1e8"
+                  stroke-width="8"
+                  stroke-linejoin="miter"
+                ></path>
+                <path
+                  d="M 1528 144 L 1584 80 L 1640 144 Z"
+                  fill="#263449"
+                  stroke="#f5f1e8"
+                  stroke-width="8"
+                  stroke-linejoin="miter"
+                ></path>
+                <line x1="1584" y1="80" x2="1584" y2="42" stroke="#f5f1e8" stroke-width="8"></line>
+                <circle cx="1584" cy="28" r="14" fill="#b7e35a" stroke="#0b1220" stroke-width="6"></circle>
+                <rect x="1536" y="188" width="96" height="52" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6"></rect>
+                <rect x="1536" y="272" width="96" height="52" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6"></rect>
+                <rect x="1536" y="356" width="96" height="52" fill="#b7e35a" stroke="#f5f1e8" stroke-width="6"></rect>
+              </g>
+
+              <g id="f05-road-context" class="dof-layer" data-depth="1">
+                <rect x="0" y="450" width="1792" height="210" fill="#0b1220"></rect>
+                <line x1="0" y1="450" x2="1792" y2="450" stroke="#f5f1e8" stroke-width="8"></line>
+                <g fill="#d5d5d5" opacity="0.62">
+                  <rect x="70" y="565" width="150" height="16"></rect>
+                  <rect x="300" y="565" width="150" height="16"></rect>
+                  <rect x="530" y="565" width="150" height="16"></rect>
+                  <rect x="760" y="565" width="150" height="16"></rect>
+                  <rect x="990" y="565" width="150" height="16"></rect>
+                  <rect x="1378" y="565" width="150" height="16"></rect>
+                  <rect x="1608" y="565" width="150" height="16"></rect>
+                </g>
+              </g>
+
+              <g id="f05-blocked-route">
+                <line x1="1122" y1="552" x2="1204" y2="552" stroke="#ff6b5e" stroke-width="14"></line>
+                <path
+                  d="M 1183 530 L 1208 552 L 1183 574"
+                  fill="none"
+                  stroke="#ff6b5e"
+                  stroke-width="14"
+                  stroke-linecap="square"
+                  stroke-linejoin="miter"
+                ></path>
+              </g>
+
+              <g id="f05-stop-bars">
+                <rect x="1198" y="448" width="26" height="172" fill="#ff6b5e" stroke="#f5f1e8" stroke-width="7"></rect>
+                <rect x="1242" y="448" width="26" height="172" fill="#ff6b5e" stroke="#f5f1e8" stroke-width="7"></rect>
+                <rect x="1183" y="480" width="100" height="24" fill="#ff6b5e" stroke="#f5f1e8" stroke-width="7"></rect>
+              </g>
+
+              <g id="f05-ambulance">
+                <g transform="translate(770 466)">
+                  <rect x="0" y="26" width="246" height="106" fill="#f5f1e8" stroke="#0b1220" stroke-width="8"></rect>
+                  <path
+                    d="M 246 52 L 294 52 L 354 94 L 354 132 L 246 132 Z"
+                    fill="#f5f1e8"
+                    stroke="#0b1220"
+                    stroke-width="8"
+                    stroke-linejoin="miter"
+                  ></path>
+                  <path d="M 275 64 L 294 64 L 326 90 L 275 90 Z" fill="#263449" stroke="#0b1220" stroke-width="6"></path>
+                  <rect x="0" y="82" width="354" height="24" fill="#ff6b5e"></rect>
+                  <rect x="70" y="46" width="70" height="70" fill="#263449" stroke="#0b1220" stroke-width="6"></rect>
+                  <rect x="95" y="58" width="20" height="46" fill="#f5f1e8"></rect>
+                  <rect x="82" y="71" width="46" height="20" fill="#f5f1e8"></rect>
+                  <circle cx="74" cy="132" r="30" fill="#0b1220" stroke="#f5f1e8" stroke-width="8"></circle>
+                  <circle cx="286" cy="132" r="30" fill="#0b1220" stroke="#f5f1e8" stroke-width="8"></circle>
+                  <circle cx="74" cy="132" r="10" fill="#d5d5d5"></circle>
+                  <circle cx="286" cy="132" r="10" fill="#d5d5d5"></circle>
+                  <g id="f05-beacon-glow">
+                    <circle cx="184" cy="9" r="31" fill="#ffd24a" opacity="0.25"></circle>
+                    <rect x="163" y="-1" width="42" height="25" fill="#ffd24a" stroke="#0b1220" stroke-width="6"></rect>
+                  </g>
+                </g>
+              </g>
+            </svg>
+
+            <div id="f05-shell-frame" class="shell-frame" aria-hidden="true"></div>
+          </div>
+
+          <div id="f05-evidence" class="evidence-rail" aria-label="Regression evidence">
+            <div id="f05-pass-card" class="evidence-card pass">Tower: Pass</div>
+            <div id="f05-blocked-card" class="evidence-card blocked">Ambulance: Blocked</div>
+          </div>
+
+          <div id="f05-phrase-stack" class="phrase-stack" aria-label="The kaiju is not the monster">
+            <div id="f05-phrase-one" class="phrase-line">The Kaiju</div>
+            <div id="f05-phrase-two" class="phrase-line">Is <span class="accent">Not</span></div>
+            <div id="f05-phrase-three" class="phrase-line">The Monster</div>
+          </div>
+
+          <div id="f05-final-thesis" class="final-thesis" aria-label="The regression is"></div>
+        </section>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+
+        const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo(
+          "#f05-ambulance",
+          { x: -1150 },
+          { x: 0, duration: 2.2, ease: "power3.out" },
+          0.12,
+        );
+
+        tl.set("#f05-beacon-glow", { opacity: 0.22, scale: 0.84 }, 0);
+        [0.34, 1.03, 1.72].forEach((onset) => {
+          tl.to(
+            "#f05-beacon-glow",
+            { opacity: 1, scale: 1.18, duration: 0.12, ease: "power3.out" },
+            onset,
+          );
+          tl.to(
+            "#f05-beacon-glow",
+            { opacity: 0.22, scale: 0.84, duration: 0.18, ease: "power2.in" },
+            onset + 0.12,
+          );
+        });
+
+        tl.fromTo(
+          "#f05-pass-card",
+          { x: -150, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.42, ease: "power4.out" },
+          3.25,
+        );
+        tl.fromTo(
+          "#f05-blocked-card",
+          { x: -150, opacity: 0, scale: 1.08 },
+          { x: 0, opacity: 1, scale: 1, duration: 0.46, ease: "expo.out" },
+          3.92,
+        );
+        tl.fromTo(
+          "#f05-blocked-route",
+          { scaleX: 0, opacity: 0 },
+          { scaleX: 1, opacity: 1, duration: 0.38, ease: "power3.out" },
+          4.05,
+        );
+        tl.fromTo(
+          "#f05-stop-bars",
+          { scaleY: 0, opacity: 0 },
+          { scaleY: 1, opacity: 1, duration: 0.48, ease: "back.out(1.7)" },
+          4.32,
+        );
+
+        [
+          { selector: "#f05-sky-context", blur: "8px", opacity: 0.42 },
+          { selector: "#f05-kaiju", blur: "14px", opacity: 0.38 },
+          { selector: "#f05-road-context", blur: "3px", opacity: 0.52 },
+        ].forEach((layer) => {
+          tl.to(
+            layer.selector,
+            {
+              "--dof": layer.blur,
+              opacity: layer.opacity,
+              duration: 0.9,
+              ease: "power2.inOut",
+            },
+            4.38,
+          );
+        });
+
+        tl.to(
+          "#f05-physical-shell",
+          { scale: 0.68, y: 80, duration: 0.75, ease: "power3.inOut" },
+          5.4,
+        );
+        tl.to(
+          "#f05-evidence",
+          { opacity: 0, y: 24, duration: 0.28, ease: "power2.in" },
+          5.4,
+        );
+
+        const phraseBeats = [5.56, 6.18, 6.82];
+        tl.fromTo(
+          "#f05-phrase-one",
+          { scale: 1.45, filter: "blur(12px)", opacity: 0 },
+          {
+            scale: 1,
+            filter: "blur(0px)",
+            opacity: 1,
+            duration: 0.5,
+            ease: "power4.out",
+          },
+          phraseBeats[0],
+        );
+        tl.fromTo(
+          "#f05-phrase-two",
+          { x: -300, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.45, ease: "expo.out" },
+          phraseBeats[1],
+        );
+        tl.fromTo(
+          "#f05-phrase-three",
+          { y: 84, rotation: 5, opacity: 0 },
+          { y: 0, rotation: 0, opacity: 1, duration: 0.55, ease: "circ.out" },
+          phraseBeats[2],
+        );
+
+        tl.set(
+          "#f05-phrase-stack, #f05-sky-context, #f05-road-context, #f05-kaiju, #f05-shell-frame, #f05-evidence",
+          { opacity: 0 },
+          8.2,
+        );
+
+        const thesisStates = [
+          { t: 0, text: "" },
+          { t: 8.2, text: "THE REGRESSION IS" },
+        ];
+        const thesisDriver = { t: 0 };
+        const thesisElement = document.getElementById("f05-final-thesis");
+
+        function thesisAt(time) {
+          for (let index = thesisStates.length - 1; index >= 0; index -= 1) {
+            if (time >= thesisStates[index].t) {
+              return thesisStates[index].text;
+            }
+          }
+          return "";
+        }
+
+        tl.to(
+          thesisDriver,
+          {
+            t: 11,
+            duration: 11,
+            ease: "none",
+            onUpdate: () => {
+              thesisElement.textContent = thesisAt(thesisDriver.t);
+            },
+          },
+          0,
+        );
+
+        window.__timelines["05-regression"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

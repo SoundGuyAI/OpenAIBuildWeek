@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      @font-face {
+        font-family: "Archivo Black";
+        src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+        font-display: block;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0B1220;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .concept-disclosure-overlay {
+        position: absolute;
+        top: 210px;
+        left: 10px;
+        z-index: 18;
+        padding: 8px 6px;
+        border: 3px solid #f5f1e8;
+        background: #0b1220;
+        color: #ffd24a;
+        font: 700 12px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+      }
+      .prototype-demo-backdrop {
+        position: absolute;
+        inset: 0;
+        z-index: 11;
+        background-color: #0b1220;
+        background-image:
+          linear-gradient(rgba(91, 215, 209, 0.1) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(91, 215, 209, 0.1) 2px, transparent 2px);
+        background-size: 192px 108px;
+      }
+      .prototype-demo-video {
+        position: absolute;
+        left: 58px;
+        top: 118px;
+        z-index: 12;
+        width: 1360px;
+        height: 765px;
+        object-fit: cover;
+        border: 7px solid #f5f1e8;
+        background: #0b1220;
+        box-shadow: 16px 16px 0 #5bd7d1;
+      }
+      .prototype-demo-panel {
+        position: absolute;
+        top: 118px;
+        right: 58px;
+        z-index: 13;
+        width: 410px;
+        height: 765px;
+        padding: 34px 30px;
+        border: 7px solid #f5f1e8;
+        background: #263449;
+        color: #f5f1e8;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        box-shadow: 16px 16px 0 #ffd24a;
+      }
+      .prototype-demo-panel .eyebrow {
+        color: #5bd7d1;
+        font: 800 16px/1.2 "JetBrains Mono", monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .prototype-demo-panel h2 {
+        margin-top: 16px;
+        font: 900 48px/0.95 "Archivo Black", system-ui, sans-serif;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+      .prototype-demo-panel ol {
+        margin: 42px 0 0 24px;
+        color: #d5d5d5;
+        font-size: 24px;
+        line-height: 1.28;
+      }
+      .prototype-demo-panel li { margin-bottom: 28px; padding-left: 8px; }
+      .prototype-demo-panel strong { color: #ffd24a; }
+      .prototype-demo-panel .commit {
+        position: absolute;
+        right: 30px;
+        bottom: 28px;
+        left: 30px;
+        padding-top: 18px;
+        border-top: 4px solid #5bd7d1;
+        color: #b7e35a;
+        font: 800 16px/1.35 "JetBrains Mono", monospace;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .prototype-demo-tag {
+        position: absolute;
+        top: 28px;
+        left: 48px;
+        z-index: 14;
+        padding: 13px 18px;
+        border: 4px solid #f5f1e8;
+        background: #0b1220;
+        color: #b7e35a;
+        font: 800 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="95"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div
+        id="el-01-fast-help"
+        class="scene"
+        data-composition-id="01-fast-help"
+        data-composition-src="compositions/frames/01-fast-help.html"
+        data-start="0"
+        data-duration="9.4"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-01-fast-help-voice"
+        src="assets/voice/01.wav"
+        data-start="0"
+        data-duration="9"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-02-happy-path"
+        class="scene"
+        data-composition-id="02-happy-path"
+        data-composition-src="compositions/frames/02-happy-path.html"
+        data-start="9"
+        data-duration="11.5"
+        data-track-index="1"
+      ></div>
+      <audio
+        id="el-02-happy-path-voice"
+        src="assets/voice/02.wav"
+        data-start="9"
+        data-duration="11"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-03-edge-case"
+        class="scene"
+        data-composition-id="03-edge-case"
+        data-composition-src="compositions/frames/03-edge-case.html"
+        data-start="20"
+        data-duration="10.5"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-03-edge-case-voice"
+        src="assets/voice/03.wav"
+        data-start="20"
+        data-duration="10"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-04-broad-fix"
+        class="scene"
+        data-composition-id="04-broad-fix"
+        data-composition-src="compositions/frames/04-broad-fix.html"
+        data-start="30"
+        data-duration="10.4"
+        data-track-index="1"
+      ></div>
+      <audio
+        id="el-04-broad-fix-voice"
+        src="assets/voice/04.wav"
+        data-start="30"
+        data-duration="10"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-05-regression"
+        class="scene"
+        data-composition-id="05-regression"
+        data-composition-src="compositions/frames/05-regression.html"
+        data-start="40"
+        data-duration="11.5"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-05-regression-voice"
+        src="assets/voice/05.wav"
+        data-start="40"
+        data-duration="11"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-06-targeted-fix"
+        class="scene"
+        data-composition-id="06-targeted-fix"
+        data-composition-src="compositions/frames/06-targeted-fix.html"
+        data-start="51"
+        data-duration="12.5"
+        data-track-index="1"
+      ></div>
+      <audio
+        id="el-06-targeted-fix-voice"
+        src="assets/voice/06.wav"
+        data-start="51"
+        data-duration="12"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-07-release-earned"
+        class="scene"
+        data-composition-id="07-release-earned"
+        data-composition-src="compositions/frames/07-release-earned.html"
+        data-start="63"
+        data-duration="15.4"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-07-release-earned-voice"
+        src="assets/voice/07.wav"
+        data-start="63"
+        data-duration="15"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-08-prove-it"
+        class="scene"
+        data-composition-id="08-prove-it"
+        data-composition-src="compositions/frames/08-prove-it.html"
+        data-start="78"
+        data-duration="17"
+        data-track-index="1"
+      ></div>
+      <div
+        id="el-working-demo-backdrop"
+        class="clip prototype-demo-backdrop"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="7"
+        data-layout-ignore
+        data-layout-allow-occlusion
+      ></div>
+      <video
+        id="el-working-demo"
+        class="clip prototype-demo-video"
+        src="assets/prototype/working-demo.mp4"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="4"
+        data-layout-allow-occlusion
+        data-layout-allow-overlap
+        muted
+        playsinline
+        preload="auto"
+      ></video>
+      <div
+        id="el-working-demo-panel"
+        class="clip prototype-demo-panel"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="5"
+        data-layout-allow-occlusion
+        data-layout-allow-overlap
+      >
+        <div class="eyebrow">Working prototype</div>
+        <h2>Watch the evidence change</h2>
+        <ol>
+          <li><strong>Broad guardrail</strong><br />Ambulance regression</li>
+          <li><strong>Targeted slow zone</strong><br />Three current passes</li>
+          <li><strong>Release gate</strong><br />Unlocked by evidence</li>
+        </ol>
+        <div class="commit">Remote CI capture<br />game commit 2674d39</div>
+      </div>
+      <div
+        id="el-working-demo-tag"
+        class="clip prototype-demo-tag"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="6"
+        data-layout-allow-occlusion
+        data-layout-allow-overlap
+      >Browser capture - working prototype</div>
+      <audio
+        id="el-08-prove-it-voice"
+        src="assets/voice/08.wav"
+        data-start="78"
+        data-duration="17"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="concept-disclosure-scenes"
+        class="clip concept-disclosure-overlay"
+        data-start="9"
+        data-duration="69"
+        data-track-index="3"
+      >Concept visualization - not gameplay capture</div>
+
+      <!-- captions -->
+      <div
+        id="el-captions"
+        class="scene"
+        data-composition-id="captions"
+        data-composition-src="compositions/captions.html"
+        data-start="0"
+        data-duration="95"
+        data-track-index="2"
+      ></div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // ── frame transitions (injected by transitions.mjs) ──
+      (function () { var tl = window.__timelines["main"];
+        tl.to("#el-01-fast-help", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 9);
+        tl.fromTo("#el-02-happy-path", { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 9);
+        tl.to("#el-02-happy-path", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 20);
+        tl.fromTo("#el-03-edge-case", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 20);
+        tl.to("#el-03-edge-case", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 30);
+        tl.fromTo("#el-04-broad-fix", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 30);
+        tl.to("#el-04-broad-fix", { scaleX: 0, transformOrigin: "left center", duration: 0.4, ease: "power3.inOut" }, 40);
+        tl.fromTo("#el-05-regression", { scaleX: 0, transformOrigin: "right center", opacity: 1 }, { scaleX: 1, transformOrigin: "right center", duration: 0.4, ease: "power3.inOut" }, 40);
+        tl.to("#el-05-regression", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 51);
+        tl.fromTo("#el-06-targeted-fix", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 51);
+        tl.to("#el-06-targeted-fix", { x: -1920, duration: 0.5, ease: "power3.inOut" }, 63);
+        tl.fromTo("#el-07-release-earned", { x: 1920, opacity: 1 }, { x: 0, duration: 0.5, ease: "power3.inOut" }, 63);
+        tl.to("#el-07-release-earned", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 78);
+        tl.fromTo("#el-08-prove-it", { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 78);
+        tl.to({}, { duration: 95 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
+      })();
+    </script>
+  </body>
+</html>

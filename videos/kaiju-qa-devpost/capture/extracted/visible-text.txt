@@ -1,0 +1,25 @@
+Loop Engineer: Kaiju QA
+
+Test the tiny monster before it meets the real city.
+
+Before a helpful baby kaiju is deployed to a real city, build a tabletop test
+district, stage edge cases, and prove that its "help everyone" behavior is safe
+enough to ship.
+
+The player is the quality engineer. A happy-path stalled-car test passes, but a
+fragile-tower edge case fails. A broad "freeze near buildings" guardrail saves
+the tower and causes a new ambulance regression. The player compares persistent
+path evidence, preserves both criteria, places a targeted slow-zone boundary,
+runs the full regression suite, and releases only after every scenario passes.
+
+Loop Engineering means defining the goal, authorizing a bounded action,
+observing external evidence, adjusting from causality, and reaching an explicit
+pass, stop, rollback, or escalate gate. In this game, those decisions become
+spatial toys instead of a static diagram.
+
+Audience: first-year computing students, bootcamp learners, career switchers,
+and educators teaching responsible AI-assisted development.
+
+Concept visualization. Final submission media should replace mock scenes with
+matching gameplay capture when available.
+

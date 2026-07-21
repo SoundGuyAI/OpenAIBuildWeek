@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Fast Help Is Not Safe Help</title>
+  </head>
+  <body>
+    <template>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <style>
+        @font-face {
+          font-family: "Archivo Black";
+          src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+          font-weight: 400;
+          font-style: normal;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+          font-weight: 100 800;
+          font-style: normal;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "Space Grotesk";
+          src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+          font-weight: 300 700;
+          font-style: normal;
+          font-display: block;
+        }
+
+        #root {
+          --cream: #0b1220;
+          --cream-2: #263449;
+          --ink: #f5f1e8;
+          --ink-2: #d5d5d5;
+          --pink: #ff6b5e;
+          --orange: #5bd7d1;
+          --yellow: #ffd24a;
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          container-type: size;
+          color: var(--ink);
+          font-family: "Space Grotesk";
+          font-synthesis: none;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        .clip {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+        }
+
+        .clip *,
+        .clip *::before,
+        .clip *::after {
+          box-sizing: border-box;
+        }
+
+        .ground-layer {
+          z-index: 0;
+          background: var(--cream);
+        }
+
+        .hero-image {
+          z-index: 1;
+          display: block;
+          width: 1920px;
+          height: 1080px;
+          object-fit: cover;
+          object-position: 50% 52%;
+          border: 8px solid var(--ink);
+          filter: brightness(0.82) saturate(0.94);
+          transform-origin: 50% 62%;
+          will-change: transform;
+        }
+
+        .shade-layer {
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .edge-shades {
+          position: absolute;
+          inset: 0;
+        }
+
+        .edge-panel {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          background: rgba(11, 18, 32, 0.38);
+        }
+
+        .edge-panel-left {
+          left: 0;
+          width: 330px;
+        }
+
+        .edge-panel-right {
+          right: 0;
+          width: 340px;
+        }
+
+        .edge-panel-top {
+          top: 0;
+          right: 0;
+          bottom: auto;
+          left: 0;
+          width: auto;
+          height: 92px;
+          background: rgba(11, 18, 32, 0.22);
+        }
+
+        .content-layer {
+          z-index: 3;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .full-badge-wrap {
+          position: absolute;
+          top: 78px;
+          left: 96px;
+          z-index: 5;
+          width: 760px;
+          height: 72px;
+          will-change: transform, opacity;
+        }
+
+        .full-badge-inner,
+        .final-badge-inner {
+          display: flex;
+          width: 100%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+          padding: 0 28px;
+          border: 8px solid var(--ink);
+          background: var(--yellow);
+          color: var(--cream);
+          font-family: "JetBrains Mono";
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 1;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          transform: rotate(-4deg);
+          transform-origin: 50% 50%;
+        }
+
+        .evidence-svg {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          width: 1920px;
+          height: 1080px;
+          overflow: visible;
+        }
+
+        .evidence-path {
+          fill: none;
+          stroke: var(--orange);
+          stroke-width: 7px;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .lab-group {
+          transform-box: fill-box;
+          transform-origin: 50% 62%;
+          will-change: transform, opacity;
+        }
+
+        .lab-node {
+          fill: var(--cream);
+          stroke: var(--orange);
+          stroke-width: 7px;
+          transform-box: fill-box;
+          transform-origin: center;
+          will-change: transform, opacity;
+        }
+
+        .evidence-terminal {
+          transform-box: fill-box;
+          transform-origin: center;
+          will-change: transform, opacity;
+        }
+
+        .terminal-ring {
+          fill: var(--cream);
+          stroke: var(--orange);
+          stroke-width: 8px;
+        }
+
+        .terminal-core {
+          fill: var(--yellow);
+        }
+
+        .pivot-zone {
+          position: absolute;
+          top: 315px;
+          left: 96px;
+          z-index: 3;
+          width: 790px;
+          height: 340px;
+        }
+
+        .marker-card,
+        .title-tile {
+          position: absolute;
+          inset: 0;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        .marker-card {
+          z-index: 1;
+          display: grid;
+          place-items: center;
+          overflow: hidden;
+          border: 8px solid var(--ink);
+          background: var(--pink);
+          box-shadow:
+            24px 24px 0 var(--orange),
+            24px 24px 0 4px var(--ink);
+        }
+
+        .marker-state {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 28px;
+          padding: 36px 44px;
+          color: var(--cream);
+          font-family: "Archivo Black";
+          font-size: 5.4cqw;
+          font-weight: 400;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-align: center;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .marker-word {
+          display: inline-block;
+          will-change: transform, opacity;
+        }
+
+        .title-tile {
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          overflow: hidden;
+          padding: 38px 54px 34px;
+          border: 8px solid var(--ink);
+          background: var(--cream-2);
+        }
+
+        .title-kicker,
+        .title-main,
+        .title-subline {
+          width: 100%;
+          will-change: transform, opacity;
+        }
+
+        .title-kicker {
+          color: var(--ink-2);
+          font-family: "Archivo Black";
+          font-size: 2.4cqw;
+          font-weight: 400;
+          line-height: 1;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+        }
+
+        .title-main {
+          margin-top: 12px;
+          color: var(--ink);
+          font-family: "Archivo Black";
+          font-size: 5.7cqw;
+          font-weight: 400;
+          line-height: 0.86;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .title-main-accent {
+          color: var(--yellow);
+        }
+
+        .title-subline {
+          margin-top: 24px;
+          color: var(--orange);
+          font-family: "Space Grotesk";
+          font-size: 28px;
+          font-weight: 600;
+          line-height: 1.2;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .final-badge-wrap {
+          position: absolute;
+          top: 668px;
+          left: 660px;
+          z-index: 4;
+          width: 420px;
+          height: 72px;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        .final-badge-inner {
+          padding: 0 24px;
+          font-size: 22px;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="01-fast-help"
+        data-start="0"
+        data-duration="9.4"
+        data-fps="30"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div
+          id="fh01-ground"
+          class="clip ground-layer"
+          data-start="0"
+          data-duration="9"
+          data-track-index="0"
+          aria-hidden="true"
+        ></div>
+
+        <img
+          id="fh01-hero"
+          class="clip hero-image"
+          src="assets/kaiju-qa-hero.png"
+          alt="Low-poly kaiju tabletop laboratory concept visualization"
+          data-start="0"
+          data-duration="9"
+          data-track-index="1"
+          data-layout-allow-overflow="true"
+        />
+
+        <div
+          id="fh01-shade"
+          class="clip shade-layer"
+          data-start="0"
+          data-duration="9"
+          data-track-index="2"
+          aria-hidden="true"
+        >
+          <div class="edge-shades">
+            <div class="edge-panel edge-panel-left"></div>
+            <div class="edge-panel edge-panel-right"></div>
+            <div class="edge-panel edge-panel-top"></div>
+          </div>
+        </div>
+
+        <div
+          id="fh01-content"
+          class="clip content-layer"
+          data-start="0"
+          data-duration="9"
+          data-track-index="3"
+        >
+          <div id="fh01-full-badge" class="full-badge-wrap">
+            <div class="full-badge-inner">Concept Visualization — Not Gameplay Capture</div>
+          </div>
+
+          <svg
+            class="evidence-svg"
+            viewBox="0 0 1920 1080"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <g id="fh01-lab-group" class="lab-group">
+              <path
+                id="fh01-lab-path"
+                class="evidence-path"
+                d="M 170 760 C 350 708 520 724 700 650 C 835 594 905 544 980 482 C 1115 370 1350 352 1680 260"
+              />
+              <circle class="lab-node" cx="330" cy="719" r="15" />
+              <circle class="lab-node" cx="980" cy="482" r="15" />
+              <circle class="lab-node" cx="1535" cy="292" r="15" />
+            </g>
+
+            <path
+              id="fh01-title-curl"
+              class="evidence-path"
+              d="M 980 520 C 928 496 900 449 900 390 C 900 303 832 260 752 270 L 210 270 C 132 270 90 319 90 390 L 90 650 C 90 705 137 735 205 725 L 760 725 C 816 725 846 715 870 704"
+            />
+
+            <g id="fh01-evidence-terminal" class="evidence-terminal">
+              <circle class="terminal-ring" cx="870" cy="704" r="24" />
+              <circle class="terminal-core" cx="870" cy="704" r="9" />
+            </g>
+          </svg>
+
+          <div class="pivot-zone">
+            <div id="fh01-marker-card" class="marker-card">
+              <div id="fh01-marker-fast" class="marker-state">
+                <span class="marker-word">Fast</span>
+                <span class="marker-word">Help</span>
+              </div>
+              <div id="fh01-marker-safe" class="marker-state">
+                <span class="marker-word">Safe</span>
+                <span class="marker-word">Help?</span>
+              </div>
+            </div>
+
+            <div id="fh01-title-tile" class="title-tile">
+              <div id="fh01-title-kicker" class="title-kicker">Loop Engineer:</div>
+              <div id="fh01-title-main" class="title-main">Kaiju <span class="title-main-accent">QA</span></div>
+              <div id="fh01-title-subline" class="title-subline">The Regression Is the Real Monster</div>
+            </div>
+          </div>
+
+          <div id="fh01-final-badge" class="final-badge-wrap">
+            <div class="final-badge-inner">Concept Visualization</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (() => {
+          window.__timelines = window.__timelines || {};
+
+          const labPath = document.getElementById("fh01-lab-path");
+          const titleCurl = document.getElementById("fh01-title-curl");
+
+          [labPath, titleCurl].forEach((path) => {
+            const length = path.getTotalLength();
+            path.style.strokeDasharray = String(length);
+            path.style.strokeDashoffset = String(length);
+          });
+
+          const tl = gsap.timeline({ paused: true });
+
+          gsap.set("#fh01-marker-card", { opacity: 0 });
+          gsap.set("#fh01-marker-fast .marker-word, #fh01-marker-safe .marker-word", { x: 230, opacity: 0 });
+          gsap.set("#fh01-title-tile", { scale: 0.72, opacity: 0 });
+          gsap.set("#fh01-title-kicker", { y: 24, opacity: 0 });
+          gsap.set("#fh01-title-main", { x: 80, opacity: 0 });
+          gsap.set("#fh01-title-subline", { y: 18, opacity: 0 });
+          gsap.set("#fh01-final-badge", { scale: 0.68, opacity: 0 });
+          gsap.set("#fh01-evidence-terminal", { scale: 0.7, opacity: 0 });
+          gsap.set(".lab-node", { scale: 0.55, opacity: 0 });
+
+          tl.fromTo(
+            "#fh01-hero",
+            { x: 0, y: 0, scale: 1 },
+            { x: 0, y: 0, scale: 1.04, duration: 2.8, ease: "none" },
+            0,
+          );
+
+          tl.fromTo(
+            "#fh01-full-badge",
+            { x: -90, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.55, ease: "power4.out" },
+            0.1,
+          );
+
+          tl.to(
+            labPath,
+            { strokeDashoffset: 0, duration: 1.55, ease: "power2.out" },
+            0.38,
+          );
+
+          const labNodes = Array.from(document.querySelectorAll(".lab-node"));
+          labNodes.forEach((node, index) => {
+            tl.fromTo(
+              node,
+              { scale: 0.55, opacity: 0 },
+              { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(1.6)", immediateRender: false },
+              0.82 + index * 0.34,
+            );
+          });
+
+          tl.to(
+            "#fh01-hero",
+            { x: 420, y: -80, scale: 0.76, duration: 0.9, ease: "power3.inOut" },
+            2.8,
+          );
+          tl.to(
+            "#fh01-lab-group",
+            { x: 420, y: -80, scale: 0.76, duration: 0.9, ease: "power3.inOut" },
+            2.8,
+          );
+
+          tl.fromTo(
+            "#fh01-marker-card",
+            { x: -230, scale: 0.92, opacity: 0 },
+            { x: 0, scale: 1, opacity: 1, duration: 0.55, ease: "power4.out", immediateRender: false },
+            3.18,
+          );
+
+          const MARKER_SEQUENCE = [
+            { selector: "#fh01-marker-fast", text: "FAST HELP", speedFactor: 1, hold: 0.38 },
+            { selector: "#fh01-marker-safe", text: "SAFE HELP?", speedFactor: 1, hold: 0.72 },
+          ];
+          const BASE_DURATION = 0.55;
+          const SEC_PER_CHAR = 0.035;
+          let markerCursor = 3.78;
+          const markerTiming = MARKER_SEQUENCE.map((entry) => {
+            const duration = (BASE_DURATION + entry.text.length * SEC_PER_CHAR + entry.hold) / entry.speedFactor;
+            const timing = { ...entry, start: markerCursor, end: markerCursor + duration };
+            markerCursor += duration;
+            return timing;
+          });
+
+          const markerWords = (selector) =>
+            selector === "#fh01-marker-fast"
+              ? Array.from(document.querySelectorAll("#fh01-marker-fast .marker-word"))
+              : Array.from(document.querySelectorAll("#fh01-marker-safe .marker-word"));
+
+          const revealWords = (selector, start) => {
+            const words = markerWords(selector);
+            let offset = 0;
+            words.forEach((word, index) => {
+              tl.fromTo(
+                word,
+                { x: 230, opacity: 0.35 },
+                { x: 0, opacity: 1, duration: 0.3, ease: "power4.out", immediateRender: false },
+                start + offset,
+              );
+              offset += 0.05 * Math.pow(0.84, index);
+            });
+          };
+
+          const waterfallExit = (selector, start) => {
+            const words = markerWords(selector);
+            words.forEach((word, index) => {
+              const at = start + index * 0.022;
+              tl.to(word, { x: -230, duration: 0.34, ease: "power4.in" }, at);
+              tl.to(word, { opacity: 0, duration: 0.18, ease: "power1.in" }, at);
+            });
+          };
+
+          revealWords(markerTiming[0].selector, markerTiming[0].start);
+
+          const safeSwapStart = markerTiming[1].start;
+          const safeCut = safeSwapStart + 0.202;
+          waterfallExit(markerTiming[0].selector, safeSwapStart);
+          revealWords(markerTiming[1].selector, safeCut);
+
+          tl.to("#fh01-lab-group", { opacity: 0.28, duration: 0.4, ease: "power1.out" }, 5.6);
+          tl.to("#fh01-full-badge", { x: -90, opacity: 0, duration: 0.3, ease: "power4.in" }, 5.92);
+
+          tl.to(
+            titleCurl,
+            { strokeDashoffset: 0, duration: 0.87, ease: "power2.out" },
+            5.65,
+          );
+
+          tl.to(
+            "#fh01-marker-card",
+            { scale: 0.72, opacity: 0, duration: 0.38, ease: "power2.in" },
+            6.22,
+          );
+          tl.fromTo(
+            "#fh01-title-tile",
+            { scale: 0.72, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.54, ease: "back.out(1.6)", immediateRender: false },
+            6.44,
+          );
+
+          tl.fromTo(
+            "#fh01-title-kicker",
+            { y: 24, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.32, ease: "power3.out", immediateRender: false },
+            6.72,
+          );
+          tl.fromTo(
+            "#fh01-title-main",
+            { x: 80, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.38, ease: "power4.out", immediateRender: false },
+            6.93,
+          );
+          tl.fromTo(
+            "#fh01-title-subline",
+            { y: 18, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3, ease: "power3.out", immediateRender: false },
+            7.08,
+          );
+
+          tl.fromTo(
+            "#fh01-evidence-terminal",
+            { scale: 0.7, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.18, ease: "back.out(1.6)", immediateRender: false },
+            6.5,
+          );
+          tl.to(
+            "#fh01-evidence-terminal",
+            { scale: 0.68, opacity: 0, duration: 0.3, ease: "power2.in" },
+            6.68,
+          );
+          tl.fromTo(
+            "#fh01-final-badge",
+            { scale: 0.68, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.52, ease: "back.out(1.6)", immediateRender: false },
+            6.84,
+          );
+
+          window.__timelines["01-fast-help"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

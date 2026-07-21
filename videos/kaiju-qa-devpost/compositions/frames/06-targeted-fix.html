@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>06-targeted-fix</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Archivo Black";
+          src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 400;
+          font-display: swap;
+        }
+
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 100 800;
+          font-display: swap;
+        }
+
+        @font-face {
+          font-family: "Space Grotesk";
+          src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+          font-style: normal;
+          font-weight: 300 700;
+          font-display: swap;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          container-type: size;
+          color: #f5f1e8;
+          font-family: "Space Grotesk";
+        }
+
+        .bg-layer,
+        .scene-layer {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+
+        .bg-layer {
+          background: #0b1220;
+        }
+
+        .bg-grid {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 900px;
+          opacity: 0.34;
+        }
+
+        .bg-grid line,
+        .bg-grid path {
+          fill: none;
+          stroke: #263449;
+          stroke-width: 3;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .topbar {
+          position: absolute;
+          top: 30px;
+          left: 64px;
+          right: 64px;
+          height: 54px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-family: "JetBrains Mono";
+          font-size: 22px;
+          line-height: 1;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .topbar-label {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          color: #f5f1e8;
+        }
+
+        .topbar-index {
+          display: grid;
+          width: 42px;
+          height: 42px;
+          place-items: center;
+          border: 4px solid #f5f1e8;
+          background: #ff6b5e;
+          color: #0b1220;
+          font-weight: 700;
+          letter-spacing: 0;
+        }
+
+        .topbar-pill {
+          display: inline-flex;
+          min-height: 48px;
+          align-items: center;
+          padding: 0 24px;
+          border: 4px solid #f5f1e8;
+          border-radius: 999px;
+          background: #263449;
+          color: #f5f1e8;
+          white-space: nowrap;
+        }
+
+        .viewport {
+          position: absolute;
+          top: 100px;
+          left: 0;
+          width: 1920px;
+          height: 650px;
+          overflow: hidden;
+          border-top: 4px solid #f5f1e8;
+          border-bottom: 4px solid #f5f1e8;
+        }
+
+        .world {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 650px;
+          transform-origin: 50% 50%;
+          will-change: transform;
+        }
+
+        .world-canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4600px;
+          height: 650px;
+        }
+
+        .map-geometry,
+        .map-network {
+          position: absolute;
+          inset: 0;
+          width: 4600px;
+          height: 650px;
+          overflow: visible;
+        }
+
+        .map-geometry {
+          z-index: 0;
+        }
+
+        .map-network {
+          z-index: 2;
+        }
+
+        .city-block {
+          fill: #263449;
+          stroke: #d5d5d5;
+          stroke-width: 6;
+        }
+
+        .city-cut {
+          fill: #0b1220;
+          stroke: #263449;
+          stroke-width: 5;
+        }
+
+        .district-rule {
+          fill: none;
+          stroke: #263449;
+          stroke-width: 5;
+          stroke-dasharray: 24 18;
+        }
+
+        .field-morph {
+          position: absolute;
+          top: 70px;
+          left: 450px;
+          z-index: 1;
+          width: 3700px;
+          height: 500px;
+          overflow: hidden;
+          border: 12px solid #ff6b5e;
+          background-color: rgba(255, 107, 94, 0.16);
+          transform-origin: 50% 50%;
+          will-change: transform, opacity, background-color;
+        }
+
+        .field-old-label {
+          position: absolute;
+          top: 24px;
+          left: 32px;
+          display: inline-flex;
+          height: 60px;
+          align-items: center;
+          padding: 0 22px;
+          border: 5px solid #f5f1e8;
+          background: #ff6b5e;
+          color: #0b1220;
+          font-family: "JetBrains Mono";
+          font-size: 30px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .road-outline,
+        .road-surface,
+        .road-center,
+        .route,
+        .protect-rail,
+        .target-rail,
+        .stop-bar {
+          fill: none;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .road-outline {
+          stroke: #f5f1e8;
+          stroke-width: 112;
+          stroke-linecap: square;
+          stroke-linejoin: bevel;
+          opacity: 0.88;
+        }
+
+        .road-surface {
+          stroke: #263449;
+          stroke-width: 96;
+          stroke-linecap: square;
+          stroke-linejoin: bevel;
+        }
+
+        .road-center {
+          stroke: #d5d5d5;
+          stroke-width: 5;
+          stroke-dasharray: 28 22;
+        }
+
+        .route {
+          stroke: #f5f1e8;
+          stroke-width: 16;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .protect-rail {
+          stroke: #ffd24a;
+          stroke-width: 22;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .target-rail {
+          stroke: #5bd7d1;
+          stroke-width: 28;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .stop-bar {
+          stroke: #ff6b5e;
+          stroke-width: 22;
+          stroke-linecap: square;
+        }
+
+        .station {
+          position: absolute;
+          z-index: 3;
+          width: 360px;
+          min-height: 260px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .station-car {
+          top: 160px;
+          left: 780px;
+        }
+
+        .station-tower {
+          top: 145px;
+          left: 2120px;
+        }
+
+        .station-ambulance {
+          top: 165px;
+          left: 3460px;
+        }
+
+        .station-card {
+          position: relative;
+          width: 300px;
+          height: 184px;
+          display: grid;
+          grid-template-columns: 104px 1fr;
+          align-items: center;
+          gap: 20px;
+          padding: 24px;
+          border: 8px solid #f5f1e8;
+          background: #0b1220;
+        }
+
+        .station-index {
+          position: absolute;
+          top: 12px;
+          right: 14px;
+          font-family: "JetBrains Mono";
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: #d5d5d5;
+        }
+
+        .station-icon {
+          width: 96px;
+          height: 96px;
+          display: block;
+        }
+
+        .station-icon path,
+        .station-icon line,
+        .station-icon polyline,
+        .station-icon rect,
+        .station-icon circle {
+          fill: none;
+          stroke: #f5f1e8;
+          stroke-width: 9;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .station-copy {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .station-name {
+          font-family: "JetBrains Mono";
+          font-size: 22px;
+          font-weight: 700;
+          line-height: 1.18;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .station-type {
+          color: #d5d5d5;
+          font-family: "Space Grotesk";
+          font-size: 22px;
+          line-height: 1.15;
+        }
+
+        .outcome {
+          display: inline-flex;
+          width: 252px;
+          height: 66px;
+          align-items: center;
+          justify-content: center;
+          margin-top: 14px;
+          border: 6px solid #f5f1e8;
+          background: #263449;
+          color: #f5f1e8;
+          font-family: "Archivo Black";
+          font-size: 40px;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          transform-origin: 50% 50%;
+        }
+
+        .zone-label {
+          position: absolute;
+          top: 520px;
+          left: 1950px;
+          z-index: 4;
+          display: grid;
+          width: 700px;
+          height: 100px;
+          place-items: center;
+          border: 8px solid #f5f1e8;
+          background: #0b1220;
+          color: #5bd7d1;
+          font-family: "Archivo Black";
+          font-size: 64px;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          transform-origin: 50% 50%;
+        }
+
+        .decision-row {
+          position: absolute;
+          top: 748px;
+          left: 420px;
+          width: 1080px;
+          height: 84px;
+          display: grid;
+          grid-template-columns: 300px 90px 300px 90px 300px;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .decision-chip {
+          display: grid;
+          width: 300px;
+          height: 76px;
+          place-items: center;
+          border: 6px solid #f5f1e8;
+          background: #263449;
+          color: #f5f1e8;
+          font-family: "Archivo Black";
+          font-size: 40px;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          transform-origin: 50% 50%;
+        }
+
+        .decision-arrow {
+          display: grid;
+          width: 90px;
+          height: 76px;
+          place-items: center;
+          color: #ffd24a;
+          font-family: "JetBrains Mono";
+          font-size: 44px;
+          font-weight: 700;
+          line-height: 1;
+          transform-origin: 50% 50%;
+        }
+
+        .target-chip {
+          background: #ff6b5e;
+          color: #0b1220;
+          box-shadow:
+            14px 14px 0 #5bd7d1,
+            14px 14px 0 4px #f5f1e8;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="06-targeted-fix"
+        data-width="1920"
+        data-height="1080"
+        data-duration="12.5"
+        data-fps="30"
+      >
+        <div
+          id="f06-bg"
+          class="clip bg-layer"
+          data-start="0"
+          data-duration="12"
+          data-track-index="0"
+        >
+          <svg class="bg-grid" viewBox="0 0 1920 900" aria-hidden="true">
+            <line x1="64" y1="0" x2="64" y2="900" />
+            <line x1="320" y1="0" x2="320" y2="900" />
+            <line x1="640" y1="0" x2="640" y2="900" />
+            <line x1="960" y1="0" x2="960" y2="900" />
+            <line x1="1280" y1="0" x2="1280" y2="900" />
+            <line x1="1600" y1="0" x2="1600" y2="900" />
+            <line x1="1856" y1="0" x2="1856" y2="900" />
+            <line x1="0" y1="100" x2="1920" y2="100" />
+            <line x1="0" y1="420" x2="1920" y2="420" />
+            <line x1="0" y1="750" x2="1920" y2="750" />
+            <path d="M 64 878 H 1856" />
+          </svg>
+        </div>
+
+        <div
+          id="f06-scene"
+          class="clip scene-layer"
+          data-start="0"
+          data-duration="12"
+          data-track-index="1"
+        >
+          <div id="f06-topbar" class="topbar">
+            <div class="topbar-label">
+              <span class="topbar-index">06</span>
+              <span>Path review</span>
+            </div>
+            <div class="topbar-pill">Targeted fix · smallest safe change</div>
+          </div>
+
+          <div class="viewport">
+            <div id="f06-world" class="world">
+              <div class="world-canvas">
+                <svg class="map-geometry" viewBox="0 0 4600 650" aria-hidden="true">
+                  <rect class="city-block" x="120" y="72" width="390" height="215" />
+                  <rect class="city-block" x="550" y="88" width="420" height="168" />
+                  <rect class="city-block" x="1080" y="82" width="360" height="210" />
+                  <rect class="city-block" x="1510" y="118" width="350" height="154" />
+                  <rect class="city-block" x="1930" y="78" width="260" height="210" />
+                  <rect class="city-block" x="2405" y="72" width="300" height="225" />
+                  <rect class="city-block" x="2790" y="112" width="360" height="165" />
+                  <rect class="city-block" x="3250" y="78" width="360" height="218" />
+                  <rect class="city-block" x="3710" y="112" width="310" height="170" />
+                  <rect class="city-block" x="4100" y="74" width="360" height="220" />
+                  <rect class="city-cut" x="180" y="560" width="510" height="62" />
+                  <rect class="city-cut" x="1480" y="550" width="430" height="72" />
+                  <rect class="city-cut" x="2720" y="548" width="460" height="74" />
+                  <rect class="city-cut" x="3970" y="550" width="470" height="72" />
+                  <path class="district-rule" d="M 80 326 H 4520" />
+                  <path class="district-rule" d="M 1460 44 V 620" />
+                  <path class="district-rule" d="M 3180 44 V 620" />
+                </svg>
+
+                <div id="f06-field" class="field-morph">
+                  <div id="f06-field-label" class="field-old-label">City-wide</div>
+                </div>
+
+                <svg class="map-network" viewBox="0 0 4600 650" aria-hidden="true">
+                  <path
+                    class="road-outline"
+                    d="M 70 490 C 520 415 970 548 1440 482 C 1900 418 2440 430 2920 488 C 3410 547 3920 538 4530 458"
+                  />
+                  <path
+                    class="road-surface"
+                    d="M 70 490 C 520 415 970 548 1440 482 C 1900 418 2440 430 2920 488 C 3410 547 3920 538 4530 458"
+                  />
+                  <path
+                    class="road-center"
+                    d="M 70 490 C 520 415 970 548 1440 482 C 1900 418 2440 430 2920 488 C 3410 547 3920 538 4530 458"
+                  />
+
+                  <path class="road-outline" d="M 2300 635 V 464 C 2300 392 2294 348 2294 302" />
+                  <path class="road-surface" d="M 2300 635 V 464 C 2300 392 2294 348 2294 302" />
+                  <path class="road-center" d="M 2300 635 V 464 C 2300 392 2294 348 2294 302" />
+
+                  <path class="road-outline" d="M 4240 106 C 4000 178 3810 320 3650 484" />
+                  <path class="road-surface" d="M 4240 106 C 4000 178 3810 320 3650 484" />
+                  <path class="road-center" d="M 4240 106 C 4000 178 3810 320 3650 484" />
+
+                  <path
+                    id="f06-car-route"
+                    class="route"
+                    d="M 180 486 C 410 438 630 424 820 476 C 1010 528 1195 532 1380 480"
+                  />
+                  <path
+                    id="f06-tower-protect"
+                    class="protect-rail"
+                    d="M 2085 452 L 2085 132 L 2515 132 L 2515 452"
+                  />
+                  <path
+                    id="f06-ambulance-route"
+                    class="route"
+                    d="M 4240 106 C 4015 178 3835 326 3650 484 C 3530 548 3400 548 3280 496"
+                  />
+                  <path
+                    id="f06-stop-left"
+                    class="stop-bar"
+                    d="M 3398 426 L 3348 492"
+                  />
+                  <path
+                    id="f06-stop-right"
+                    class="stop-bar"
+                    d="M 3478 448 L 3428 514"
+                  />
+                  <path
+                    id="f06-target-rail"
+                    class="target-rail"
+                    d="M 2028 472 L 2028 82 L 2572 82 L 2572 472"
+                  />
+                </svg>
+
+                <div class="station station-car">
+                  <div id="f06-car-card" class="station-card">
+                    <span class="station-index">01</span>
+                    <svg class="station-icon" viewBox="0 0 100 100" aria-hidden="true">
+                      <path d="M 16 60 H 84 L 75 37 H 33 Z" />
+                      <path d="M 25 37 L 37 24 H 65 L 75 37" />
+                      <circle cx="31" cy="70" r="10" />
+                      <circle cx="72" cy="70" r="10" />
+                    </svg>
+                    <div class="station-copy">
+                      <div class="station-name">Car</div>
+                      <div class="station-type">Rescue path</div>
+                    </div>
+                  </div>
+                  <div id="f06-keep" class="outcome">Keep</div>
+                </div>
+
+                <div class="station station-tower">
+                  <div id="f06-tower-card" class="station-card">
+                    <span class="station-index">02</span>
+                    <svg class="station-icon" viewBox="0 0 100 100" aria-hidden="true">
+                      <path d="M 30 86 V 18 H 70 V 86" />
+                      <line x1="42" y1="34" x2="58" y2="34" />
+                      <line x1="42" y1="50" x2="58" y2="50" />
+                      <line x1="42" y1="66" x2="58" y2="66" />
+                      <polyline points="70,40 82,52 70,64" />
+                    </svg>
+                    <div class="station-copy">
+                      <div class="station-name">Tower</div>
+                      <div class="station-type">Fragile corner</div>
+                    </div>
+                  </div>
+                  <div id="f06-protect" class="outcome">Protect</div>
+                </div>
+
+                <div class="station station-ambulance">
+                  <div id="f06-ambulance-card" class="station-card">
+                    <span class="station-index">03</span>
+                    <svg class="station-icon" viewBox="0 0 100 100" aria-hidden="true">
+                      <rect x="18" y="30" width="64" height="42" />
+                      <line x1="50" y1="38" x2="50" y2="61" />
+                      <line x1="39" y1="49" x2="61" y2="49" />
+                      <circle cx="31" cy="77" r="8" />
+                      <circle cx="70" cy="77" r="8" />
+                    </svg>
+                    <div class="station-copy">
+                      <div class="station-name">Ambulance</div>
+                      <div class="station-type">Clear lane</div>
+                    </div>
+                  </div>
+                  <div id="f06-unblock" class="outcome">Unblock</div>
+                </div>
+
+                <div id="f06-zone-label" class="zone-label">Local zone</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="decision-row" aria-label="Observe, compare, target">
+            <div id="f06-observe" class="decision-chip">Observe</div>
+            <div id="f06-arrow-one" class="decision-arrow">→</div>
+            <div id="f06-compare" class="decision-chip">Compare</div>
+            <div id="f06-arrow-two" class="decision-arrow">→</div>
+            <div id="f06-target" class="decision-chip target-chip">Target</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        (() => {
+          window.__timelines = window.__timelines || {};
+
+          const world = document.getElementById("f06-world");
+          const topbar = document.getElementById("f06-topbar");
+          const field = document.getElementById("f06-field");
+          const fieldLabel = document.getElementById("f06-field-label");
+          const carCard = document.getElementById("f06-car-card");
+          const towerCard = document.getElementById("f06-tower-card");
+          const ambulanceCard = document.getElementById("f06-ambulance-card");
+          const keep = document.getElementById("f06-keep");
+          const protect = document.getElementById("f06-protect");
+          const unblock = document.getElementById("f06-unblock");
+          const zoneLabel = document.getElementById("f06-zone-label");
+          const observe = document.getElementById("f06-observe");
+          const arrowOne = document.getElementById("f06-arrow-one");
+          const compare = document.getElementById("f06-compare");
+          const arrowTwo = document.getElementById("f06-arrow-two");
+          const target = document.getElementById("f06-target");
+
+          const preparePath = (id) => {
+            const path = document.getElementById(id);
+            const length = path.getTotalLength();
+            path.style.strokeDasharray = `${length}`;
+            path.style.strokeDashoffset = `${length}`;
+            return path;
+          };
+
+          const carRoute = preparePath("f06-car-route");
+          const towerProtect = preparePath("f06-tower-protect");
+          const ambulanceRoute = preparePath("f06-ambulance-route");
+          const stopLeft = preparePath("f06-stop-left");
+          const stopRight = preparePath("f06-stop-right");
+          const targetRail = preparePath("f06-target-rail");
+
+          const cam = { scale: 1, x: 0, y: 0 };
+          const applyCamera = () => {
+            world.style.transform = `translate(${cam.x}px, ${cam.y}px) scale(${cam.scale})`;
+          };
+          applyCamera();
+
+          const tl = gsap.timeline({ paused: true });
+
+          tl.fromTo(
+            topbar,
+            { opacity: 0, y: -24 },
+            { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+            0,
+          );
+          tl.fromTo(
+            carCard,
+            { opacity: 0, scale: 0.9 },
+            { opacity: 1, scale: 1, duration: 0.45, ease: "power3.out" },
+            0.04,
+          );
+          tl.to(
+            cam,
+            {
+              scale: 1.08,
+              x: 0,
+              y: 27,
+              duration: 1.15,
+              ease: "power3.inOut",
+              onUpdate: applyCamera,
+            },
+            0.05,
+          );
+          tl.to(
+            carRoute,
+            { strokeDashoffset: 0, duration: 1.1, ease: "power2.out" },
+            0.18,
+          );
+          tl.fromTo(
+            keep,
+            { opacity: 0, y: 22, scale: 0.92 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.58, ease: "power3.out" },
+            1.05,
+          );
+
+          tl.to(
+            cam,
+            {
+              scale: 1.08,
+              x: -1447,
+              y: 27,
+              duration: 1.05,
+              ease: "power3.inOut",
+              onUpdate: applyCamera,
+            },
+            2.2,
+          );
+          tl.fromTo(
+            towerCard,
+            { opacity: 0, scale: 0.92 },
+            { opacity: 1, scale: 1, duration: 0.52, ease: "power3.out" },
+            2.95,
+          );
+          tl.to(
+            towerProtect,
+            { strokeDashoffset: 0, duration: 0.78, ease: "power2.out" },
+            3.05,
+          );
+          tl.fromTo(
+            protect,
+            { opacity: 0, y: 22, scale: 0.92 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.58, ease: "power3.out" },
+            3.42,
+          );
+
+          tl.to(
+            cam,
+            {
+              scale: 1.08,
+              x: -2894,
+              y: 27,
+              duration: 1.05,
+              ease: "power3.inOut",
+              onUpdate: applyCamera,
+            },
+            4.4,
+          );
+          tl.fromTo(
+            ambulanceCard,
+            { opacity: 0, scale: 0.92 },
+            { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" },
+            5.0,
+          );
+          tl.to(
+            ambulanceRoute,
+            { strokeDashoffset: 0, duration: 0.82, ease: "power2.out" },
+            5.0,
+          );
+          tl.to(
+            [stopLeft, stopRight],
+            {
+              strokeDashoffset: 0,
+              duration: 0.42,
+              ease: "power2.out",
+              stagger: 0.1,
+            },
+            5.24,
+          );
+          tl.fromTo(
+            unblock,
+            { opacity: 0, y: 22, scale: 0.92 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.58, ease: "power3.out" },
+            5.52,
+          );
+
+          tl.to(
+            cam,
+            {
+              scale: 0.42,
+              x: -563,
+              y: 2,
+              duration: 0.95,
+              ease: "power3.inOut",
+              onUpdate: applyCamera,
+            },
+            6.6,
+          );
+          tl.to(
+            fieldLabel,
+            { opacity: 0, y: -18, duration: 0.38, ease: "power1.in" },
+            7.15,
+          );
+          tl.to(
+            field,
+            {
+              scaleX: 0.16,
+              scaleY: 0.44,
+              backgroundColor: "rgba(255, 107, 94, 0.04)",
+              duration: 1.15,
+              ease: "power2.inOut",
+            },
+            7.15,
+          );
+          tl.to(
+            targetRail,
+            { strokeDashoffset: 0, duration: 1.02, ease: "power2.out" },
+            8.05,
+          );
+          tl.to(
+            field,
+            { opacity: 0, duration: 0.44, ease: "power1.in" },
+            8.38,
+          );
+          tl.fromTo(
+            zoneLabel,
+            { opacity: 0, y: 20, scale: 0.94 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.56, ease: "power3.out" },
+            8.72,
+          );
+
+          tl.fromTo(
+            observe,
+            { opacity: 0, y: 22, scale: 0.94 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.44, ease: "power3.out" },
+            9.65,
+          );
+          tl.fromTo(
+            arrowOne,
+            { opacity: 0, x: -18 },
+            { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" },
+            10.04,
+          );
+          tl.fromTo(
+            compare,
+            { opacity: 0, y: 22, scale: 0.94 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.44, ease: "power3.out" },
+            10.22,
+          );
+          tl.fromTo(
+            arrowTwo,
+            { opacity: 0, x: -18 },
+            { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" },
+            10.61,
+          );
+          tl.fromTo(
+            target,
+            { opacity: 0, y: 22, scale: 0.9 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.52, ease: "back.out(1.45)" },
+            10.82,
+          );
+
+          window.__timelines["06-targeted-fix"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

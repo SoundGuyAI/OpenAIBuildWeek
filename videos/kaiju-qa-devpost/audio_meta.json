@@ -1,0 +1,1091 @@
+{
+  "timing_method": "deterministic script alignment; ASR unavailable on this Windows host",
+  "bgm": null,
+  "voices": [
+    {
+      "frame": 1,
+      "path": "assets/voice/01.wav",
+      "duration_s": 9,
+      "spoken_duration_s": 8.96,
+      "words": [
+        {
+          "id": "w0",
+          "text": "This",
+          "start": 0.08,
+          "end": 0.485
+        },
+        {
+          "id": "w1",
+          "text": "tiny",
+          "start": 0.51,
+          "end": 0.915
+        },
+        {
+          "id": "w2",
+          "text": "kaiju",
+          "start": 0.94,
+          "end": 1.411
+        },
+        {
+          "id": "w3",
+          "text": "has",
+          "start": 1.436,
+          "end": 1.769
+        },
+        {
+          "id": "w4",
+          "text": "one",
+          "start": 1.794,
+          "end": 2.127
+        },
+        {
+          "id": "w5",
+          "text": "instruction:",
+          "start": 2.152,
+          "end": 2.958
+        },
+        {
+          "id": "w6",
+          "text": "help",
+          "start": 3.068,
+          "end": 3.473
+        },
+        {
+          "id": "w7",
+          "text": "everyone.",
+          "start": 3.498,
+          "end": 4.147
+        },
+        {
+          "id": "w8",
+          "text": "Fast",
+          "start": 4.367,
+          "end": 4.772
+        },
+        {
+          "id": "w9",
+          "text": "help",
+          "start": 4.797,
+          "end": 5.201
+        },
+        {
+          "id": "w10",
+          "text": "is",
+          "start": 5.226,
+          "end": 5.479
+        },
+        {
+          "id": "w11",
+          "text": "not",
+          "start": 5.504,
+          "end": 5.837
+        },
+        {
+          "id": "w12",
+          "text": "always",
+          "start": 5.862,
+          "end": 6.396
+        },
+        {
+          "id": "w13",
+          "text": "safe.",
+          "start": 6.421,
+          "end": 6.826
+        },
+        {
+          "id": "w14",
+          "text": "Welcome",
+          "start": 7.046,
+          "end": 7.638
+        },
+        {
+          "id": "w15",
+          "text": "to",
+          "start": 7.663,
+          "end": 7.916
+        },
+        {
+          "id": "w16",
+          "text": "Kaiju",
+          "start": 7.941,
+          "end": 8.412
+        },
+        {
+          "id": "w17",
+          "text": "QA.",
+          "start": 8.437,
+          "end": 8.69
+        }
+      ]
+    },
+    {
+      "frame": 2,
+      "path": "assets/voice/02.wav",
+      "duration_s": 11,
+      "spoken_duration_s": 7.595,
+      "words": [
+        {
+          "id": "w0",
+          "text": "First",
+          "start": 0.08,
+          "end": 0.427
+        },
+        {
+          "id": "w1",
+          "text": "run:",
+          "start": 0.452,
+          "end": 0.697
+        },
+        {
+          "id": "w2",
+          "text": "a",
+          "start": 0.807,
+          "end": 0.923
+        },
+        {
+          "id": "w3",
+          "text": "stalled",
+          "start": 0.948,
+          "end": 1.384
+        },
+        {
+          "id": "w4",
+          "text": "car.",
+          "start": 1.409,
+          "end": 1.654
+        },
+        {
+          "id": "w5",
+          "text": "Lift,",
+          "start": 1.874,
+          "end": 2.171
+        },
+        {
+          "id": "w6",
+          "text": "carry,",
+          "start": 2.281,
+          "end": 2.628
+        },
+        {
+          "id": "w7",
+          "text": "road",
+          "start": 2.738,
+          "end": 3.036
+        },
+        {
+          "id": "w8",
+          "text": "clear.",
+          "start": 3.061,
+          "end": 3.408
+        },
+        {
+          "id": "w9",
+          "text": "Pass.",
+          "start": 3.628,
+          "end": 3.926
+        },
+        {
+          "id": "w10",
+          "text": "Well,",
+          "start": 4.146,
+          "end": 4.444
+        },
+        {
+          "id": "w11",
+          "text": "partial",
+          "start": 4.554,
+          "end": 4.99
+        },
+        {
+          "id": "w12",
+          "text": "pass.",
+          "start": 5.015,
+          "end": 5.312
+        },
+        {
+          "id": "w13",
+          "text": "One",
+          "start": 5.532,
+          "end": 5.777
+        },
+        {
+          "id": "w14",
+          "text": "happy",
+          "start": 5.802,
+          "end": 6.149
+        },
+        {
+          "id": "w15",
+          "text": "path",
+          "start": 6.174,
+          "end": 6.472
+        },
+        {
+          "id": "w16",
+          "text": "is",
+          "start": 6.497,
+          "end": 6.683
+        },
+        {
+          "id": "w17",
+          "text": "not",
+          "start": 6.708,
+          "end": 6.953
+        },
+        {
+          "id": "w18",
+          "text": "proof.",
+          "start": 6.978,
+          "end": 7.325
+        }
+      ]
+    },
+    {
+      "frame": 3,
+      "path": "assets/voice/03.wav",
+      "duration_s": 10,
+      "spoken_duration_s": 9.664,
+      "words": [
+        {
+          "id": "w0",
+          "text": "So",
+          "start": 0.08,
+          "end": 0.296
+        },
+        {
+          "id": "w1",
+          "text": "we",
+          "start": 0.321,
+          "end": 0.536
+        },
+        {
+          "id": "w2",
+          "text": "add",
+          "start": 0.561,
+          "end": 0.846
+        },
+        {
+          "id": "w3",
+          "text": "an",
+          "start": 0.871,
+          "end": 1.086
+        },
+        {
+          "id": "w4",
+          "text": "edge",
+          "start": 1.111,
+          "end": 1.457
+        },
+        {
+          "id": "w5",
+          "text": "case:",
+          "start": 1.482,
+          "end": 1.828
+        },
+        {
+          "id": "w6",
+          "text": "a",
+          "start": 1.938,
+          "end": 2.072
+        },
+        {
+          "id": "w7",
+          "text": "fragile",
+          "start": 2.097,
+          "end": 2.603
+        },
+        {
+          "id": "w8",
+          "text": "tower.",
+          "start": 2.628,
+          "end": 3.03
+        },
+        {
+          "id": "w9",
+          "text": "Same",
+          "start": 3.25,
+          "end": 3.596
+        },
+        {
+          "id": "w10",
+          "text": "helpful",
+          "start": 3.621,
+          "end": 4.126
+        },
+        {
+          "id": "w11",
+          "text": "kaiju.",
+          "start": 4.151,
+          "end": 4.554
+        },
+        {
+          "id": "w12",
+          "text": "Same",
+          "start": 4.774,
+          "end": 5.119
+        },
+        {
+          "id": "w13",
+          "text": "behavior.",
+          "start": 5.144,
+          "end": 5.698
+        },
+        {
+          "id": "w14",
+          "text": "Different",
+          "start": 5.918,
+          "end": 6.518
+        },
+        {
+          "id": "w15",
+          "text": "result.",
+          "start": 6.543,
+          "end": 6.998
+        },
+        {
+          "id": "w16",
+          "text": "That",
+          "start": 7.218,
+          "end": 7.564
+        },
+        {
+          "id": "w17",
+          "text": "failure",
+          "start": 7.589,
+          "end": 8.094
+        },
+        {
+          "id": "w18",
+          "text": "is",
+          "start": 8.119,
+          "end": 8.335
+        },
+        {
+          "id": "w19",
+          "text": "useful",
+          "start": 8.36,
+          "end": 8.815
+        },
+        {
+          "id": "w20",
+          "text": "evidence.",
+          "start": 8.84,
+          "end": 9.394
+        }
+      ]
+    },
+    {
+      "frame": 4,
+      "path": "assets/voice/04.wav",
+      "duration_s": 10,
+      "spoken_duration_s": 4.459,
+      "words": [
+        {
+          "id": "w0",
+          "text": "The",
+          "start": 0.08,
+          "end": 0.309
+        },
+        {
+          "id": "w1",
+          "text": "obvious",
+          "start": 0.334,
+          "end": 0.742
+        },
+        {
+          "id": "w2",
+          "text": "fix",
+          "start": 0.767,
+          "end": 0.996
+        },
+        {
+          "id": "w3",
+          "text": "is",
+          "start": 1.021,
+          "end": 1.195
+        },
+        {
+          "id": "w4",
+          "text": "to",
+          "start": 1.22,
+          "end": 1.394
+        },
+        {
+          "id": "w5",
+          "text": "freeze",
+          "start": 1.419,
+          "end": 1.786
+        },
+        {
+          "id": "w6",
+          "text": "near",
+          "start": 1.811,
+          "end": 2.089
+        },
+        {
+          "id": "w7",
+          "text": "buildings.",
+          "start": 2.114,
+          "end": 2.598
+        },
+        {
+          "id": "w8",
+          "text": "Tower",
+          "start": 2.818,
+          "end": 3.142
+        },
+        {
+          "id": "w9",
+          "text": "saved.",
+          "start": 3.167,
+          "end": 3.491
+        },
+        {
+          "id": "w10",
+          "text": "Ship",
+          "start": 3.711,
+          "end": 3.99
+        },
+        {
+          "id": "w11",
+          "text": "it?",
+          "start": 4.015,
+          "end": 4.189
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "path": "assets/voice/05.wav",
+      "duration_s": 11,
+      "spoken_duration_s": 9.749,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Not",
+          "start": 0.08,
+          "end": 0.341
+        },
+        {
+          "id": "w1",
+          "text": "yet.",
+          "start": 0.366,
+          "end": 0.627
+        },
+        {
+          "id": "w2",
+          "text": "The",
+          "start": 0.847,
+          "end": 1.108
+        },
+        {
+          "id": "w3",
+          "text": "next",
+          "start": 1.133,
+          "end": 1.45
+        },
+        {
+          "id": "w4",
+          "text": "test",
+          "start": 1.475,
+          "end": 1.792
+        },
+        {
+          "id": "w5",
+          "text": "is",
+          "start": 1.817,
+          "end": 2.015
+        },
+        {
+          "id": "w6",
+          "text": "an",
+          "start": 2.04,
+          "end": 2.238
+        },
+        {
+          "id": "w7",
+          "text": "ambulance,",
+          "start": 2.263,
+          "end": 2.814
+        },
+        {
+          "id": "w8",
+          "text": "and",
+          "start": 2.924,
+          "end": 3.185
+        },
+        {
+          "id": "w9",
+          "text": "the",
+          "start": 3.21,
+          "end": 3.471
+        },
+        {
+          "id": "w10",
+          "text": "new",
+          "start": 3.496,
+          "end": 3.757
+        },
+        {
+          "id": "w11",
+          "text": "safety",
+          "start": 3.782,
+          "end": 4.2
+        },
+        {
+          "id": "w12",
+          "text": "rule",
+          "start": 4.225,
+          "end": 4.542
+        },
+        {
+          "id": "w13",
+          "text": "has",
+          "start": 4.567,
+          "end": 4.828
+        },
+        {
+          "id": "w14",
+          "text": "frozen",
+          "start": 4.853,
+          "end": 5.271
+        },
+        {
+          "id": "w15",
+          "text": "the",
+          "start": 5.296,
+          "end": 5.557
+        },
+        {
+          "id": "w16",
+          "text": "rescue.",
+          "start": 5.582,
+          "end": 6
+        },
+        {
+          "id": "w17",
+          "text": "The",
+          "start": 6.22,
+          "end": 6.481
+        },
+        {
+          "id": "w18",
+          "text": "kaiju",
+          "start": 6.506,
+          "end": 6.875
+        },
+        {
+          "id": "w19",
+          "text": "is",
+          "start": 6.9,
+          "end": 7.098
+        },
+        {
+          "id": "w20",
+          "text": "not",
+          "start": 7.123,
+          "end": 7.384
+        },
+        {
+          "id": "w21",
+          "text": "the",
+          "start": 7.409,
+          "end": 7.67
+        },
+        {
+          "id": "w22",
+          "text": "monster.",
+          "start": 7.695,
+          "end": 8.159
+        },
+        {
+          "id": "w23",
+          "text": "The",
+          "start": 8.379,
+          "end": 8.64
+        },
+        {
+          "id": "w24",
+          "text": "regression",
+          "start": 8.665,
+          "end": 9.256
+        },
+        {
+          "id": "w25",
+          "text": "is.",
+          "start": 9.281,
+          "end": 9.479
+        }
+      ]
+    },
+    {
+      "frame": 6,
+      "path": "assets/voice/06.wav",
+      "duration_s": 12,
+      "spoken_duration_s": 9.067,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Now",
+          "start": 0.08,
+          "end": 0.352
+        },
+        {
+          "id": "w1",
+          "text": "we",
+          "start": 0.377,
+          "end": 0.583
+        },
+        {
+          "id": "w2",
+          "text": "compare",
+          "start": 0.608,
+          "end": 1.091
+        },
+        {
+          "id": "w3",
+          "text": "every",
+          "start": 1.116,
+          "end": 1.5
+        },
+        {
+          "id": "w4",
+          "text": "path.",
+          "start": 1.525,
+          "end": 1.855
+        },
+        {
+          "id": "w5",
+          "text": "Keep",
+          "start": 2.075,
+          "end": 2.405
+        },
+        {
+          "id": "w6",
+          "text": "the",
+          "start": 2.43,
+          "end": 2.702
+        },
+        {
+          "id": "w7",
+          "text": "car",
+          "start": 2.727,
+          "end": 2.998
+        },
+        {
+          "id": "w8",
+          "text": "rescue.",
+          "start": 3.023,
+          "end": 3.458
+        },
+        {
+          "id": "w9",
+          "text": "Protect",
+          "start": 3.678,
+          "end": 4.161
+        },
+        {
+          "id": "w10",
+          "text": "the",
+          "start": 4.186,
+          "end": 4.458
+        },
+        {
+          "id": "w11",
+          "text": "tower.",
+          "start": 4.483,
+          "end": 4.867
+        },
+        {
+          "id": "w12",
+          "text": "Replace",
+          "start": 5.087,
+          "end": 5.57
+        },
+        {
+          "id": "w13",
+          "text": "the",
+          "start": 5.595,
+          "end": 5.867
+        },
+        {
+          "id": "w14",
+          "text": "city-wide",
+          "start": 5.892,
+          "end": 6.421
+        },
+        {
+          "id": "w15",
+          "text": "freeze",
+          "start": 6.446,
+          "end": 6.881
+        },
+        {
+          "id": "w16",
+          "text": "with",
+          "start": 6.906,
+          "end": 7.236
+        },
+        {
+          "id": "w17",
+          "text": "one",
+          "start": 7.261,
+          "end": 7.532
+        },
+        {
+          "id": "w18",
+          "text": "targeted",
+          "start": 7.557,
+          "end": 8.086
+        },
+        {
+          "id": "w19",
+          "text": "slow",
+          "start": 8.111,
+          "end": 8.441
+        },
+        {
+          "id": "w20",
+          "text": "zone.",
+          "start": 8.466,
+          "end": 8.797
+        }
+      ]
+    },
+    {
+      "frame": 7,
+      "path": "assets/voice/07.wav",
+      "duration_s": 15,
+      "spoken_duration_s": 9.579,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Run",
+          "start": 0.08,
+          "end": 0.341
+        },
+        {
+          "id": "w1",
+          "text": "the",
+          "start": 0.366,
+          "end": 0.626
+        },
+        {
+          "id": "w2",
+          "text": "full",
+          "start": 0.651,
+          "end": 0.968
+        },
+        {
+          "id": "w3",
+          "text": "suite:",
+          "start": 0.993,
+          "end": 1.362
+        },
+        {
+          "id": "w4",
+          "text": "car",
+          "start": 1.472,
+          "end": 1.733
+        },
+        {
+          "id": "w5",
+          "text": "rescued,",
+          "start": 1.758,
+          "end": 2.221
+        },
+        {
+          "id": "w6",
+          "text": "tower",
+          "start": 2.331,
+          "end": 2.7
+        },
+        {
+          "id": "w7",
+          "text": "standing,",
+          "start": 2.725,
+          "end": 3.233
+        },
+        {
+          "id": "w8",
+          "text": "ambulance",
+          "start": 3.343,
+          "end": 3.893
+        },
+        {
+          "id": "w9",
+          "text": "moving.",
+          "start": 3.918,
+          "end": 4.335
+        },
+        {
+          "id": "w10",
+          "text": "Three",
+          "start": 4.555,
+          "end": 4.924
+        },
+        {
+          "id": "w11",
+          "text": "tests.",
+          "start": 4.949,
+          "end": 5.318
+        },
+        {
+          "id": "w12",
+          "text": "Three",
+          "start": 5.538,
+          "end": 5.907
+        },
+        {
+          "id": "w13",
+          "text": "passes.",
+          "start": 5.932,
+          "end": 6.349
+        },
+        {
+          "id": "w14",
+          "text": "Now",
+          "start": 6.569,
+          "end": 6.83
+        },
+        {
+          "id": "w15",
+          "text": "the",
+          "start": 6.855,
+          "end": 7.115
+        },
+        {
+          "id": "w16",
+          "text": "tiny",
+          "start": 7.14,
+          "end": 7.457
+        },
+        {
+          "id": "w17",
+          "text": "release",
+          "start": 7.482,
+          "end": 7.946
+        },
+        {
+          "id": "w18",
+          "text": "stamp",
+          "start": 7.971,
+          "end": 8.34
+        },
+        {
+          "id": "w19",
+          "text": "means",
+          "start": 8.365,
+          "end": 8.734
+        },
+        {
+          "id": "w20",
+          "text": "something.",
+          "start": 8.759,
+          "end": 9.309
+        }
+      ]
+    },
+    {
+      "frame": 8,
+      "path": "assets/voice/08.wav",
+      "duration_s": 17,
+      "spoken_duration_s": 16.747,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Loop",
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "id": "w1",
+          "text": "Engineering:",
+          "start": 0.505,
+          "end": 1.301
+        },
+        {
+          "id": "w2",
+          "text": "goal,",
+          "start": 1.411,
+          "end": 1.811
+        },
+        {
+          "id": "w3",
+          "text": "change,",
+          "start": 1.921,
+          "end": 2.448
+        },
+        {
+          "id": "w4",
+          "text": "evidence,",
+          "start": 2.558,
+          "end": 3.2
+        },
+        {
+          "id": "w5",
+          "text": "gate.",
+          "start": 3.31,
+          "end": 3.71
+        },
+        {
+          "id": "w6",
+          "text": "Kaiju",
+          "start": 3.93,
+          "end": 4.395
+        },
+        {
+          "id": "w7",
+          "text": "QA",
+          "start": 4.42,
+          "end": 4.67
+        },
+        {
+          "id": "w8",
+          "text": "makes",
+          "start": 4.695,
+          "end": 5.161
+        },
+        {
+          "id": "w9",
+          "text": "it",
+          "start": 5.186,
+          "end": 5.436
+        },
+        {
+          "id": "w10",
+          "text": "visible.",
+          "start": 5.461,
+          "end": 6.046
+        },
+        {
+          "id": "w11",
+          "text": "GPT-5.6",
+          "start": 6.266,
+          "end": 6.732
+        },
+        {
+          "id": "w12",
+          "text": "and",
+          "start": 6.757,
+          "end": 7.086
+        },
+        {
+          "id": "w13",
+          "text": "Codex",
+          "start": 7.111,
+          "end": 7.576
+        },
+        {
+          "id": "w14",
+          "text": "shaped",
+          "start": 7.601,
+          "end": 8.129
+        },
+        {
+          "id": "w15",
+          "text": "scoped",
+          "start": 8.154,
+          "end": 8.681
+        },
+        {
+          "id": "w16",
+          "text": "plans,",
+          "start": 8.706,
+          "end": 9.171
+        },
+        {
+          "id": "w17",
+          "text": "tests,",
+          "start": 9.281,
+          "end": 9.747
+        },
+        {
+          "id": "w18",
+          "text": "and",
+          "start": 9.857,
+          "end": 10.186
+        },
+        {
+          "id": "w19",
+          "text": "review.",
+          "start": 10.211,
+          "end": 10.738
+        },
+        {
+          "id": "w20",
+          "text": "Anyone",
+          "start": 10.958,
+          "end": 11.485
+        },
+        {
+          "id": "w21",
+          "text": "can",
+          "start": 11.51,
+          "end": 11.839
+        },
+        {
+          "id": "w22",
+          "text": "change",
+          "start": 11.864,
+          "end": 12.392
+        },
+        {
+          "id": "w23",
+          "text": "code.",
+          "start": 12.417,
+          "end": 12.817
+        },
+        {
+          "id": "w24",
+          "text": "A",
+          "start": 13.037,
+          "end": 13.193
+        },
+        {
+          "id": "w25",
+          "text": "Loop",
+          "start": 13.218,
+          "end": 13.618
+        },
+        {
+          "id": "w26",
+          "text": "Engineer",
+          "start": 13.643,
+          "end": 14.284
+        },
+        {
+          "id": "w27",
+          "text": "proves",
+          "start": 14.309,
+          "end": 14.836
+        },
+        {
+          "id": "w28",
+          "text": "it",
+          "start": 14.861,
+          "end": 15.111
+        },
+        {
+          "id": "w29",
+          "text": "deserves",
+          "start": 15.136,
+          "end": 15.777
+        },
+        {
+          "id": "w30",
+          "text": "to",
+          "start": 15.802,
+          "end": 16.052
+        },
+        {
+          "id": "w31",
+          "text": "ship.",
+          "start": 16.077,
+          "end": 16.477
+        }
+      ]
+    }
+  ],
+  "sfx": []
+}

@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>02 Happy Path</title>
+  </head>
+  <body>
+    <template id="02-happy-path-template">
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <style>
+        @font-face {
+          font-family: "Archivo Black";
+          src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+          font-weight: 400;
+          font-style: normal;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+          font-weight: 100 800;
+          font-style: normal;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "Space Grotesk";
+          src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+          font-weight: 300 700;
+          font-style: normal;
+          font-display: block;
+        }
+
+        #root {
+          --cream: #0b1220;
+          --cream-2: #263449;
+          --ink: #f5f1e8;
+          --ink-2: #d5d5d5;
+          --green: #b7e35a;
+          --pink: #ff6b5e;
+          --pink-dark: #d84f47;
+          --orange: #5bd7d1;
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          container-type: size;
+          color: var(--ink);
+          font-family: "Space Grotesk";
+          font-synthesis: none;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        .clip {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+        }
+
+        .clip *,
+        .clip *::before,
+        .clip *::after {
+          box-sizing: border-box;
+        }
+
+        .ground-layer {
+          z-index: 0;
+          overflow: hidden;
+          background: var(--cream);
+        }
+
+        .ground-rail {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 18px;
+          background: var(--orange);
+        }
+
+        .ground-corner {
+          position: absolute;
+          top: 18px;
+          right: 0;
+          width: 176px;
+          height: 94px;
+          border-bottom: 8px solid var(--ink);
+          border-left: 8px solid var(--ink);
+          background: var(--pink);
+        }
+
+        .caption-cutoff {
+          position: absolute;
+          top: 896px;
+          left: 64px;
+          width: 1792px;
+          height: 4px;
+          background: var(--cream-2);
+          opacity: 0.55;
+        }
+
+        .content-layer {
+          z-index: 1;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .topbar {
+          position: absolute;
+          z-index: 20;
+          top: 44px;
+          left: 64px;
+          width: 1792px;
+          height: 68px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .topbar-label {
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          color: var(--ink);
+          font-family: "JetBrains Mono";
+          font-size: 22px;
+          font-weight: 650;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .topbar-mark {
+          width: 18px;
+          height: 18px;
+          background: var(--orange);
+        }
+
+        .topbar-pill {
+          min-width: 210px;
+          height: 58px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 26px;
+          border: 4px solid var(--ink);
+          border-radius: 999px;
+          background: var(--cream);
+          color: var(--ink);
+          font-family: "JetBrains Mono";
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.09em;
+          text-transform: uppercase;
+        }
+
+        .camera-stage {
+          position: absolute;
+          z-index: 2;
+          top: 120px;
+          left: 0;
+          width: 1920px;
+          height: 700px;
+          transform-origin: 50% 50%;
+          will-change: transform;
+        }
+
+        .test-bench,
+        .criteria-rail {
+          position: absolute;
+          top: 35px;
+          height: 630px;
+          border: 8px solid var(--ink);
+          background: var(--cream-2);
+        }
+
+        .test-bench {
+          left: 84px;
+          width: 1240px;
+          overflow: hidden;
+        }
+
+        .criteria-rail {
+          left: 1360px;
+          width: 476px;
+          padding: 28px 26px;
+          background: var(--cream);
+        }
+
+        .panel-label,
+        .panel-meta,
+        .criteria-kicker,
+        .criterion-label,
+        .criterion-status,
+        .run-mode,
+        .interlock-copy,
+        .result-kicker {
+          font-family: "JetBrains Mono";
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .panel-label {
+          position: absolute;
+          top: 22px;
+          left: 28px;
+          font-size: 20px;
+          color: var(--ink);
+        }
+
+        .panel-meta {
+          position: absolute;
+          top: 23px;
+          right: 28px;
+          font-size: 18px;
+          color: var(--ink-2);
+        }
+
+        .bench-svg {
+          position: absolute;
+          top: 74px;
+          left: 22px;
+          width: 1180px;
+          height: 410px;
+          overflow: visible;
+        }
+
+        .bench-surface {
+          fill: var(--cream);
+          stroke: var(--ink);
+          stroke-width: 5;
+        }
+
+        .bench-rule {
+          fill: none;
+          stroke: var(--cream-2);
+          stroke-width: 3;
+          opacity: 0.9;
+        }
+
+        .route-base {
+          fill: none;
+          stroke: var(--cream-2);
+          stroke-width: 34;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .route-path {
+          fill: none;
+          stroke: var(--orange);
+          stroke-width: 18;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .route-center {
+          fill: none;
+          stroke: var(--ink);
+          stroke-width: 3;
+          stroke-dasharray: 18 16;
+          opacity: 0.62;
+        }
+
+        #f02-kaiju,
+        #f02-car,
+        #f02-road-clear {
+          transform-box: fill-box;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        .kaiju-body,
+        .kaiju-head,
+        .kaiju-foot,
+        .kaiju-arm {
+          fill: var(--green);
+          stroke: var(--ink);
+          stroke-width: 6;
+        }
+
+        .kaiju-spike {
+          fill: var(--pink);
+          stroke: var(--ink);
+          stroke-width: 4;
+        }
+
+        .kaiju-feature {
+          fill: var(--cream);
+        }
+
+        .kaiju-smile {
+          fill: none;
+          stroke: var(--cream);
+          stroke-width: 5;
+          stroke-linecap: square;
+        }
+
+        .car-body,
+        .car-cab {
+          fill: var(--pink);
+          stroke: var(--ink);
+          stroke-width: 6;
+        }
+
+        .car-wheel {
+          fill: var(--cream);
+          stroke: var(--ink);
+          stroke-width: 5;
+        }
+
+        .road-clear-plate {
+          fill: var(--orange);
+          stroke: var(--ink);
+          stroke-width: 5;
+        }
+
+        .road-clear-text {
+          fill: var(--cream);
+          font-family: "JetBrains Mono";
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .run-control {
+          position: absolute;
+          z-index: 8;
+          top: 518px;
+          left: 32px;
+          width: 360px;
+          height: 92px;
+          display: grid;
+          place-items: center;
+          border: 8px solid var(--ink);
+          background: var(--pink);
+          box-shadow:
+            14px 14px 0 var(--orange),
+            14px 14px 0 4px var(--ink);
+          color: var(--cream);
+          transform-origin: 50% 50%;
+          will-change: transform, background-color;
+        }
+
+        .run-label {
+          position: absolute;
+          color: var(--cream);
+          font-family: "Archivo Black";
+          font-size: 42px;
+          font-weight: 400;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          will-change: opacity, transform;
+        }
+
+        .run-mode {
+          position: absolute;
+          top: 542px;
+          left: 430px;
+          height: 58px;
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          border: 4px solid var(--ink);
+          background: var(--cream);
+          color: var(--ink-2);
+          font-size: 17px;
+        }
+
+        .click-ripple {
+          position: absolute;
+          z-index: 14;
+          top: 559px;
+          left: 256px;
+          width: 80px;
+          height: 80px;
+          border: 5px solid var(--orange);
+          border-radius: 50%;
+          opacity: 0;
+          transform-origin: 50% 50%;
+          pointer-events: none;
+          will-change: transform, opacity;
+        }
+
+        .release-stamp {
+          position: absolute;
+          z-index: 6;
+          top: 184px;
+          left: 790px;
+          width: 266px;
+          height: 266px;
+          display: grid;
+          place-items: center;
+          border: 8px solid var(--ink);
+          background: var(--pink);
+          color: var(--cream);
+          transform-origin: 50% 100%;
+          will-change: transform, opacity;
+        }
+
+        .stamp-ring {
+          width: 202px;
+          height: 202px;
+          display: grid;
+          place-items: center;
+          border: 10px solid var(--cream);
+          border-radius: 50%;
+          color: var(--cream);
+          font-family: "Archivo Black";
+          font-size: 36px;
+          font-weight: 400;
+          line-height: 0.9;
+          letter-spacing: -0.01em;
+          text-align: center;
+          text-transform: uppercase;
+        }
+
+        .coverage-interlock {
+          position: absolute;
+          z-index: 7;
+          top: 442px;
+          left: 694px;
+          width: 458px;
+          height: 72px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          border: 8px solid var(--ink);
+          background: var(--cream);
+          transform-origin: 50% 0%;
+          will-change: transform, opacity;
+        }
+
+        .interlock-block {
+          width: 22px;
+          height: 22px;
+          background: var(--orange);
+        }
+
+        .interlock-copy {
+          color: var(--ink);
+          font-size: 18px;
+        }
+
+        .result-slot {
+          position: absolute;
+          z-index: 9;
+          top: 478px;
+          left: 610px;
+          width: 566px;
+          height: 132px;
+          perspective: 1000px;
+        }
+
+        .result-card {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          align-items: center;
+          gap: 22px;
+          padding: 20px 26px 18px 30px;
+          border: 8px solid var(--ink);
+          transform-origin: 50% 50%;
+          will-change: transform, opacity, filter;
+        }
+
+        .car-pass-card {
+          background: var(--pink);
+          color: var(--cream);
+        }
+
+        .partial-pass-card {
+          background: var(--green);
+          color: var(--cream);
+        }
+
+        .result-copy {
+          min-width: 0;
+        }
+
+        .result-kicker {
+          margin-bottom: 8px;
+          color: currentColor;
+          font-size: 16px;
+          opacity: 0.78;
+        }
+
+        .result-main {
+          color: currentColor;
+          font-family: "Archivo Black";
+          font-size: 42px;
+          font-weight: 400;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .result-icon {
+          width: 74px;
+          height: 74px;
+          display: grid;
+          place-items: center;
+          border: 6px solid currentColor;
+          font-family: "Archivo Black";
+          font-size: 40px;
+          line-height: 1;
+        }
+
+        .criteria-kicker {
+          color: var(--orange);
+          font-size: 18px;
+        }
+
+        .criteria-title {
+          margin: 10px 0 22px;
+          color: var(--ink);
+          font-family: "Archivo Black";
+          font-size: 36px;
+          font-weight: 400;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+        }
+
+        .criteria-list {
+          display: grid;
+          gap: 16px;
+        }
+
+        .criterion {
+          position: relative;
+          min-height: 128px;
+          display: grid;
+          grid-template-columns: 62px minmax(0, 1fr) 104px;
+          align-items: center;
+          gap: 16px;
+          padding: 16px 16px 16px 18px;
+          border: 6px solid var(--ink);
+          background: var(--cream-2);
+          will-change: transform, opacity, background-color;
+        }
+
+        .criterion-armed {
+          border-color: var(--orange);
+        }
+
+        .criterion-num {
+          color: var(--ink);
+          font-family: "Archivo Black";
+          font-size: 44px;
+          font-weight: 400;
+          line-height: 0.85;
+        }
+
+        .criterion-label {
+          display: block;
+          color: var(--ink-2);
+          font-size: 13px;
+          line-height: 1.2;
+        }
+
+        .criterion-name {
+          display: block;
+          margin-top: 7px;
+          color: var(--ink);
+          font-family: "Archivo Black";
+          font-size: 22px;
+          font-weight: 400;
+          line-height: 0.92;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+        }
+
+        .criterion-status {
+          min-width: 96px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 4px solid var(--ink);
+          background: var(--cream);
+          color: var(--ink-2);
+          font-size: 13px;
+          will-change: transform, opacity;
+        }
+
+        .status-armed {
+          background: var(--orange);
+          color: var(--cream);
+        }
+
+        .status-pass {
+          position: absolute;
+          right: 16px;
+          background: var(--green);
+          color: var(--cream);
+        }
+
+        .pointer {
+          position: absolute;
+          z-index: 30;
+          top: 250px;
+          left: 1040px;
+          width: 108px;
+          height: 126px;
+          pointer-events: none;
+          transform-origin: 12px 12px;
+          will-change: transform, opacity;
+        }
+
+        .pointer svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .pointer-tip {
+          fill: var(--pink);
+          stroke: var(--ink);
+          stroke-width: 6;
+          stroke-linejoin: miter;
+        }
+
+        .pointer-tail {
+          fill: var(--orange);
+          stroke: var(--ink);
+          stroke-width: 6;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="02-happy-path"
+        data-start="0"
+        data-duration="11.5"
+        data-fps="30"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div
+          id="f02-ground"
+          class="clip ground-layer"
+          data-start="0"
+          data-duration="11"
+          data-track-index="0"
+          aria-hidden="true"
+        >
+          <div class="ground-rail"></div>
+          <div class="ground-corner"></div>
+          <div class="caption-cutoff"></div>
+        </div>
+
+        <div
+          id="f02-content"
+          class="clip content-layer"
+          data-start="0"
+          data-duration="11"
+          data-track-index="1"
+        >
+          <div class="topbar">
+            <div class="topbar-label"><span class="topbar-mark"></span> Test district / happy path</div>
+            <div class="topbar-pill">02 / evidence run</div>
+          </div>
+
+          <div id="f02-camera" class="camera-stage">
+            <section class="test-bench" aria-label="Tabletop test bench">
+              <div class="panel-label">Tabletop test bench</div>
+              <div class="panel-meta">Master view / fixed after run</div>
+
+              <svg class="bench-svg" viewBox="0 0 1180 410" role="img" aria-label="Kaiju clears a stalled car from the route">
+                <rect class="bench-surface" x="4" y="4" width="1172" height="402" />
+                <path class="bench-rule" d="M 32 112 H 1148 M 32 205 H 1148 M 32 298 H 1148" />
+                <path class="bench-rule" d="M 282 28 V 382 M 574 28 V 382 M 866 28 V 382" />
+
+                <path
+                  class="route-base"
+                  d="M 132 334 C 276 334 342 300 454 266 C 586 226 660 272 774 216 C 884 162 958 148 1066 148"
+                />
+                <path
+                  id="f02-route"
+                  class="route-path"
+                  d="M 132 334 C 276 334 342 300 454 266 C 586 226 660 272 774 216 C 884 162 958 148 1066 148"
+                />
+                <path
+                  class="route-center"
+                  d="M 132 334 C 276 334 342 300 454 266 C 586 226 660 272 774 216 C 884 162 958 148 1066 148"
+                />
+
+                <g id="f02-kaiju">
+                  <g transform="translate(88 254)">
+                    <path class="kaiju-spike" d="M 34 54 L 4 30 L 44 28 Z M 26 90 L -6 74 L 38 62 Z M 34 126 L 0 120 L 42 98 Z" />
+                    <ellipse class="kaiju-body" cx="86" cy="105" rx="62" ry="72" />
+                    <circle class="kaiju-head" cx="105" cy="45" r="48" />
+                    <rect class="kaiju-foot" x="48" y="158" width="34" height="38" />
+                    <rect class="kaiju-foot" x="102" y="158" width="34" height="38" />
+                    <rect class="kaiju-arm" x="135" y="86" width="56" height="24" />
+                    <circle class="kaiju-feature" cx="88" cy="35" r="7" />
+                    <circle class="kaiju-feature" cx="119" cy="35" r="7" />
+                    <path class="kaiju-smile" d="M 88 62 Q 105 76 124 60" />
+                  </g>
+                </g>
+
+                <g id="f02-car">
+                  <g transform="translate(998 82)">
+                    <rect class="car-body" x="0" y="34" width="116" height="58" />
+                    <path class="car-cab" d="M 28 34 L 48 6 H 90 L 106 34 Z" />
+                    <circle class="car-wheel" cx="28" cy="94" r="16" />
+                    <circle class="car-wheel" cx="90" cy="94" r="16" />
+                  </g>
+                </g>
+
+                <g id="f02-road-clear">
+                  <rect class="road-clear-plate" x="888" y="272" width="230" height="58" />
+                  <text class="road-clear-text" x="1003" y="307" text-anchor="middle">Road clear</text>
+                </g>
+              </svg>
+
+              <div id="f02-run-button" class="run-control">
+                <span id="f02-run-ready" class="run-label">Run test</span>
+                <span id="f02-run-active" class="run-label">Running</span>
+              </div>
+              <div id="f02-run-mode" class="run-mode">Scenario 01 armed</div>
+
+              <div id="f02-ripple-1" class="click-ripple"></div>
+              <div id="f02-ripple-2" class="click-ripple"></div>
+              <div id="f02-ripple-3" class="click-ripple"></div>
+
+              <div id="f02-release-stamp" class="release-stamp">
+                <div class="stamp-ring">Release</div>
+              </div>
+
+              <div id="f02-interlock" class="coverage-interlock">
+                <span class="interlock-block"></span>
+                <span class="interlock-copy">Coverage lock</span>
+                <span class="interlock-block"></span>
+              </div>
+
+              <div class="result-slot">
+                <article id="f02-car-pass" class="result-card car-pass-card">
+                  <div class="result-copy">
+                    <div class="result-kicker">Completed criterion</div>
+                    <div class="result-main">Car: pass</div>
+                  </div>
+                  <div class="result-icon">✓</div>
+                </article>
+
+                <article id="f02-partial-pass" class="result-card partial-pass-card">
+                  <div class="result-copy">
+                    <div class="result-kicker">2 of 3 / tower untested</div>
+                    <div class="result-main">Partial pass</div>
+                  </div>
+                  <div class="result-icon">2/3</div>
+                </article>
+              </div>
+            </section>
+
+            <aside class="criteria-rail" aria-label="Coverage criteria">
+              <div class="criteria-kicker">Coverage rail</div>
+              <h2 class="criteria-title">3 criteria</h2>
+
+              <div class="criteria-list">
+                <article id="f02-criterion-1" class="criterion criterion-armed">
+                  <div class="criterion-num">01</div>
+                  <div>
+                    <span class="criterion-label">Criterion</span>
+                    <span class="criterion-name">Stalled car</span>
+                  </div>
+                  <span id="f02-status-armed" class="criterion-status status-armed">Armed</span>
+                  <span id="f02-status-pass" class="criterion-status status-pass">Pass</span>
+                </article>
+
+                <article id="f02-criterion-2" class="criterion">
+                  <div class="criterion-num">02</div>
+                  <div>
+                    <span class="criterion-label">Criterion</span>
+                    <span class="criterion-name">Emergency lane</span>
+                  </div>
+                  <span id="f02-lane-not-run" class="criterion-status">Not run</span>
+                  <span id="f02-lane-pass" class="criterion-status status-pass">Pass</span>
+                </article>
+
+                <article id="f02-criterion-3" class="criterion">
+                  <div class="criterion-num">03</div>
+                  <div>
+                    <span class="criterion-label">Criterion</span>
+                    <span class="criterion-name">Fragile tower</span>
+                  </div>
+                  <span class="criterion-status">Untested</span>
+                </article>
+              </div>
+            </aside>
+          </div>
+
+          <div id="f02-pointer" class="pointer" aria-hidden="true">
+            <svg viewBox="0 0 108 126">
+              <path class="pointer-tail" d="M 48 58 L 82 101 L 58 119 L 28 72 Z" />
+              <path class="pointer-tip" d="M 8 4 L 96 58 L 54 67 L 35 108 Z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (() => {
+          window.__timelines = window.__timelines || {};
+
+          const route = document.getElementById("f02-route");
+          const routeLength = route.getTotalLength();
+          route.style.strokeDasharray = String(routeLength);
+          route.style.strokeDashoffset = String(routeLength);
+
+          const tl = gsap.timeline({ paused: true });
+
+          gsap.set(["#f02-kaiju", "#f02-car"], { opacity: 0 });
+          gsap.set(["#f02-criterion-1", "#f02-criterion-2", "#f02-criterion-3", "#f02-run-button", "#f02-run-mode"], { opacity: 0 });
+          gsap.set(["#f02-status-pass", "#f02-lane-pass", "#f02-road-clear", "#f02-run-active", "#f02-release-stamp", "#f02-interlock", "#f02-car-pass", "#f02-partial-pass", "#f02-pointer"], { opacity: 0 });
+          gsap.set(["#f02-ripple-1", "#f02-ripple-2", "#f02-ripple-3"], { opacity: 0, scale: 0 });
+
+          // Scene 1 (0.0-2.2): establish the 70/30 tabletop and assemble three criteria.
+          tl.fromTo(
+            "#f02-camera",
+            { x: 0, y: 12, scale: 1.025 },
+            { x: 0, y: 0, scale: 1, duration: 1.55, ease: "power2.out" },
+            0,
+          );
+          tl.fromTo(
+            "#f02-kaiju",
+            { opacity: 0, scale: 0.82, x: -28, y: 18 },
+            { opacity: 1, scale: 1, x: 0, y: 0, duration: 0.48, ease: "back.out(1.35)", immediateRender: false },
+            0.08,
+          );
+          tl.fromTo(
+            "#f02-car",
+            { opacity: 0, scale: 0.86, y: -18 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.42, ease: "power3.out", immediateRender: false },
+            0.18,
+          );
+
+          ["#f02-criterion-1", "#f02-criterion-2", "#f02-criterion-3"].forEach((selector, index) => {
+            tl.fromTo(
+              selector,
+              { opacity: 0, x: 82, scale: 0.96 },
+              { opacity: 1, x: 0, scale: 1, duration: 0.48, ease: "power4.out", immediateRender: false },
+              0.34 + index * 0.56,
+            );
+          });
+
+          tl.fromTo(
+            "#f02-run-button",
+            { opacity: 0, y: 40, scale: 0.94 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.44, ease: "power3.out", immediateRender: false },
+            1.72,
+          );
+          tl.fromTo(
+            "#f02-run-mode",
+            { opacity: 0, x: -24 },
+            { opacity: 1, x: 0, duration: 0.34, ease: "power3.out", immediateRender: false },
+            1.9,
+          );
+
+          // Scene 2 (2.2-4.2): cursor-driven click, ripple, tactile press, then fixed master view.
+          tl.to(
+            "#f02-camera",
+            { x: 24, y: -8, scale: 1.025, duration: 0.62, ease: "power2.inOut" },
+            2.2,
+          );
+          tl.fromTo(
+            "#f02-pointer",
+            { opacity: 0, x: 0, y: 0, scale: 0.92 },
+            { opacity: 1, x: -738, y: 463, scale: 1, duration: 0.76, ease: "back.out(1.25)", immediateRender: false },
+            2.24,
+          );
+
+          const clickAt = 3.2;
+          tl.to("#f02-pointer", { scale: 0.84, duration: 0.08, ease: "power2.in" }, clickAt);
+          tl.to("#f02-pointer", { scale: 1, duration: 0.1, ease: "power2.out" }, clickAt + 0.08);
+          tl.to("#f02-run-button", { scale: 0.92, y: 8, duration: 0.12, ease: "power1.in" }, clickAt);
+          tl.to("#f02-run-button", { scale: 1, y: 0, duration: 0.5, ease: "back.out(1.45)" }, clickAt + 0.12);
+          tl.to("#f02-run-button", { backgroundColor: "#5bd7d1", duration: 0.24, ease: "power1.out" }, clickAt + 0.12);
+          tl.set("#f02-run-ready", { opacity: 0 }, clickAt + 0.18);
+          tl.set("#f02-run-active", { opacity: 1 }, clickAt + 0.18);
+
+          ["#f02-ripple-1", "#f02-ripple-2", "#f02-ripple-3"].forEach((selector, index) => {
+            const rippleAt = clickAt + index * 0.08;
+            tl.set(selector, { opacity: 1, scale: 0 }, rippleAt);
+            tl.to(
+              selector,
+              { opacity: 0, scale: 3.8, duration: 0.72, ease: "power2.out", immediateRender: false },
+              rippleAt,
+            );
+          });
+
+          tl.to(
+            "#f02-camera",
+            { x: 0, y: 0, scale: 1, duration: 0.62, ease: "power3.out" },
+            3.46,
+          );
+
+          // Scene 3 (4.2-7.4): draw the route, carry the kaiju along it, lift the car, then update criterion 01.
+          tl.to(
+            route,
+            { strokeDashoffset: 0, duration: 1.72, ease: "power2.out" },
+            4.2,
+          );
+          tl.to("#f02-kaiju", { x: 238, y: -30, duration: 0.72, ease: "power2.inOut" }, 4.34);
+          tl.to("#f02-kaiju", { x: 502, y: -108, duration: 0.8, ease: "power2.inOut" }, 5.06);
+          tl.to("#f02-kaiju", { x: 792, y: -202, duration: 0.86, ease: "power2.inOut" }, 5.86);
+          tl.to("#f02-car", { x: 108, y: -104, duration: 0.54, ease: "power2.out" }, 6.58);
+          tl.fromTo(
+            "#f02-road-clear",
+            { opacity: 0, scale: 0.82, y: 14 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.36, ease: "back.out(1.35)", immediateRender: false },
+            6.88,
+          );
+          tl.to("#f02-status-armed", { opacity: 0, scale: 0.75, duration: 0.18, ease: "power2.in" }, 7.12);
+          tl.fromTo(
+            "#f02-status-pass",
+            { opacity: 0, scale: 0.7 },
+            { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.35)", immediateRender: false },
+            7.18,
+          );
+          tl.to("#f02-criterion-1", { backgroundColor: "#263f34", duration: 0.28, ease: "power1.out" }, 7.18);
+          tl.to("#f02-lane-not-run", { opacity: 0, scale: 0.75, duration: 0.18, ease: "power2.in" }, 7.12);
+          tl.fromTo(
+            "#f02-lane-pass",
+            { opacity: 0, scale: 0.7 },
+            { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.35)", immediateRender: false },
+            7.18,
+          );
+          tl.to("#f02-criterion-2", { backgroundColor: "#263f34", duration: 0.28, ease: "power1.out" }, 7.18);
+
+          // Scene 4 (7.4-9.2): assemble CAR: PASS and halt the oversized release stamp at the coverage interlock.
+          tl.fromTo(
+            "#f02-car-pass",
+            { opacity: 0, x: -180, scale: 0.94 },
+            { opacity: 1, x: 0, scale: 1, duration: 0.52, ease: "power4.out", immediateRender: false },
+            7.42,
+          );
+          tl.fromTo(
+            "#f02-release-stamp",
+            { opacity: 0, y: -360, scale: 0.92, rotation: -6 },
+            { opacity: 1, y: 0, scale: 1, rotation: -6, duration: 0.7, ease: "power2.in", immediateRender: false },
+            7.58,
+          );
+          tl.fromTo(
+            "#f02-interlock",
+            { opacity: 0, x: -70 },
+            { opacity: 1, x: 0, duration: 0.34, ease: "power4.out", immediateRender: false },
+            8.0,
+          );
+          tl.to(
+            "#f02-release-stamp",
+            { y: 12, scaleX: 1.04, scaleY: 0.9, duration: 0.14, ease: "power1.in" },
+            8.28,
+          );
+          tl.to(
+            "#f02-interlock",
+            { y: 5, scaleY: 0.94, duration: 0.14, ease: "power1.in" },
+            8.28,
+          );
+
+          // Scene 5 (9.2-11.0): inverse zoom-through to the partial-pass state, then a fixed hold.
+          tl.to(
+            ["#f02-run-button", "#f02-run-mode", "#f02-pointer", "#f02-interlock"],
+            { opacity: 0, duration: 0.2, ease: "power1.out" },
+            9.2,
+          );
+          tl.to("#f02-car-pass", { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 9.2);
+          tl.to("#f02-car-pass", { opacity: 0.15, duration: 0.2, ease: "none" }, 9.2);
+          tl.to("#f02-release-stamp", { opacity: 0, duration: 0.24, ease: "power1.out" }, 9.2);
+          tl.set("#f02-car-pass", { opacity: 0 }, 9.4);
+          tl.set("#f02-partial-pass", { opacity: 0.15, scale: 1.25, filter: "blur(10px)" }, 9.4);
+          tl.to(
+            "#f02-partial-pass",
+            { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" },
+            9.4,
+          );
+
+          window.__timelines["02-happy-path"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

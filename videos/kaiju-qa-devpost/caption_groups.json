@@ -1,0 +1,1342 @@
+{
+  "total_duration_s": 95,
+  "width": 1920,
+  "height": 1080,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 1,
+      "start": 0.08,
+      "end": 4.267,
+      "text": "This tiny kaiju has one instruction: help everyone.",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "This",
+          "start": 0.08,
+          "end": 0.485
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "tiny",
+          "start": 0.51,
+          "end": 0.915
+        },
+        {
+          "id": "caption-word-0-2",
+          "text": "kaiju",
+          "start": 0.94,
+          "end": 1.411
+        },
+        {
+          "id": "caption-word-0-3",
+          "text": "has",
+          "start": 1.436,
+          "end": 1.769
+        },
+        {
+          "id": "caption-word-0-4",
+          "text": "one",
+          "start": 1.794,
+          "end": 2.127
+        },
+        {
+          "id": "caption-word-0-5",
+          "text": "instruction:",
+          "start": 2.152,
+          "end": 2.958
+        },
+        {
+          "id": "caption-word-0-6",
+          "text": "help",
+          "start": 3.068,
+          "end": 3.473
+        },
+        {
+          "id": "caption-word-0-7",
+          "text": "everyone.",
+          "start": 3.498,
+          "end": 4.147
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 1,
+      "start": 4.367,
+      "end": 6.946,
+      "text": "Fast help is not always safe.",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "Fast",
+          "start": 4.367,
+          "end": 4.772
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "help",
+          "start": 4.797,
+          "end": 5.201
+        },
+        {
+          "id": "caption-word-1-2",
+          "text": "is",
+          "start": 5.226,
+          "end": 5.479
+        },
+        {
+          "id": "caption-word-1-3",
+          "text": "not",
+          "start": 5.504,
+          "end": 5.837
+        },
+        {
+          "id": "caption-word-1-4",
+          "text": "always",
+          "start": 5.862,
+          "end": 6.396
+        },
+        {
+          "id": "caption-word-1-5",
+          "text": "safe.",
+          "start": 6.421,
+          "end": 6.826
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 1,
+      "start": 7.046,
+      "end": 8.81,
+      "text": "Welcome to Kaiju QA.",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "Welcome",
+          "start": 7.046,
+          "end": 7.638
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "to",
+          "start": 7.663,
+          "end": 7.916
+        },
+        {
+          "id": "caption-word-2-2",
+          "text": "Kaiju",
+          "start": 7.941,
+          "end": 8.412
+        },
+        {
+          "id": "caption-word-2-3",
+          "text": "QA.",
+          "start": 8.437,
+          "end": 8.69
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 2,
+      "start": 9.08,
+      "end": 10.774,
+      "text": "First run: a stalled car.",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "First",
+          "start": 9.08,
+          "end": 9.427
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "run:",
+          "start": 9.452,
+          "end": 9.697
+        },
+        {
+          "id": "caption-word-3-2",
+          "text": "a",
+          "start": 9.807,
+          "end": 9.923
+        },
+        {
+          "id": "caption-word-3-3",
+          "text": "stalled",
+          "start": 9.948,
+          "end": 10.384
+        },
+        {
+          "id": "caption-word-3-4",
+          "text": "car.",
+          "start": 10.409,
+          "end": 10.654
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 2,
+      "start": 10.874,
+      "end": 12.528,
+      "text": "Lift, carry, road clear.",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "Lift,",
+          "start": 10.874,
+          "end": 11.171
+        },
+        {
+          "id": "caption-word-4-1",
+          "text": "carry,",
+          "start": 11.281,
+          "end": 11.628
+        },
+        {
+          "id": "caption-word-4-2",
+          "text": "road",
+          "start": 11.738,
+          "end": 12.036
+        },
+        {
+          "id": "caption-word-4-3",
+          "text": "clear.",
+          "start": 12.061,
+          "end": 12.408
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 2,
+      "start": 12.628,
+      "end": 13.046,
+      "text": "Pass.",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "Pass.",
+          "start": 12.628,
+          "end": 12.926
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 2,
+      "start": 13.146,
+      "end": 14.432,
+      "text": "Well, partial pass.",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "Well,",
+          "start": 13.146,
+          "end": 13.444
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "partial",
+          "start": 13.554,
+          "end": 13.99
+        },
+        {
+          "id": "caption-word-6-2",
+          "text": "pass.",
+          "start": 14.015,
+          "end": 14.312
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 2,
+      "start": 14.532,
+      "end": 16.445,
+      "text": "One happy path is not proof.",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "One",
+          "start": 14.532,
+          "end": 14.777
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "happy",
+          "start": 14.802,
+          "end": 15.149
+        },
+        {
+          "id": "caption-word-7-2",
+          "text": "path",
+          "start": 15.174,
+          "end": 15.472
+        },
+        {
+          "id": "caption-word-7-3",
+          "text": "is",
+          "start": 15.497,
+          "end": 15.683
+        },
+        {
+          "id": "caption-word-7-4",
+          "text": "not",
+          "start": 15.708,
+          "end": 15.953
+        },
+        {
+          "id": "caption-word-7-5",
+          "text": "proof.",
+          "start": 15.978,
+          "end": 16.325
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 3,
+      "start": 20.08,
+      "end": 23.15,
+      "text": "So we add an edge case: a fragile tower.",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "So",
+          "start": 20.08,
+          "end": 20.296
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "we",
+          "start": 20.321,
+          "end": 20.536
+        },
+        {
+          "id": "caption-word-8-2",
+          "text": "add",
+          "start": 20.561,
+          "end": 20.846
+        },
+        {
+          "id": "caption-word-8-3",
+          "text": "an",
+          "start": 20.871,
+          "end": 21.086
+        },
+        {
+          "id": "caption-word-8-4",
+          "text": "edge",
+          "start": 21.111,
+          "end": 21.457
+        },
+        {
+          "id": "caption-word-8-5",
+          "text": "case:",
+          "start": 21.482,
+          "end": 21.828
+        },
+        {
+          "id": "caption-word-8-6",
+          "text": "a",
+          "start": 21.938,
+          "end": 22.072
+        },
+        {
+          "id": "caption-word-8-7",
+          "text": "fragile",
+          "start": 22.097,
+          "end": 22.603
+        },
+        {
+          "id": "caption-word-8-8",
+          "text": "tower.",
+          "start": 22.628,
+          "end": 23.03
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 3,
+      "start": 23.25,
+      "end": 24.674,
+      "text": "Same helpful kaiju.",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "Same",
+          "start": 23.25,
+          "end": 23.596
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "helpful",
+          "start": 23.621,
+          "end": 24.126
+        },
+        {
+          "id": "caption-word-9-2",
+          "text": "kaiju.",
+          "start": 24.151,
+          "end": 24.554
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 3,
+      "start": 24.774,
+      "end": 25.818,
+      "text": "Same behavior.",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "Same",
+          "start": 24.774,
+          "end": 25.119
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "behavior.",
+          "start": 25.144,
+          "end": 25.698
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 3,
+      "start": 25.918,
+      "end": 27.118,
+      "text": "Different result.",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "Different",
+          "start": 25.918,
+          "end": 26.518
+        },
+        {
+          "id": "caption-word-11-1",
+          "text": "result.",
+          "start": 26.543,
+          "end": 26.998
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 3,
+      "start": 27.218,
+      "end": 29.514,
+      "text": "That failure is useful evidence.",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "That",
+          "start": 27.218,
+          "end": 27.564
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "failure",
+          "start": 27.589,
+          "end": 28.094
+        },
+        {
+          "id": "caption-word-12-2",
+          "text": "is",
+          "start": 28.119,
+          "end": 28.335
+        },
+        {
+          "id": "caption-word-12-3",
+          "text": "useful",
+          "start": 28.36,
+          "end": 28.815
+        },
+        {
+          "id": "caption-word-12-4",
+          "text": "evidence.",
+          "start": 28.84,
+          "end": 29.394
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 4,
+      "start": 30.08,
+      "end": 32.718,
+      "text": "The obvious fix is to freeze near buildings.",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "The",
+          "start": 30.08,
+          "end": 30.309
+        },
+        {
+          "id": "caption-word-13-1",
+          "text": "obvious",
+          "start": 30.334,
+          "end": 30.742
+        },
+        {
+          "id": "caption-word-13-2",
+          "text": "fix",
+          "start": 30.767,
+          "end": 30.996
+        },
+        {
+          "id": "caption-word-13-3",
+          "text": "is",
+          "start": 31.021,
+          "end": 31.195
+        },
+        {
+          "id": "caption-word-13-4",
+          "text": "to",
+          "start": 31.22,
+          "end": 31.394
+        },
+        {
+          "id": "caption-word-13-5",
+          "text": "freeze",
+          "start": 31.419,
+          "end": 31.786
+        },
+        {
+          "id": "caption-word-13-6",
+          "text": "near",
+          "start": 31.811,
+          "end": 32.089
+        },
+        {
+          "id": "caption-word-13-7",
+          "text": "buildings.",
+          "start": 32.114,
+          "end": 32.598
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 4,
+      "start": 32.818,
+      "end": 33.611,
+      "text": "Tower saved.",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "Tower",
+          "start": 32.818,
+          "end": 33.142
+        },
+        {
+          "id": "caption-word-14-1",
+          "text": "saved.",
+          "start": 33.167,
+          "end": 33.491
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 4,
+      "start": 33.711,
+      "end": 34.309,
+      "text": "Ship it?",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "Ship",
+          "start": 33.711,
+          "end": 33.99
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "it?",
+          "start": 34.015,
+          "end": 34.189
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 5,
+      "start": 40.08,
+      "end": 40.747,
+      "text": "Not yet.",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "Not",
+          "start": 40.08,
+          "end": 40.341
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "yet.",
+          "start": 40.366,
+          "end": 40.627
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 5,
+      "start": 40.847,
+      "end": 42.924,
+      "text": "The next test is an ambulance,",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "The",
+          "start": 40.847,
+          "end": 41.108
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "next",
+          "start": 41.133,
+          "end": 41.45
+        },
+        {
+          "id": "caption-word-17-2",
+          "text": "test",
+          "start": 41.475,
+          "end": 41.792
+        },
+        {
+          "id": "caption-word-17-3",
+          "text": "is",
+          "start": 41.817,
+          "end": 42.015
+        },
+        {
+          "id": "caption-word-17-4",
+          "text": "an",
+          "start": 42.04,
+          "end": 42.238
+        },
+        {
+          "id": "caption-word-17-5",
+          "text": "ambulance,",
+          "start": 42.263,
+          "end": 42.814
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 5,
+      "start": 42.924,
+      "end": 46.12,
+      "text": "and the new safety rule has frozen the rescue.",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "and",
+          "start": 42.924,
+          "end": 43.185
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "the",
+          "start": 43.21,
+          "end": 43.471
+        },
+        {
+          "id": "caption-word-18-2",
+          "text": "new",
+          "start": 43.496,
+          "end": 43.757
+        },
+        {
+          "id": "caption-word-18-3",
+          "text": "safety",
+          "start": 43.782,
+          "end": 44.2
+        },
+        {
+          "id": "caption-word-18-4",
+          "text": "rule",
+          "start": 44.225,
+          "end": 44.542
+        },
+        {
+          "id": "caption-word-18-5",
+          "text": "has",
+          "start": 44.567,
+          "end": 44.828
+        },
+        {
+          "id": "caption-word-18-6",
+          "text": "frozen",
+          "start": 44.853,
+          "end": 45.271
+        },
+        {
+          "id": "caption-word-18-7",
+          "text": "the",
+          "start": 45.296,
+          "end": 45.557
+        },
+        {
+          "id": "caption-word-18-8",
+          "text": "rescue.",
+          "start": 45.582,
+          "end": 46
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 5,
+      "start": 46.22,
+      "end": 48.279,
+      "text": "The kaiju is not the monster.",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "The",
+          "start": 46.22,
+          "end": 46.481
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "kaiju",
+          "start": 46.506,
+          "end": 46.875
+        },
+        {
+          "id": "caption-word-19-2",
+          "text": "is",
+          "start": 46.9,
+          "end": 47.098
+        },
+        {
+          "id": "caption-word-19-3",
+          "text": "not",
+          "start": 47.123,
+          "end": 47.384
+        },
+        {
+          "id": "caption-word-19-4",
+          "text": "the",
+          "start": 47.409,
+          "end": 47.67
+        },
+        {
+          "id": "caption-word-19-5",
+          "text": "monster.",
+          "start": 47.695,
+          "end": 48.159
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 5,
+      "start": 48.379,
+      "end": 49.599,
+      "text": "The regression is.",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "The",
+          "start": 48.379,
+          "end": 48.64
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "regression",
+          "start": 48.665,
+          "end": 49.256
+        },
+        {
+          "id": "caption-word-20-2",
+          "text": "is.",
+          "start": 49.281,
+          "end": 49.479
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 6,
+      "start": 51.08,
+      "end": 52.975,
+      "text": "Now we compare every path.",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "Now",
+          "start": 51.08,
+          "end": 51.352
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "we",
+          "start": 51.377,
+          "end": 51.583
+        },
+        {
+          "id": "caption-word-21-2",
+          "text": "compare",
+          "start": 51.608,
+          "end": 52.091
+        },
+        {
+          "id": "caption-word-21-3",
+          "text": "every",
+          "start": 52.116,
+          "end": 52.5
+        },
+        {
+          "id": "caption-word-21-4",
+          "text": "path.",
+          "start": 52.525,
+          "end": 52.855
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 6,
+      "start": 53.075,
+      "end": 54.578,
+      "text": "Keep the car rescue.",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "Keep",
+          "start": 53.075,
+          "end": 53.405
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "the",
+          "start": 53.43,
+          "end": 53.702
+        },
+        {
+          "id": "caption-word-22-2",
+          "text": "car",
+          "start": 53.727,
+          "end": 53.998
+        },
+        {
+          "id": "caption-word-22-3",
+          "text": "rescue.",
+          "start": 54.023,
+          "end": 54.458
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 6,
+      "start": 54.678,
+      "end": 55.987,
+      "text": "Protect the tower.",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "Protect",
+          "start": 54.678,
+          "end": 55.161
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "the",
+          "start": 55.186,
+          "end": 55.458
+        },
+        {
+          "id": "caption-word-23-2",
+          "text": "tower.",
+          "start": 55.483,
+          "end": 55.867
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 6,
+      "start": 56.087,
+      "end": 59.917,
+      "text": "Replace the city-wide freeze with one targeted slow zone.",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "Replace",
+          "start": 56.087,
+          "end": 56.57
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "the",
+          "start": 56.595,
+          "end": 56.867
+        },
+        {
+          "id": "caption-word-24-2",
+          "text": "city-wide",
+          "start": 56.892,
+          "end": 57.421
+        },
+        {
+          "id": "caption-word-24-3",
+          "text": "freeze",
+          "start": 57.446,
+          "end": 57.881
+        },
+        {
+          "id": "caption-word-24-4",
+          "text": "with",
+          "start": 57.906,
+          "end": 58.236
+        },
+        {
+          "id": "caption-word-24-5",
+          "text": "one",
+          "start": 58.261,
+          "end": 58.532
+        },
+        {
+          "id": "caption-word-24-6",
+          "text": "targeted",
+          "start": 58.557,
+          "end": 59.086
+        },
+        {
+          "id": "caption-word-24-7",
+          "text": "slow",
+          "start": 59.111,
+          "end": 59.441
+        },
+        {
+          "id": "caption-word-24-8",
+          "text": "zone.",
+          "start": 59.466,
+          "end": 59.797
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 7,
+      "start": 63.08,
+      "end": 65.331,
+      "text": "Run the full suite: car rescued,",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "Run",
+          "start": 63.08,
+          "end": 63.341
+        },
+        {
+          "id": "caption-word-25-1",
+          "text": "the",
+          "start": 63.366,
+          "end": 63.626
+        },
+        {
+          "id": "caption-word-25-2",
+          "text": "full",
+          "start": 63.651,
+          "end": 63.968
+        },
+        {
+          "id": "caption-word-25-3",
+          "text": "suite:",
+          "start": 63.993,
+          "end": 64.362
+        },
+        {
+          "id": "caption-word-25-4",
+          "text": "car",
+          "start": 64.472,
+          "end": 64.733
+        },
+        {
+          "id": "caption-word-25-5",
+          "text": "rescued,",
+          "start": 64.758,
+          "end": 65.221
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 7,
+      "start": 65.331,
+      "end": 67.455,
+      "text": "tower standing, ambulance moving.",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "tower",
+          "start": 65.331,
+          "end": 65.7
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "standing,",
+          "start": 65.725,
+          "end": 66.233
+        },
+        {
+          "id": "caption-word-26-2",
+          "text": "ambulance",
+          "start": 66.343,
+          "end": 66.893
+        },
+        {
+          "id": "caption-word-26-3",
+          "text": "moving.",
+          "start": 66.918,
+          "end": 67.335
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 7,
+      "start": 67.555,
+      "end": 68.438,
+      "text": "Three tests.",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "Three",
+          "start": 67.555,
+          "end": 67.924
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "tests.",
+          "start": 67.949,
+          "end": 68.318
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 7,
+      "start": 68.538,
+      "end": 69.469,
+      "text": "Three passes.",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "Three",
+          "start": 68.538,
+          "end": 68.907
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "passes.",
+          "start": 68.932,
+          "end": 69.349
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 7,
+      "start": 69.569,
+      "end": 72.429,
+      "text": "Now the tiny release stamp means something.",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "Now",
+          "start": 69.569,
+          "end": 69.83
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "the",
+          "start": 69.855,
+          "end": 70.115
+        },
+        {
+          "id": "caption-word-29-2",
+          "text": "tiny",
+          "start": 70.14,
+          "end": 70.457
+        },
+        {
+          "id": "caption-word-29-3",
+          "text": "release",
+          "start": 70.482,
+          "end": 70.946
+        },
+        {
+          "id": "caption-word-29-4",
+          "text": "stamp",
+          "start": 70.971,
+          "end": 71.34
+        },
+        {
+          "id": "caption-word-29-5",
+          "text": "means",
+          "start": 71.365,
+          "end": 71.734
+        },
+        {
+          "id": "caption-word-29-6",
+          "text": "something.",
+          "start": 71.759,
+          "end": 72.309
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 8,
+      "start": 78.08,
+      "end": 81.83,
+      "text": "Loop Engineering: goal, change, evidence, gate.",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "Loop",
+          "start": 78.08,
+          "end": 78.48
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "Engineering:",
+          "start": 78.505,
+          "end": 79.301
+        },
+        {
+          "id": "caption-word-30-2",
+          "text": "goal,",
+          "start": 79.411,
+          "end": 79.811
+        },
+        {
+          "id": "caption-word-30-3",
+          "text": "change,",
+          "start": 79.921,
+          "end": 80.448
+        },
+        {
+          "id": "caption-word-30-4",
+          "text": "evidence,",
+          "start": 80.558,
+          "end": 81.2
+        },
+        {
+          "id": "caption-word-30-5",
+          "text": "gate.",
+          "start": 81.31,
+          "end": 81.71
+        }
+      ]
+    },
+    {
+      "id": "caption-group-31",
+      "frame": 8,
+      "start": 81.93,
+      "end": 84.166,
+      "text": "Kaiju QA makes it visible.",
+      "words": [
+        {
+          "id": "caption-word-31-0",
+          "text": "Kaiju",
+          "start": 81.93,
+          "end": 82.395
+        },
+        {
+          "id": "caption-word-31-1",
+          "text": "QA",
+          "start": 82.42,
+          "end": 82.67
+        },
+        {
+          "id": "caption-word-31-2",
+          "text": "makes",
+          "start": 82.695,
+          "end": 83.161
+        },
+        {
+          "id": "caption-word-31-3",
+          "text": "it",
+          "start": 83.186,
+          "end": 83.436
+        },
+        {
+          "id": "caption-word-31-4",
+          "text": "visible.",
+          "start": 83.461,
+          "end": 84.046
+        }
+      ]
+    },
+    {
+      "id": "caption-group-32",
+      "frame": 8,
+      "start": 84.266,
+      "end": 88.858,
+      "text": "GPT-5.6 and Codex shaped scoped plans, tests, and review.",
+      "words": [
+        {
+          "id": "caption-word-32-0",
+          "text": "GPT-5.6",
+          "start": 84.266,
+          "end": 84.732
+        },
+        {
+          "id": "caption-word-32-1",
+          "text": "and",
+          "start": 84.757,
+          "end": 85.086
+        },
+        {
+          "id": "caption-word-32-2",
+          "text": "Codex",
+          "start": 85.111,
+          "end": 85.576
+        },
+        {
+          "id": "caption-word-32-3",
+          "text": "shaped",
+          "start": 85.601,
+          "end": 86.129
+        },
+        {
+          "id": "caption-word-32-4",
+          "text": "scoped",
+          "start": 86.154,
+          "end": 86.681
+        },
+        {
+          "id": "caption-word-32-5",
+          "text": "plans,",
+          "start": 86.706,
+          "end": 87.171
+        },
+        {
+          "id": "caption-word-32-6",
+          "text": "tests,",
+          "start": 87.281,
+          "end": 87.747
+        },
+        {
+          "id": "caption-word-32-7",
+          "text": "and",
+          "start": 87.857,
+          "end": 88.186
+        },
+        {
+          "id": "caption-word-32-8",
+          "text": "review.",
+          "start": 88.211,
+          "end": 88.738
+        }
+      ]
+    },
+    {
+      "id": "caption-group-33",
+      "frame": 8,
+      "start": 88.958,
+      "end": 90.937,
+      "text": "Anyone can change code.",
+      "words": [
+        {
+          "id": "caption-word-33-0",
+          "text": "Anyone",
+          "start": 88.958,
+          "end": 89.485
+        },
+        {
+          "id": "caption-word-33-1",
+          "text": "can",
+          "start": 89.51,
+          "end": 89.839
+        },
+        {
+          "id": "caption-word-33-2",
+          "text": "change",
+          "start": 89.864,
+          "end": 90.392
+        },
+        {
+          "id": "caption-word-33-3",
+          "text": "code.",
+          "start": 90.417,
+          "end": 90.817
+        }
+      ]
+    },
+    {
+      "id": "caption-group-34",
+      "frame": 8,
+      "start": 91.037,
+      "end": 94.597,
+      "text": "A Loop Engineer proves it deserves to ship.",
+      "words": [
+        {
+          "id": "caption-word-34-0",
+          "text": "A",
+          "start": 91.037,
+          "end": 91.193
+        },
+        {
+          "id": "caption-word-34-1",
+          "text": "Loop",
+          "start": 91.218,
+          "end": 91.618
+        },
+        {
+          "id": "caption-word-34-2",
+          "text": "Engineer",
+          "start": 91.643,
+          "end": 92.284
+        },
+        {
+          "id": "caption-word-34-3",
+          "text": "proves",
+          "start": 92.309,
+          "end": 92.836
+        },
+        {
+          "id": "caption-word-34-4",
+          "text": "it",
+          "start": 92.861,
+          "end": 93.111
+        },
+        {
+          "id": "caption-word-34-5",
+          "text": "deserves",
+          "start": 93.136,
+          "end": 93.777
+        },
+        {
+          "id": "caption-word-34-6",
+          "text": "to",
+          "start": 93.802,
+          "end": 94.052
+        },
+        {
+          "id": "caption-word-34-7",
+          "text": "ship.",
+          "start": 94.077,
+          "end": 94.477
+        }
+      ]
+    }
+  ]
+}
