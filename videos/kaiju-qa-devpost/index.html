@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=1920, height=1080" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
     <style>
+      @font-face {
+        font-family: "Archivo Black";
+        src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+        font-display: block;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+        font-display: block;
+      }
       * {
         margin: 0;
         padding: 0;
@@ -44,6 +59,87 @@
         text-transform: uppercase;
         writing-mode: vertical-rl;
         transform: rotate(180deg);
+      }
+      .prototype-demo-backdrop {
+        position: absolute;
+        inset: 0;
+        z-index: 11;
+        background-color: #0b1220;
+        background-image:
+          linear-gradient(rgba(91, 215, 209, 0.1) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(91, 215, 209, 0.1) 2px, transparent 2px);
+        background-size: 192px 108px;
+      }
+      .prototype-demo-video {
+        position: absolute;
+        left: 58px;
+        top: 118px;
+        z-index: 12;
+        width: 1360px;
+        height: 765px;
+        object-fit: cover;
+        border: 7px solid #f5f1e8;
+        background: #0b1220;
+        box-shadow: 16px 16px 0 #5bd7d1;
+      }
+      .prototype-demo-panel {
+        position: absolute;
+        top: 118px;
+        right: 58px;
+        z-index: 13;
+        width: 410px;
+        height: 765px;
+        padding: 34px 30px;
+        border: 7px solid #f5f1e8;
+        background: #263449;
+        color: #f5f1e8;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        box-shadow: 16px 16px 0 #ffd24a;
+      }
+      .prototype-demo-panel .eyebrow {
+        color: #5bd7d1;
+        font: 800 16px/1.2 "JetBrains Mono", monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .prototype-demo-panel h2 {
+        margin-top: 16px;
+        font: 900 48px/0.95 "Archivo Black", system-ui, sans-serif;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+      .prototype-demo-panel ol {
+        margin: 42px 0 0 24px;
+        color: #d5d5d5;
+        font-size: 24px;
+        line-height: 1.28;
+      }
+      .prototype-demo-panel li { margin-bottom: 28px; padding-left: 8px; }
+      .prototype-demo-panel strong { color: #ffd24a; }
+      .prototype-demo-panel .commit {
+        position: absolute;
+        right: 30px;
+        bottom: 28px;
+        left: 30px;
+        padding-top: 18px;
+        border-top: 4px solid #5bd7d1;
+        color: #b7e35a;
+        font: 800 16px/1.35 "JetBrains Mono", monospace;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .prototype-demo-tag {
+        position: absolute;
+        top: 28px;
+        left: 48px;
+        z-index: 14;
+        padding: 13px 18px;
+        border: 4px solid #f5f1e8;
+        background: #0b1220;
+        color: #b7e35a;
+        font: 800 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
     </style>
   </head>
@@ -191,6 +287,55 @@
         data-duration="17"
         data-track-index="1"
       ></div>
+      <div
+        id="el-working-demo-backdrop"
+        class="clip prototype-demo-backdrop"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="7"
+        data-layout-ignore
+        data-layout-allow-occlusion
+      ></div>
+      <video
+        id="el-working-demo"
+        class="clip prototype-demo-video"
+        src="assets/prototype/working-demo.mp4"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="4"
+        data-layout-allow-occlusion
+        data-layout-allow-overlap
+        muted
+        playsinline
+        preload="auto"
+      ></video>
+      <div
+        id="el-working-demo-panel"
+        class="clip prototype-demo-panel"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="5"
+        data-layout-allow-occlusion
+        data-layout-allow-overlap
+      >
+        <div class="eyebrow">Working prototype</div>
+        <h2>Watch the evidence change</h2>
+        <ol>
+          <li><strong>Broad guardrail</strong><br />Ambulance regression</li>
+          <li><strong>Targeted slow zone</strong><br />Three current passes</li>
+          <li><strong>Release gate</strong><br />Unlocked by evidence</li>
+        </ol>
+        <div class="commit">Remote CI capture<br />game commit 2674d39</div>
+      </div>
+      <div
+        id="el-working-demo-tag"
+        class="clip prototype-demo-tag"
+        data-start="78"
+        data-duration="8.166667"
+        data-track-index="6"
+        data-layout-allow-occlusion
+        data-layout-allow-overlap
+      >Browser capture - working prototype</div>
       <audio
         id="el-08-prove-it-voice"
         src="assets/voice/08.wav"

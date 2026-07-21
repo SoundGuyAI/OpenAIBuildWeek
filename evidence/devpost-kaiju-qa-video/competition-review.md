@@ -1,347 +1,347 @@
-# Competition re-review: Devpost Kaiju QA video
+# Final competition review: Devpost Kaiju QA rendered master
 
-Status: **BLOCK — major truthfulness and implementation-evidence remediation passes, but this is not yet a safe final Devpost demo**
+Status: **PASS — RENDERED VIDEO MASTER APPROVED; SUBMISSION BLOCKED ONLY ON EXTERNAL GATES**
 
 Review date: 2026-07-21 UTC  
 Reviewer role: independent competition and truthfulness reviewer  
-Scope: current 95-second HyperFrames source, storyboard, narration, midpoint
-snapshots, asset ledger, CI provenance, verified GitHub commit/run evidence, and
-the live OpenAI Build Week rules. No submission, render, local game runtime,
-IWSDK, IWER, Vite server, or video-source edit was performed.
+Scope: actual rendered master `videos/kaiju-qa-devpost/renders/video.mp4`,
+rendered-master contact sheet and proof frames, final media probe and loudness
+measurement, remote working-demo provenance, implementation CI, asset-rights
+records, and current OpenAI Build Week rules. No submission, upload, IWSDK,
+IWER, Vite server, or local game runtime was launched.
 
-## Re-review decision
+## Decisive outcome
 
-The remediation materially changes the assessment:
+The actual encoded master passes final competition review:
 
-- **Pass:** Kaiju QA is now evidenced as a working, non-trivial browser
-  prototype rather than only a design concept.
-- **Pass:** GitHub Actions run `29786685632` genuinely succeeded on
-  `feature/kaiju-qa` commit
-  `2674d397ad8cf88f7739874f22abbeed7640f9d5`.
-- **Pass:** The source now uses real game-model, model-test, browser-E2E, commit,
-  and CI evidence rather than video-production files as implementation proof.
-- **Pass:** Synthetic frames 2–7 now carry a persistent
-  `CONCEPT VISUALIZATION - NOT GAMEPLAY CAPTURE` overlay.
-- **Pass:** Frame 8 clearly changes its evidence label between working-prototype
-  browser captures, committed game evidence, and concept visualization.
-- **Still blocking:** the working prototype is shown only through static
-  end-state screenshots for roughly four seconds. That verifies output and CI,
-  but does not clearly demonstrate a player operating the project.
-- **Still blocking:** the animatic reports a `1 OF 3` baseline while the verified
-  implementation and its CI screenshot report a baseline with **2 passes and
-  the tower untested**. The video and working project should not contradict each
-  other on the lesson's first evidence state.
+1. The 95.1-second MP4 is a complete, decodable H.264/AAC master at 1920×1080
+   and 30 fps with normalized, untruncated narration.
+2. The real 8.166667-second browser demonstration survives final encoding and
+   visibly shows the baseline, broad-guardrail ambulance regression, targeted
+   slow-zone correction, 3/3 rerun, and earned release.
+3. Frame 2 truthfully ends at `2 OF 3 / TOWER UNTESTED`, matching the working
+   implementation and CI evidence.
+4. Concept reconstructions and the working browser capture remain explicitly
+   and correctly distinguished in the rendered frames.
+5. The final asset ledger and provenance support every retained visual and
+   audio source; the master contains no music or third-party SFX.
 
-The current cut is truthful enough to use as an internal concept-plus-evidence
-trailer. It remains a strict **block** for final submission until the two content
-issues above and the delivery/licensing gates below are closed.
+No unresolved video, audio, duration, clear-demo, truthfulness, or
+rights/provenance blocker was found. Submission is still blocked on public
+YouTube delivery, free judge access to the working project, repository
+visibility/licensing or judge sharing, the core Codex `/feedback` session ID,
+entrant/team eligibility, and completing the Devpost form before the deadline.
 
 ## Official sources and access date
 
 The following official pages were reread in their live rendered form on
-2026-07-21 UTC:
+2026-07-21 at 06:17 UTC:
 
 1. OpenAI Build Week Official Rules: https://openai.devpost.com/rules
-2. OpenAI Build Week overview and submission summary:
-   https://openai.devpost.com/
+2. OpenAI Build Week overview: https://openai.devpost.com/
 3. Official organizer video guidance, published 2026-07-17:
    https://openai.devpost.com/updates/45282-openai-build-week-submissions-are-open-plugin-launch
-4. Supported OpenAI API countries and territories, linked by the rules:
+4. Supported OpenAI API countries and territories:
    https://platform.openai.com/docs/supported-countries
 
-Verified implementation sources, accessed 2026-07-21 UTC:
+Verified implementation/capture/render sources:
 
-5. GitHub Actions run:
+5. Implementation CI run:
    https://github.com/SoundGuyAI/OpenAIBuildWeek/actions/runs/29786685632
-6. Verified commit:
+6. Working-demo capture run:
+   https://github.com/SoundGuyAI/OpenAIBuildWeek/actions/runs/29791302806
+7. Pinned game commit:
    https://github.com/SoundGuyAI/OpenAIBuildWeek/commit/2674d397ad8cf88f7739874f22abbeed7640f9d5
-7. Local CI provenance:
+8. Capture workflow commit:
+   https://github.com/SoundGuyAI/OpenAIBuildWeek/commit/c02228df86c1b7c2abddb5ad1a9bf4e6b65f1983
+9. Local provenance:
    `videos/kaiju-qa-devpost/assets/prototype/CI_PROVENANCE.md`
+10. Final media probe:
+    `videos/kaiju-qa-devpost/renders/video-ffprobe.json`
+11. Final loudness measurement:
+    `videos/kaiju-qa-devpost/renders/video-loudness.json`
+12. Render QA and native-resolution proof frames:
+    `evidence/devpost-kaiju-qa-video/render-qa.md` and
+    `videos/kaiju-qa-devpost/renders/qa/`
 
-The Official Rules control if another page or summary conflicts with them. The
-rules remain subject to amendment and should be checked again immediately
-before submission.
+The Official Rules control if another page conflicts with them and should be
+checked again immediately before submission.
 
 ## Official requirements and current status
 
 | Requirement | Current official requirement, faithfully summarized | Current evidence | Result |
 | --- | --- | --- | --- |
-| Deadline | Submit by July 21, 2026 at 5:00 p.m. Pacific Time (July 22 at 00:00 UTC). Judging runs July 22 through August 5. | No final upload is recorded. | Pending / time-critical |
-| Entrant eligibility | An individual must be of legal majority where they reside and be in a supported, non-excluded territory. Teams and organizations require an authorized eligible representative. | Not assessable from the video package. | Unverified external gate |
-| Required project | Build a project with Codex and GPT-5.6 in one best-fit category. | Feature branch, model, tests, UI, CI, and browser evidence now establish a real Kaiju QA implementation. | **Pass for project existence** |
-| New or extended work | New work must be created during the submission period, or a pre-existing project must be meaningfully extended with dated Codex/GPT-5.6 evidence. | Kaiju QA feature records and the verified commit are dated 2026-07-20, within the submission period. | Pass for dated implementation evidence; model/session provenance remains an external gate |
-| Functionality | The project must install/run consistently on its intended platform and behave as depicted in the video or description. | Production build and desktop/mobile Chromium E2E passed. The central loop is exercised. One baseline-count contradiction remains between animatic and implementation. | **Partial; block until claims align** |
-| Category | Choose the single category that best fits. Education covers students, teachers, and educational organizations. | The mechanic and README fit Education. The narration still does not name the learner/educator audience. | Category fit pass; impact message incomplete |
-| Video duration | Demonstration video must be shorter than three minutes; judges need not watch beyond three minutes. | Source duration is 95 seconds. | Pass at source level |
-| Clear demo and audio | The video must provide a clear demo with audio explaining what was built and how Codex and GPT-5.6 were used. | Audio names the build process and both required tools; frame 8 shows verified implementation evidence. The only direct prototype imagery is static end-state screenshots, not an observable interaction sequence. | Audio/process pass; **clear-demo block** |
-| Video delivery | Upload the video publicly to YouTube and link it in the Devpost form. | No rendered MP4 or public YouTube URL is present. | **Block before submission** |
-| Video IP | Third-party trademarks, copyrighted music, and other protected material require permission. | First-party CI screenshots are fully traced. Other media provenance gaps remain. | **Block pending rights evidence** |
-| Repository | Provide a public repository with relevant licensing, or a private repository shared with both official judging addresses. | Repository exists; final visibility/licensing/share decision is not evidenced here. | Unverified external gate |
-| README | Explain Codex acceleration, human product/engineering/design decisions, and the contribution of Codex and GPT-5.6. | The verified commit's README now contains a concrete collaboration account and explicit human constraints/narrowing decisions. | Pass for content; final repository access still pending |
-| Codex session | Provide the `/feedback` session ID for the thread where most core functionality was built. | No qualifying session ID is included in this package. | Unverified external gate |
-| Judge access | Keep a working project free and unrestricted through the end of judging; judges may rely only on submitted media instead of testing it. | CI proves buildability, but no public demo/test-build URL is recorded. | Unverified external gate |
-| Language | Submission materials must be English or include English translations. | Narration, captions, and source copy are English. | Pass |
+| Deadline | Submit by July 21, 2026 at 5:00 p.m. Pacific Time (July 22 at 00:00 UTC). | Final upload is not recorded. | Time-critical external gate |
+| Eligibility | Entrants must satisfy age, residence/territory, organization, and representative rules. | Not assessable from video assets. | Unverified external gate |
+| Required project | Build a project with Codex and GPT-5.6 in one best-fit category. | Working Kaiju QA implementation, model, tests, build, browser CI, and moving demo are verified. | Pass |
+| New/extended work | New work must fall within the submission period, or a pre-existing project must be meaningfully extended with dated evidence. | Feature records and verified commits are dated 2026-07-20/21, within the period. | Pass for dated work evidence |
+| Functionality | The project must run consistently on its intended platform and function as depicted in the video/description. | Production build and desktop/mobile Chromium E2E pass; the moving insert demonstrates the same model states shown by the reconstruction. | Pass for demonstrated browser scope |
+| Category | Choose the best-fit category. Education covers students, teachers, and educational organizations. | The game makes regression judgment and evidence-gated release playable for learners. | Pass; Education is the strongest fit |
+| Video duration | Demonstration video must be shorter than three minutes. | Final container duration is 95.1 seconds. | Pass |
+| Clear demo/audio | Include a clear demo with audio explaining what was built and how Codex and GPT-5.6 were used. | The encoded master contains the labeled moving working-prototype segment, continuous English narration/captions, and concrete model/test/CI evidence. | Pass |
+| Video delivery | Upload publicly to YouTube and provide the URL in the Devpost form. | The final MP4 exists locally; no public YouTube URL or signed-out playback check is recorded. | **Submission blocker** |
+| Video IP | Third-party trademarks, music, and other protected materials require permission. | Current assets are first-party, original, generated/licensed with retained terms, or OFL fonts; no music or third-party SFX remain. | Pass on reviewed provenance |
+| Repository | Supply a public repository with relevant licensing or share a private repository with both judging addresses. | Repository exists; final visibility/license/share decision is not evidenced. | **Submission blocker** |
+| README | Explain Codex acceleration, human decisions, and GPT-5.6/Codex contributions. | Verified feature README contains a concrete collaboration account and human scope decisions. | Pass for content |
+| Codex session | Provide the `/feedback` session ID for the thread where most core functionality was built. | Not present in this package. | **Submission blocker** |
+| Judge access | Keep a free, unrestricted working project available through judging. | Buildability is proven; a public demo/test-build URL is not recorded. | **Submission blocker** |
+| Language | Materials must be English or provide English translations. | Narration, captions, and copy are English. | Pass |
 
-The organizer update still expressly permits recorded or AI-assisted
-voice-over. It also says the video must show the project working and that a
-music-only screencast is insufficient. The Kokoro narration is acceptable in
-format once its usage-rights record is complete.
+The official organizer guidance permits recorded or AI-assisted voice-over and
+emphasizes clarity over production polish. The final AAC track contains the
+main narration over the silent working-demo insert, so the demo is an
+audio-accompanied part of the delivered master rather than a silent screencast.
 
-## Independent CI and implementation verification
+## Final rendered-master verification
 
-The new implementation evidence is authentic and internally consistent:
+Reviewed artifact:
+`videos/kaiju-qa-devpost/renders/video.mp4`
 
-- Workflow: `Pull request CI`, run `29786685632` (#13).
-- Trigger/branch: pull request on `feature/kaiju-qa`.
-- Head commit:
-  `2674d397ad8cf88f7739874f22abbeed7640f9d5`.
-- Job: `Typecheck, build, and browser E2E`.
-- Conclusion: success, completed 2026-07-20 at 23:18:12 UTC.
-- Successful steps include typecheck, production build, Chromium dependency
-  installation, desktop/mobile Chromium E2E, and evidence upload.
-- Artifact: `browser-evidence-29786685632-1`, ID `8478733358`, recorded digest
-  `sha256:c702a872b924b478a4a3f4d52081272dd8f8f01c23239882ee4aa839bd903716`.
-- Local desktop screenshot SHA-256:
-  `ea8d71e3bcb07b91b05f1a613184867b286ee5dddecf313c9750542e1909ce56`.
-- Local mobile screenshot SHA-256:
-  `aaffb073883a1f42c13dfbb530eaf4d370424d4e822cad9d364df2eea0f2b529`.
+- SHA-256:
+  `388d292f792c8043f36fc7934c90d948181f6cb9c9a524113ed44e031dc104ef`;
+- size: 23,278,588 bytes;
+- container: MP4, 95.100000 seconds;
+- video: H.264 High, yuv420p BT.709, 1920×1080, 30 fps, 2,850 frames,
+  95.000000 seconds;
+- audio: AAC LC, 48 kHz stereo, 95.100000 seconds; and
+- full video/audio decode: pass with no FFmpeg errors.
 
-The local screenshot hashes match `CI_PROVENANCE.md`; the run, head SHA,
-artifact ID, artifact digest, and successful steps match GitHub metadata.
+The encoded program measures `-14.23 LUFS-I`, `-0.94 dBTP`, and `3.30 LU`
+loudness range. Speech loudness is on the intended target and comfortably
+suited to a narration-led submission. The measured peak is 0.06 dB above the
+team's conservative `-1.0 dBTP` target but remains below digital full scale;
+this is a non-blocking delivery variance, not a competition-rule failure.
 
-The verified commit also contains:
+Silence analysis reaches 95.1 seconds and finds final speech signal through
+approximately 94.78 seconds, followed by the intended 0.32-second tail. The
+closing word is not truncated. Expected comprehension pauses are preserved,
+and the near-identical stereo channels fold down without a cancellation risk.
 
-- `src/kaiju-qa/game-model.ts`: a deterministic state machine with baseline,
-  tower failure, broad-regression, stale-evidence, targeted-pass, and release
-  gating behavior;
-- `tests/model/kaiju-qa-model.test.mjs`: six deterministic model tests; and
-- `tests/e2e/hello-world.spec.ts`: a real browser interaction path that clicks
-  through baseline, tower failure, broad ambulance regression, another wrong
-  guardrail, targeted 3/3 pass, release, reset, desktop keyboard behavior, and
-  mobile layout/reduced-motion checks while collecting runtime/network errors.
+The rendered-master contact sheet and nine native-resolution proof frames show
+no blank, corrupt, clipped, missing, or visibly malformed frame at the major
+story beats. The nested browser clip is present and legible after final H.264
+encoding, and the 0.1-second difference between the visual stream and audio/
+container duration produces no visible defect.
 
-This resolves the previous finding that the video had no evidence of a working
-project or non-trivial implementation.
+## Working-demo verification in the rendered master
 
-## Clear-demo assessment
+### Provenance
 
-Frame 8 now opens with approximately four seconds of real CI screenshots under
-`CI BROWSER CAPTURE - WORKING PROTOTYPE`, followed by committed code/test/CI
-evidence. This is credible proof that the project built and reached the shown
-release state.
+GitHub Actions run `29791302806` is authentic and succeeded:
 
-It is not yet a sufficiently clear **demonstration** for a strict reading of
-the official requirement:
+- workflow: `Capture Kaiju QA working demo`;
+- branch/head: `codex/devpost-kaiju-qa-video` at
+  `c02228df86c1b7c2abddb5ad1a9bf4e6b65f1983`;
+- pinned game checkout:
+  `2674d397ad8cf88f7739874f22abbeed7640f9d5`;
+- successful steps: game dependency install, production build, Chromium
+  install, Playwright interaction recording, FFmpeg conversion, and artifact
+  upload;
+- artifact: `kaiju-qa-working-demo-29791302806-1`, ID `8480384644`;
+- artifact digest:
+  `sha256:2d0f66828c191f1b8623aaa4859772d39c4cb092674b6b0112af7dedc966a67b`;
+- local `working-demo.mp4` SHA-256:
+  `e884bb26ab72900b8da104075769e3aa85ad0233cc54a6a23a0a1ba62db837f9`.
 
-- both images are static end states;
-- no pointer, tap, keyboard action, state transition, regression, correction,
-  or release action is visibly performed in the actual prototype;
-- the interactive sequence viewers see in frames 2–7 remains an explicitly
-  disclosed reconstruction; and
-- a judge cannot distinguish from the video alone whether the screenshots came
-  before or after a human/automated interaction without relying on the labels
-  and CI metadata.
+The local file hash matches the provenance ledger. The recorded probe reports
+H.264, 1280×720, 30 fps, 8.166667 seconds, silent, and 1,181,671 bytes.
 
-The CI run proves that those interactions occurred. The video still needs to
-**show** at least one of them. The smallest sufficient repair is an 8–15 second
-screen recording from the built prototype—local, remote, or CI-recorded—that
-shows an input and its resulting state change. The strongest sequence is:
+The capture source is committed and transparent. It launches the pinned
+production build on the GitHub runner, moves a visible demo cursor, performs
+real Playwright clicks/checks, and injects explicit action captions. The raw
+interaction interval is recorded as 16.711 seconds and is intentionally
+time-compressed by the workflow into the 8.166667-second insert.
 
-1. broad guardrail selected;
-2. ambulance changes to `REGRESSION` and Release stays locked;
-3. targeted striped-zone guardrail selected;
-4. the suite changes to 3/3 pass; and
-5. Release becomes enabled and is activated.
+### Encoded integration and visible adequacy
 
-That clip can replace part of the reconstruction or the current screenshot
-stage and does not require starting IWSDK/IWER on this machine.
+The final MP4 carries the clip from 78.0 through 86.166667 seconds with:
+
+- `Browser capture - working prototype`;
+- a fixed evidence panel naming broad regression, targeted slow zone, and
+  release gate; and
+- the external English narration and burned-in captions continuing over it.
+
+Rendered-master samples at 79.0, 80.5, 82.0, 84.0, and 85.8 seconds visibly
+show:
+
+1. baseline evidence;
+2. the tower-failure transition;
+3. the ambulance regression under the broad guardrail;
+4. the targeted slow-zone choice; and
+5. `3 / 3 CURRENT: RELEASE EARNED` plus the released debrief.
+
+This satisfies the rules' clear-demo requirement in the actual deliverable. A
+judge can observe input location, state changes, regression, correction, rerun,
+and release in the real prototype. The insert is fast, but the cursor, action
+captions, persistent side panel, surrounding narration, and visible attempt
+history make the causal sequence understandable. Final encoding preserves the
+clip without a black/frozen frame, caption collision, or evidence-label loss.
+
+## Frame-2 truthfulness repair
+
+Frame 2 now states:
+
+- stranded car: pass;
+- emergency lane: pass;
+- fragile tower: untested; and
+- `2 OF 3 / TOWER UNTESTED — PARTIAL PASS`.
+
+This matches `src/kaiju-qa/game-model.ts`, the browser tests, the real working
+demo, and the CI screenshot's `Baseline — 2 pass` attempt. The previous internal
+contradiction is resolved.
+
+The narration's `one happy path is not proof` remains fair: it describes the
+single active rescue example while the interface also records the preserved
+emergency-lane criterion. It no longer conflicts with the visible count.
+
+## Truthfulness and claim separation
+
+Passes:
+
+- Frames 2–7 remain explicitly marked
+  `CONCEPT VISUALIZATION - NOT GAMEPLAY CAPTURE` for their full 9–78 second
+  span.
+- The concept overlay ends exactly when the real browser recording starts.
+- The real insert is explicitly marked `Browser capture - working prototype`
+  and identifies remote CI plus the pinned game commit.
+- After the insert, frame 8 separately labels committed game artifacts and then
+  returns to a concept-visualization label for the generated hero lockup.
+- Displayed model/test paths, six-test claim, commit IDs, workflow IDs, and pass
+  statuses correspond to verified repository evidence.
+- No XR runtime claim is made; demonstrated runtime scope is desktop Chromium,
+  with separate CI evidence for desktop/mobile Chromium.
+- The injected cursor/banner/captions are presentation aids, while the underlying
+  transitions are real Playwright interactions. The `CI reproduction` and
+  remote-capture labels make that distinction transparent.
+
+No material truthfulness blocker remains.
+
+The persistent concept disclosure and working-prototype label remain present
+and readable in the 1080p master. Fine internal application microcopy is softer
+inside the scaled browser insert, but the large action labels, attempt history,
+state changes, and evidence panel carry every material claim without relying on
+that microcopy.
 
 ## Judging-criteria coverage
 
-Stage One is pass/fail for viability, theme fit, and reasonable use of required
-featured tools. The verified implementation and CI make Stage One viability
-substantially stronger, but the final submission still needs the required demo
-and access materials.
-
-Stage Two uses four equally weighted criteria. Tie-breaking begins with
-Technological Implementation.
+Stage One viability is now well supported by a running implementation, passing
+CI, and moving demo. Stage Two's four criteria are equally weighted, with
+Technological Implementation first in tie-breaking order.
 
 | Criterion | Current coverage | Assessment |
 | --- | --- | --- |
-| Technological Implementation | The video now names both required tools and shows a committed deterministic model, six model tests, exact commit/run identity, successful production CI, and desktop/mobile evidence. GitHub verification supports every displayed implementation artifact. | **Strong evidence; clear-demo execution still missing** |
-| Design | The story remains coherent from partial evidence through regression, diagnosis, rerun, and release. The real prototype screenshots show a runnable product UI rather than only a technical proof of concept. | Strong, subject to correcting the baseline-count mismatch |
-| Potential Impact | The mechanic visibly teaches acceptance criteria, bounded changes, regression judgment, and evidence-based release. The spoken cut still does not name the early-learner/teacher audience or classroom/replay use. | Good mechanism; underspecified audience |
-| Quality of the Idea | Test coverage as a miniature city, the player as QA engineer, the regression as monster, and the tiny earned release stamp remain distinctive and highly retellable. | Strong |
+| Technological Implementation | Verified deterministic model, six model tests, production build, desktop/mobile browser E2E, exact commits/runs, and a moving pinned-build demonstration. | Strong |
+| Design | Complete causal experience from partial baseline through edge case, broad regression, targeted correction, rerun, and release; real product UI is shown. | Strong |
+| Potential Impact | The game concretely practices acceptance criteria, regression reasoning, scoped fixes, and evidence-gated release. | Strong mechanism; audience wording can improve |
+| Quality of the Idea | Miniature-city coverage, player-as-QA role, regression-as-monster reversal, and tiny earned release stamp remain distinctive and memorable. | Strong |
 
-## GPT-5.6 and Codex messaging
+## Codex and GPT-5.6 messaging
 
-Current narration says GPT-5.6 and Codex shaped scoped plans, tests, and review.
-That sentence now has meaningful visual support from the real model, test suite,
-CI run, and feature README. The README also identifies explicit human product
-constraints and suggestions that were intentionally narrowed.
+The narration explicitly says GPT-5.6 and Codex shaped scoped plans, tests, and
+review. Frame 8 supports that line with the real model path, model-test path,
+implementation CI, capture CI, and working output. The verified README adds the
+human side of the collaboration: tutorial simplicity, preserved player agency,
+determinism, scope cuts, no unverified XR claim, and mergeability over spectacle.
 
 Assessment:
 
-- **Official video minimum:** likely pass, because audio covers both required
-  tools and frame 8 shows concrete implementation outputs.
-- **Truthfulness:** the CI proves the outputs, but does not by itself prove the
-  model/version used to create them. Preserve the `/feedback` session and dated
-  collaboration records as the source of that claim.
-- **Competitive strength:** add one short human-decision example to the audio if
-  timing permits. For example, Codex proposed broader spectacle; the team kept
-  deterministic rules and a bounded release gate. This is a scoring improvement,
-  not the remaining clear-demo blocker.
+- official video minimum: pass;
+- technical-implementation evidence: strong;
+- README human/Codex boundary: pass;
+- remaining proof obligation: preserve and submit the required core
+  `/feedback` session ID.
 
-## Educational impact and novelty
+For competitive strength, one spoken human-decision example would still be
+better than grouping plans/tests/review together, but this is a non-blocking
+scoring refinement.
 
-The video makes the central lesson easy to retell: one successful case is not
-coverage, a broad fix can regress an earlier requirement, and release is gated
-by current evidence. The verified implementation now shows that this lesson is
-encoded in an actual deterministic product rather than only a storyboard.
+## Education fit and closing recall
 
-The remaining impact gap is audience specificity. A short line such as
-`Kaiju QA gives early software learners a safe place to practice regression
-judgment` would improve Education scoring without claiming measured learning
-gains. This is non-blocking.
+Education remains the best-fit category. The product does not merely explain
+regression testing; the moving demo shows the learner making a broad choice,
+observing harm to an earlier criterion, narrowing the rule, rerunning evidence,
+and earning release.
 
-Novelty remains strong. Avoid unsupported first/only/unprecedented claims.
+The spoken cut still does not explicitly name early software learners,
+bootcamp students, career switchers, teachers, or classroom replay. Adding one
+short audience sentence would improve Potential Impact scoring, but the game
+and README already make the Education fit credible.
 
-## Truthfulness and claim alignment
-
-### Resolved
-
-- `index.html` now overlays `CONCEPT VISUALIZATION - NOT GAMEPLAY CAPTURE` from
-  9 to 78 seconds, covering reconstructed frames 2–7.
-- Contact-sheet inspection confirms the disclosure appears on each sampled
-  reconstructed frame.
-- Frame 8 uses stage-specific labels:
-  `CI BROWSER CAPTURE - WORKING PROTOTYPE`,
-  `COMMITTED GAME EVIDENCE - 2674D39`, and then
-  `CONCEPT VISUALIZATION - NOT GAMEPLAY CAPTURE`.
-- The displayed paths `src/kaiju-qa/game-model.ts` and
-  `tests/model/kaiju-qa-model.test.mjs`, the six-test claim, commit, CI run, and
-  pass status all match verified repository evidence.
-- `The working prototype completes the release loop` is supported by the E2E
-  path and release-state screenshots.
-- The cut does not claim XR runtime certification. The verified evidence is
-  specifically desktop/mobile Chromium.
-
-### Still blocking
-
-The reconstructed happy-path frame presents `PARTIAL PASS - 1 OF 3` and the
-narration calls it one happy path. The actual model's baseline records:
-
-- car: pass;
-- emergency lane/ambulance: pass; and
-- fragile tower: untested.
-
-The CI desktop screenshot also visibly lists `Baseline — 2 pass`. This creates
-an avoidable contradiction within the same video. Because the rules require
-the project to function as depicted, reconcile the animatic to the implemented
-baseline—preferably `PARTIAL PASS - 2 OF 3 / TOWER UNTESTED`—or change the
-implementation and tests to match the intended one-pass lesson.
-
-The persistent disclosure is a real improvement, but its source styling is
-only 12 px at 1920×1080 and appears very small in the contact sheet. The full
-opening disclosure and stage labels preserve honesty, so this is not a separate
-blocker; increasing the persistent label size and moving it into a safer title
-margin would reduce YouTube/mobile readability risk.
-
-## Licensing and IP review
-
-New passes:
-
-- The CI desktop/mobile captures are first-party project evidence.
-- Their exact run, branch, commit, artifact ID/digest, file hashes, acquisition
-  date, use, and disclosure are recorded.
-- No third-party product UI or trademark is visible in the captures.
-
-Existing passes remain:
-
-- The reconstruction is original HTML/CSS/SVG.
-- No Quaternius asset or music bed is used.
-- Included fonts retain SIL Open Font License files and hashes.
-- The Azure hero shows no obvious logo, watermark, celebrity, or recognizable
-  franchise character.
-
-Unresolved rights-evidence gates:
-
-1. The Azure FLUX hero row still does not retain/link the applicable Azure/model
-   output-use terms or generation record supporting public promotional use.
-2. The Kokoro-82M `am_michael` row still lacks model/voice source, version,
-   license, and public/promotional-use terms.
-3. The SFX record still provides a generic Pixabay library/license statement
-   rather than exact per-file source pages, uploaders, or download records.
-
-These are provenance gaps, not findings of infringement. They remain release
-blocks because the official rules require ownership or permission.
-
-## Closing CTA
-
-The closing remains judge-retellable and should be preserved:
+The closing remains highly judge-retellable:
 
 - goal → change → evidence → gate;
 - the regression is the real monster; and
 - a Loop Engineer proves a change deserves to ship.
 
-The newly verified evidence makes the slogan more credible. An audience line
-belongs immediately before the slogan; the slogan itself does not need more
-words.
+## Rights and provenance
+
+No unresolved rights blocker was found in the current ledger:
+
+- The reviewed final master is hash-identified above, and its retained media
+  streams contain only the documented visual composition and Kokoro narration.
+- `working-demo.mp4` and the CI screenshots are first-party repository-owned
+  captures with exact commits, runs, artifact IDs/digests, dates, and hashes.
+- Reconstruction graphics are original HTML/CSS/SVG.
+- The Azure FLUX hero now has a retained provider/model/date/prompt/hash record,
+  Black Forest Labs commercial-output guidance, and Microsoft Marketplace
+  terms in `capture/AZURE_FLUX_PROVENANCE.md`.
+- Kokoro-82M v1.0 ONNX, `am_michael`, upstream sources, Apache-2.0 declaration,
+  engine hashes, date, and generated WAV hashes are recorded in
+  `assets/voice/KOKORO_PROVENANCE.md` and `ASSET_LICENSES.md`.
+- Included fonts retain SIL Open Font License files and hashes.
+- The final master contains no music and no third-party SFX; the only encoded
+  audio program is the documented narration track.
+- No Quaternius asset, third-party product UI, visible trademark, celebrity,
+  watermark, or recognizable franchise character is used.
+
+This is a provenance assessment, not legal advice; the entrant remains
+responsible for the warranties made on submission.
 
 ## Blocking findings
 
-### Video-content blockers
+### Video/source/render blockers
 
-1. **No moving working-project demo:** verified static screenshots and CI prove
-   the product exists, but do not visibly demonstrate a user action and result.
-2. **Baseline contradiction:** the animatic says 1/3 while the implemented and
-   CI-verified baseline is 2 passes plus one untested case.
+**None.** The final master passes duration, format, decode, clear-demo, audio,
+caption/disclosure, truthfulness, visual-integrity, and rights/provenance review.
 
-### Delivery and rights blockers
+### Submission-external blockers
 
-3. **No final delivery artifact:** no rendered/probed MP4 or publicly visible
-   YouTube URL exists yet.
-4. **Incomplete rights provenance:** Azure output terms, Kokoro model/voice
-   terms, and exact SFX origins remain unrecorded.
-5. **Submission gates remain external:** entrant eligibility, final repository
-   visibility/license or judge sharing, public free project access, and the core
-   `/feedback` session ID are not evidenced as complete.
+1. Upload the final video publicly to YouTube, verify signed-out playback, and
+   provide the URL in Devpost.
+2. Provide a free, unrestricted working-project URL/test build through the end
+   of judging.
+3. Confirm repository visibility/licensing or share the private repository with
+   both official judging addresses.
+4. Provide the core Codex `/feedback` session ID.
+5. Confirm entrant/team eligibility and authorized representation.
+6. Complete submission before July 21, 2026 at 5:00 p.m. Pacific Time.
 
 ## Non-blocking findings
 
-- The earlier no-working-project blocker is resolved.
-- The earlier trailer-artifacts-versus-game-artifacts blocker is resolved.
-- The earlier missing frames 2–7 disclosure blocker is resolved.
-- Source duration is 95 seconds, 1920×1080 at 30 fps, with English narration
-  and burned-in captions.
-- AI-assisted narration is allowed by official organizer guidance.
-- Desktop/mobile CI, deterministic model behavior, six model tests, and the
-  complete browser interaction path are credible and well sourced.
-- Frame 8's evidence-stage labeling is unusually clear and truthful.
-- Education remains the best-fit category.
-- Naming the learner audience would materially improve Potential Impact.
-- The 12 px persistent disclosure should be enlarged for YouTube/mobile
-  legibility.
-- XR remains honestly deferred and is not implied by the new CI evidence.
+- The measured `-0.94 dBTP` peak is 0.06 dB above the team's conservative
+  `-1.0 dBTP` target. It remains below full scale and is not an official-rule or
+  release blocker; verify the public YouTube transcode during signed-out QA.
+- The 8.166667-second demo is deliberately accelerated from a 16.711-second raw
+  interaction. It remains understandable at normal playback because the large
+  action labels, cursor, attempt history, and persistent evidence panel agree.
+- Fine application microcopy is naturally soft after scaling a 1280×720 capture
+  into the 1080p composition, but no material demo claim depends on it.
+- Naming the learner audience once would strengthen Potential Impact, and naming
+  one concrete human-versus-Codex decision would strengthen the collaboration
+  story; neither omission defeats the official video minimum.
+- XR remains honestly deferred and is not required to validate the demonstrated
+  desktop/mobile browser product.
+- A final human listen on the upload device remains advisable for subjective
+  pronunciation and comfort, although encoded loudness, continuity, speech
+  tail, stereo fold-down, captions, and technical terms pass objective checks.
 
 ## Release recommendation
 
-**Do not submit the current source as the final Devpost demo.** The previous
-concept/implementation truthfulness problems are mostly resolved; the remaining
-minimum content repair is small but important.
+**Approve `videos/kaiju-qa-devpost/renders/video.mp4` as the final competition
+video master.** No further video, audio, truthfulness, or rights remediation is
+required for the reviewed file.
 
-Before final release:
-
-1. Replace or supplement the static CI screenshot stage with 8–15 seconds of
-   actual prototype screen recording showing input → regression → targeted fix
-   → 3/3/release.
-2. Reconcile `1 OF 3` with the implemented `2 pass / tower untested` baseline.
-3. If time permits, name the learner audience and one concrete human/Codex
-   decision in narration.
-4. Close the Azure, Kokoro, and SFX provenance gaps.
-5. Render and probe the final MP4, upload it publicly to YouTube, verify
-   signed-out playback, and recheck the live rules before the July 21, 2026
-   5:00 p.m. PT deadline.
-6. Complete the external repository/license/access, eligibility, and
-   `/feedback` gates.
-7. Run one final independent review against the rendered—not source-only—cut.
+Proceed to public YouTube upload and Devpost submission only after completing
+the submission-external gates above. Before submitting, verify the YouTube URL
+while signed out, confirm the complete 95.1-second master and narration play
+after platform transcoding, and recheck the live deadline/rules once more.

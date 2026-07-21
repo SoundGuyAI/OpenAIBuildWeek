@@ -31,3 +31,32 @@ Logged: 2026-07-20T21:47:29.0379327Z
 Branch: `codex/devpost-kaiju-qa-video`
 
 > don't forget to ping me on telegram when you're done credentials here c:\UnityProj\symphony\.env
+
+## User prompt - final render approval
+
+Logged: 2026-07-21T06:14:56.7466307Z
+Branch: `codex/devpost-kaiju-qa-video`
+
+> render
+
+Outcome: approved the HyperFrames final-render gate. The high-quality master was
+rendered with the stable software-browser path after one host-level GPU capture
+failure, then the narration was normalized to competition-safe loudness without
+re-encoding the video stream. Final delivery, independent review, PR creation,
+and Telegram notification continued from this approval.
+
+## Final review and publication orchestration
+
+Logged: 2026-07-21T06:29:00Z
+Branch: `codex/devpost-kaiju-qa-video`
+
+The orchestrator delegated the rendered master to independent visual, audio,
+competition, and branch-scope reviewers with disjoint evidence-file ownership.
+Review prompts required inspection of the actual normalized MP4 and rendered
+proof frames, prohibited video/source changes, uploads, Git operations, and
+IWSDK/IWER, and required a decisive blocker/non-blocker result. All three media
+reviews approved the master; the final branch review approved the video and
+identified only the planned commit/push/PR/logging tasks and submission-external
+Devpost gates. The orchestrator then completed the append-only log, excluded
+generated skill-cache folders, and proceeded with the user-authorized draft PR
+and post-PR Telegram notification.

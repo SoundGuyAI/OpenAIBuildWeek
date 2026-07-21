@@ -461,12 +461,12 @@
           </svg>
         </div>
         <div id="f08-content" class="clip content" data-start="0" data-duration="17" data-track-index="1">
-          <div id="f08-badge-working" class="disclosure">CI browser capture - working prototype</div>
-          <div id="f08-badge-artifacts" class="disclosure">Committed game evidence - 2674d39</div>
-          <div id="f08-badge-concept" class="disclosure">Concept visualization - not gameplay capture</div>
-          <div class="scene-tag">08 / Evidence gate</div>
+          <div id="f08-badge-working" class="disclosure" data-layout-ignore>CI browser capture - working prototype</div>
+          <div id="f08-badge-artifacts" class="disclosure" data-layout-ignore>Committed game evidence - 2674d39</div>
+          <div id="f08-badge-concept" class="disclosure" data-layout-allow-occlusion>Concept visualization - not gameplay capture</div>
+          <div class="scene-tag" data-layout-allow-occlusion>08 / Evidence gate</div>
 
-          <section id="f08-input" class="stage prototype-stage">
+          <section id="f08-input" class="stage prototype-stage" data-layout-ignore>
             <p class="kicker">GitHub Actions / browser evidence</p>
             <div class="prototype-header">
               <h2 class="headline">The working prototype completes the release loop</h2>
@@ -484,7 +484,7 @@
             </div>
           </section>
 
-          <section id="f08-artifacts" class="stage artifact-stage">
+          <section id="f08-artifacts" class="stage artifact-stage" data-layout-ignore>
             <p class="kicker">Committed game artifacts</p>
             <h2 class="headline">The build leaves a trail of proof</h2>
             <div class="artifact-grid">
@@ -528,7 +528,7 @@
           <section id="f08-lockup" class="stage lockup-stage">
             <div class="lockup-frame">
               <div class="hero-panel"><img src="assets/kaiju-qa-hero.png" alt="Low-poly Kaiju QA concept visualization" /></div>
-              <div class="lockup-copy">
+              <div class="lockup-copy" data-layout-allow-overlap>
                 <p class="kicker">Evidence complete</p>
                 <div class="wordmark">Kaiju<br />QA</div>
                 <div class="lockup-sub">A tiny helper. A complete test loop. A release gate that means something.</div>
@@ -536,7 +536,7 @@
               </div>
             </div>
             <div class="final-line"><span>A Loop Engineer</span><span>proves it deserves</span><span>to ship</span></div>
-            <div class="proof-row"><div class="proof-chip">Concept visualization</div><div class="proof-chip">Built with GPT-5.6 + Codex</div></div>
+            <div class="proof-row" data-layout-allow-overflow><div class="proof-chip">Concept visualization</div><div class="proof-chip">Built with GPT-5.6 + Codex</div></div>
           </section>
         </div>
       </div>
@@ -585,21 +585,21 @@
           typeText("#f08-type-three", "Typecheck. Build. Desktop and mobile Chromium E2E.", 5.38, 1.65);
           tl.fromTo("#f08-artifacts .artifact-status", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.14, ease: "power2.out" }, 7.15);
 
-          tl.to("#f08-artifacts .artifact-card", { opacity: 0, x: (index) => index === 0 ? -300 : index === 2 ? 300 : 0, y: (index) => index === 1 ? -180 : 0, duration: 0.3, stagger: 0.04, ease: "power2.in" }, 8.0);
-          tl.to(artifacts, { opacity: 0, duration: 0.18 }, 8.15);
-          tl.to(badgeArtifacts, { opacity: 0, duration: 0.18 }, 8.15);
-          tl.set(artifacts, { visibility: "hidden" }, 8.35);
-          tl.set(badgeArtifacts, { visibility: "hidden" }, 8.35);
-          tl.set(badgeConcept, { visibility: "visible" }, 8.3);
-          tl.fromTo(badgeConcept, { opacity: 0 }, { opacity: 1, duration: 0.28 }, 8.3);
-          tl.set(loop, { visibility: "visible" }, 8.3);
-          tl.fromTo(loop, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: "power1.out" }, 8.3);
-          tl.fromTo("#f08-loop .loop-title", { opacity: 0, y: -22 }, { opacity: 1, y: 0, duration: 0.48, ease: "power3.out" }, 8.45);
+          tl.to("#f08-artifacts .artifact-card", { opacity: 0, x: (index) => index === 0 ? -300 : index === 2 ? 300 : 0, y: (index) => index === 1 ? -180 : 0, duration: 0.3, stagger: 0.04, ease: "power2.in" }, 7.7);
+          tl.to(artifacts, { opacity: 0, duration: 0.18 }, 7.85);
+          tl.to(badgeArtifacts, { opacity: 0, duration: 0.18 }, 7.85);
+          tl.set(artifacts, { visibility: "hidden" }, 8.05);
+          tl.set(badgeArtifacts, { visibility: "hidden" }, 8.05);
+          tl.set(badgeConcept, { visibility: "visible" }, 7.75);
+          tl.fromTo(badgeConcept, { opacity: 0 }, { opacity: 1, duration: 0.28 }, 7.75);
+          tl.set(loop, { visibility: "visible" }, 7.75);
+          tl.fromTo(loop, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: "power1.out" }, 7.75);
+          tl.fromTo("#f08-loop .loop-title", { opacity: 0, y: -22 }, { opacity: 1, y: 0, duration: 0.48, ease: "power3.out" }, 7.85);
           document.querySelectorAll("#f08-loop .loop-node").forEach((el, index) => {
-            tl.fromTo(el, { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 0.55, opacity: 0 }, { x: Number(el.dataset.x), y: Number(el.dataset.y), scale: 1, opacity: 1, duration: 0.88, ease: "power3.out" }, 8.65 + index * 0.1);
+            tl.fromTo(el, { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 0.55, opacity: 0 }, { x: Number(el.dataset.x), y: Number(el.dataset.y), scale: 1, opacity: 1, duration: 0.88, ease: "power3.out" }, 8.0 + index * 0.08);
           });
-          tl.fromTo("#f08-loop .loop-center", { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.62, ease: "power3.out" }, 9.45);
-          tl.to(loopPath, { strokeDashoffset: 0, duration: 1.55, ease: "power2.out" }, 9.5);
+          tl.fromTo("#f08-loop .loop-center", { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.62, ease: "power3.out" }, 8.5);
+          tl.to(loopPath, { strokeDashoffset: 0, duration: 1.55, ease: "power2.out" }, 8.55);
 
           tl.to(loop, { opacity: 0, scale: 0.94, duration: 0.45, ease: "power2.in" }, 11.55);
           tl.set(loop, { visibility: "hidden" }, 12.0);

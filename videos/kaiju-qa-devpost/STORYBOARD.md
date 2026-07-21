@@ -236,7 +236,7 @@ keyMessage: Shipping is a gate supported by the whole regression suite.
 
 ## Frame 8 - Prove it deserves to ship
 
-- scene: Verified desktop/mobile CI screenshots lead into committed game-model/test/Actions evidence, then the concept evidence loop and Azure hero return for the final lockup
+- scene: A verified remote browser recording demonstrates regression, targeted correction, 3/3 rerun, and release; then the concept evidence loop and Azure hero return for the final lockup
 - voiceover: "Loop Engineering: goal, change, evidence, gate. Kaiju QA makes it visible. GPT-5.6 and Codex shaped scoped plans, tests, and review. Anyone can change code. A Loop Engineer proves it deserves to ship."
 - duration: 17s
 - poster: 14s
@@ -247,15 +247,15 @@ keyMessage: Shipping is a gate supported by the whole regression suite.
 - persuasion: Authority through verified runtime and implementation evidence
 - beat: confidence + motivation
 - blueprint: logo-assemble-lockup
-- asset_candidates: assets/prototype/ci-desktop.png and assets/prototype/ci-mobile.png - first-party GitHub Actions browser evidence; assets/kaiju-qa-hero.png - wide low-poly tabletop laboratory concept visualization
+- asset_candidates: assets/prototype/working-demo.mp4 - first-party remote Playwright recording; assets/prototype/ci-desktop.png and assets/prototype/ci-mobile.png - first-party GitHub Actions browser evidence fallback; assets/kaiju-qa-hero.png - wide low-poly tabletop laboratory concept visualization
 - focal: verified browser evidence and committed game-artifact cards resolving into the final Kaiju QA lockup
 - roles: CI screenshots = working-prototype evidence; kaiju-qa-hero = concept background inside the final evidence frame; artifact cards = supporting; loop/title/seal = cutout
 - sfx: none
 
 Adapt: keep the assemble-to-lockup signature, replacing a conventional logo
 system with the Loop Engineering evidence loop and final Kaiju QA title.
-Scene 1 (0.0-4.0s): verified desktop and mobile Chromium screenshots from successful GitHub Actions run `29786685632` assemble under `CI BROWSER CAPTURE - WORKING PROTOTYPE`; show commit `2674d39` and the passing typecheck/build/desktop-mobile E2E status without implying XR runtime certification.
-Scene 2 (4.0-8.2s): the screenshots clear inward into three committed game-artifact cards labeled `DETERMINISTIC MODEL`, `REGRESSION SUITE`, and `BROWSER CI`; show `src/kaiju-qa/game-model.ts`, `tests/model/kaiju-qa-model.test.mjs`, and Actions run `29786685632`, with concise verified phrases typed via discrete sequencing (`discrete-text-sequence`).
+Scene 1 (0.0-8.2s): play the silent first-party browser recording from Actions run `29791302806` as a direct root media clip under `BROWSER CAPTURE - WORKING PROTOTYPE`; a fixed evidence panel names the broad-guardrail regression, targeted slow-zone correction, three current passes, release gate, and pinned commit `2674d39`. Keep the external narration and captions over the insert.
+Scene 2 fallback: if the clip cannot load, the underlying verified desktop/mobile CI screenshots and committed model/test/CI artifact cards remain visible as provenance-safe poster evidence.
 Scene 3 (8.2-11.8s): artifact cards slide to the edges while five parts assemble at center: `GOAL`, `CHANGE`, `EVIDENCE`, `ADJUST`, `GATE`; an SVG line draws through them into one complete loop (`svg-path-draw`, `center-outward-expansion`).
 Scene 4 (11.8-14.8s): the loop becomes the border of a designed evidence frame holding the Azure hero still; the tiny seal and `KAIJU QA` wordmark assemble beside it, with no camera push after the lockup settles.
 Scene 5 (14.8-17.0s): final line `A LOOP ENGINEER PROVES IT DESERVES TO SHIP` reveals segment by segment, then holds with `CONCEPT VISUALIZATION` and `BUILT WITH GPT-5.6 + CODEX` as factual mono labels; no exit animation.

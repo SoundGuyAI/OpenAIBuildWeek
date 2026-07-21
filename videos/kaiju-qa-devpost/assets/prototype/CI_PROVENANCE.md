@@ -22,3 +22,22 @@ Actions artifact downloaded with `gh run download`.
 No IWSDK, IWER, Vite server, Playwright run, or browser game runtime was started
 locally while preparing this video. The runtime evidence came from the existing
 remote CI run.
+
+## Moving working-demo capture
+
+- Capture workflow: `Capture Kaiju QA working demo`
+- Workflow run: `29791302806`
+- Capture branch commit: `c02228df86c1b7c2abddb5ad1a9bf4e6b65f1983`
+- Game source: pinned commit `2674d397ad8cf88f7739874f22abbeed7640f9d5`
+- Artifact: `kaiju-qa-working-demo-29791302806-1`, ID `8480384644`
+- Artifact digest:
+  `sha256:2d0f66828c191f1b8623aaa4859772d39c4cb092674b6b0112af7dedc966a67b`
+- `working-demo.mp4` SHA-256:
+  `e884bb26ab72900b8da104075769e3aa85ad0233cc54a6a23a0a1ba62db837f9`
+- Media probe: H.264, 1280 x 720, 30 fps, 8.166667 seconds, silent
+
+The remote workflow built the pinned game commit, launched its production
+preview on the GitHub-hosted runner, and used Playwright with a visible demo
+cursor to record baseline evidence, the broad-guardrail ambulance regression,
+the targeted slow-zone correction, the 3/3 rerun, and the earned release. The
+capture script and workflow are committed with the video project.

@@ -758,8 +758,8 @@
 
                 <article id="f02-partial-pass" class="result-card partial-pass-card">
                   <div class="result-copy">
-                    <div class="result-kicker">Tower untested</div>
-                    <div class="result-main">Partial pass - 2 of 3</div>
+                    <div class="result-kicker">2 of 3 / tower untested</div>
+                    <div class="result-main">Partial pass</div>
                   </div>
                   <div class="result-icon">2/3</div>
                 </article>
@@ -972,9 +972,14 @@
           );
 
           // Scene 5 (9.2-11.0): inverse zoom-through to the partial-pass state, then a fixed hold.
+          tl.to(
+            ["#f02-run-button", "#f02-run-mode", "#f02-pointer", "#f02-interlock"],
+            { opacity: 0, duration: 0.2, ease: "power1.out" },
+            9.2,
+          );
           tl.to("#f02-car-pass", { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 9.2);
           tl.to("#f02-car-pass", { opacity: 0.15, duration: 0.2, ease: "none" }, 9.2);
-          tl.to("#f02-release-stamp", { opacity: 0.24, duration: 0.24, ease: "power1.out" }, 9.2);
+          tl.to("#f02-release-stamp", { opacity: 0, duration: 0.24, ease: "power1.out" }, 9.2);
           tl.set("#f02-car-pass", { opacity: 0 }, 9.4);
           tl.set("#f02-partial-pass", { opacity: 0.15, scale: 1.25, filter: "blur(10px)" }, 9.4);
           tl.to(

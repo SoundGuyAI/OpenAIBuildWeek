@@ -2,7 +2,7 @@
 
 Branch: `codex/devpost-kaiju-qa-video`  
 Slug: `devpost-kaiju-qa-video`  
-Status: production
+Status: rendered; final review and PR preparation
 
 ## Outcome
 
@@ -43,7 +43,7 @@ touching the game runtime or other active feature branches.
 7. HyperFrames source is editable and reproducible: brief, capture inventory,
    `frame.md`, `STORYBOARD.md`, `SCRIPT.md`, per-frame HTML, audio metadata,
    assembled `index.html`, contact sheet, and final render are present.
-8. HyperFrames lint, validate, and inspect pass before render; ffprobe confirms
+8. HyperFrames check passes before render; ffprobe confirms
    video/audio streams, duration, resolution, and frame rate.
 9. Independent visual, narrative, licensing, and competition reviews have no
    unresolved blocking findings.
@@ -142,7 +142,11 @@ their provenance. Never edit the concept worktree.
 
 - Editable project: `videos/kaiju-qa-devpost/`
 - Final render: `videos/kaiju-qa-devpost/renders/video.mp4`
-- Contact sheet: `videos/kaiju-qa-devpost/snapshots/contact-sheet.jpg`
+- Rendered-master contact sheet:
+  `videos/kaiju-qa-devpost/renders/qa/contact-sheet.png`
+- Source contact sheets:
+  `videos/kaiju-qa-devpost/snapshots/contact-sheet-1.jpg` and
+  `contact-sheet-2.jpg`
 - Evidence: `evidence/devpost-kaiju-qa-video/`
 - Draft PR against `main`
 - Telegram completion ping after the PR is confirmed

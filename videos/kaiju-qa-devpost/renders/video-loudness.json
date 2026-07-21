@@ -1,0 +1,9 @@
+{
+  "integrated_lufs": -14.23,
+  "true_peak_dbtp": -0.94,
+  "loudness_range_lu": 3.30,
+  "threshold_lufs": -24.75,
+  "target_integrated_lufs": -14.0,
+  "target_true_peak_dbtp": -1.0,
+  "normalization": "two-pass FFmpeg loudnorm; video stream copied"
+}

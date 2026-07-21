@@ -1,7 +1,7 @@
 # Agent assignments: devpost-kaiju-qa-video
 
 Branch: `codex/devpost-kaiju-qa-video`  
-Status: production
+Status: final review and PR preparation
 
 ## Orchestrator-only paths
 
@@ -24,10 +24,10 @@ Status: production
 | `019f8176-d808-73f1-a5df-18f3f994855f` | Marketing/copy strategist | `plans/devpost-kaiju-qa-video/agent-notes/marketing.md` | Hook, value proposition, CTA, judge-criteria coverage | Complete |
 | `019f8182-103b-7353-b544-ee5d5ac67157` | Voice and sound director | `plans/devpost-kaiju-qa-video/agent-notes/audio-direction.md` | Voice profile, read pacing, music/SFX plan, mix targets | Complete |
 | `019f8182-1671-77e0-95ef-8ac07830ee46` | HyperFrames production specialist | `plans/devpost-kaiju-qa-video/agent-notes/hyperframes-production.md` | Workflow-specific technical plan and Windows risks | Complete |
-| `019f81f8-5c26-7753-8dad-323af73260c8` (Archimedes) | Competition reviewer | `evidence/devpost-kaiju-qa-video/competition-review.md` | Rules/judging/truthfulness review after draft | Re-review complete; remote moving-demo capture required |
-| `019f81f8-5486-7d23-92b1-b2263d906cd1` (Dewey) | Visual QA reviewer | `evidence/devpost-kaiju-qa-video/visual-review.md` | Contact-sheet and render review | Source pass; final MP4 check pending |
-| `019f81f8-5736-7a02-b5b0-49d38ad04411` (Feynman) | Audio QA reviewer | `evidence/devpost-kaiju-qa-video/audio-review.md` | Voice/music/caption timing review | Source pass; final MP4 check pending |
-| pending | Independent reviewer | `evidence/devpost-kaiju-qa-video/review.md` | Full diff, evidence, licensing, and delivery review | Blocked on validation |
+| `019f81f8-5c26-7753-8dad-323af73260c8` (Archimedes) | Competition reviewer | `evidence/devpost-kaiju-qa-video/competition-review.md` | Rules/judging/truthfulness review after draft | Final rendered-master pass |
+| `019f81f8-5486-7d23-92b1-b2263d906cd1` (Dewey) | Visual QA reviewer | `evidence/devpost-kaiju-qa-video/visual-review.md` | Contact-sheet and render review | Final rendered-master pass |
+| `019f81f8-5736-7a02-b5b0-49d38ad04411` (Feynman) | Audio QA reviewer | `evidence/devpost-kaiju-qa-video/audio-review.md` | Voice/caption timing and final mix review | Final technical pass |
+| `019f834f-118e-73f2-8eaf-f66477417f2c` (Confucius) | Independent reviewer | `evidence/devpost-kaiju-qa-video/review.md` | Full diff, evidence, licensing, and delivery review | Complete; master approved, publication tasks identified |
 
 ## Frame worker assignments
 
