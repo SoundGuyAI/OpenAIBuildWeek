@@ -55,6 +55,11 @@ jobs:
           cd game
           node scripts/capture-working-demo.mjs
 
+      - name: Install FFmpeg for delivery conversion
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Produce an eight-second silent MP4 insert
         working-directory: game
         shell: bash
