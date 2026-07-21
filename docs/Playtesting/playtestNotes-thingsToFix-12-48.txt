@@ -1,0 +1,13 @@
+The run test lever isn't properly labels. also its movement is push and not pull and it seems like its' moving instead of rotating on an axis and it is horizontal where tehre is another levbel on the same place that is vertical
+
+in stage 5 the place to put the freeze block is overlapping right right most block - slow in tower. 
+
+the thing on the right side of he movement track all seem to be overlapping and blocking each other on desktop
+
+maybe make the table lap bigger so more thigns will fit in.
+
+
+the background is a flat image, it might be OK for desktop but it's not OK for the XR. in XR he "workbench" for the game should be places on an available horizontal surface. there should be a preleading setting option to do that before the game begins.  and the background image should not appear in XR
+
+
+the scene only takes up a small portion of my screen when loading it. it should expand to be in all the screen instead of things being so dense and overlapping...
