@@ -1,0 +1,38 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import {
+  CUES,
+  assertMp3,
+  buildSpeechRequest,
+  renderCredits,
+  renderManifest,
+} from "../../scripts/elevenlabs-narration.mjs";
+
+test("buildSpeechRequest creates an ElevenLabs request without sending it", () => {
+  const request = buildSpeechRequest(CUES[0], "secret-value");
+
+  assert.equal(CUES.length, 12);
+  assert.match(request.url, /wBXNqKUATyqu0RtYt25i/);
+  assert.equal(request.init.headers["xi-api-key"], "secret-value");
+  assert.throws(() => assertMp3(Buffer.from("not audio"), "cue.mp3"));
+});
+
+test("renderers describe static ElevenLabs MP3 assets without credentials", () => {
+  const secret = "secret-value";
+  const result = {
+    ...CUES[0],
+    fileName: "tutorial-intro.mp3",
+    durationSeconds: 1.25,
+    bytes: 1234,
+    sha256: "0123456789abcdef",
+  };
+
+  const manifest = renderManifest([result]);
+  const credits = renderCredits([result], "2026-07-21");
+
+  assert.match(manifest, /audio\/narration\/tutorial-intro\.mp3/);
+  assert.match(credits, /ElevenLabs/);
+  assert.doesNotMatch(manifest, new RegExp(secret));
+  assert.doesNotMatch(credits, new RegExp(secret));
+});
