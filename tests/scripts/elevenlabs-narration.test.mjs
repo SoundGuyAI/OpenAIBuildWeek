@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
@@ -60,4 +61,14 @@ test("passes the request URL and options separately to fetch", async () => {
   assert.equal(received.length, 2);
   assert.match(received[0], /api\.elevenlabs\.io/);
   assert.equal(received[1].headers["xi-api-key"], "secret-value");
+});
+
+test("runtime narration manifest resolves the generated MP3 set", async () => {
+  const manifest = await readFile(
+    new URL("../../src/kaiju-qa/narration-manifest.ts", import.meta.url),
+    "utf8",
+  );
+
+  assert.doesNotMatch(manifest, /audio\/narration\/[^\n"]+\.wav/);
+  assert.equal((manifest.match(/audio\/narration\/[^\n"]+\.mp3/g) ?? []).length, 12);
 });

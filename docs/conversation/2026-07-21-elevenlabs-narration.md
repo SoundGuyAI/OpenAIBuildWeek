@@ -38,3 +38,11 @@ Branch: `main` (planning only; no implementation started)
 - Transferred the tested ElevenLabs generator and all twelve generated MP3 files into this checkout on branch `audio-update`.
 - Verified that the transferred MP3 checksums exactly match the source worktree before cleanup.
 - The original checkout's unrelated `package-lock.json` change and development-server conversation log remain uncommitted and untouched.
+
+## 2026-07-21 — runtime audio replacement
+
+> ok so now replace the old audio with the new ones
+
+### Intended outcome
+
+- Update the shipped narration manifest to resolve the generated ElevenLabs MP3 files instead of the previous Kokoro WAV files.
