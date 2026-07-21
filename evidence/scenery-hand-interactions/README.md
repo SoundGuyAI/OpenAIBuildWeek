@@ -14,6 +14,8 @@ This folder contains the fresh evidence for `fix/scenery-hand-interactions`.
   exclusive two-controller lever ownership, threshold pull, and release.
 - `05-vehicles-restored.png` — rebuilt Training Yard with the blue service car
   and white district SUV visibly rendered after the vehicle-material repair.
+- `06-building-colors-restored.png` — rebuilt Training Yard with teal, coral,
+  yellow, and blue city-model identities restored alongside visible vehicles.
 
 ## Independent reports
 
@@ -47,6 +49,9 @@ mobile prop without page, request, or HTTP errors.
 - Vehicle visibility: Quaternius vehicle clones narrowly repair the source
   files' zero-alpha masked materials; the car and SUV are visibly restored in
   `05-vehicles-restored.png` without changing other imported transparency.
+- Building color: city-model texture maps and geometry remain authored, while
+  semantic tints restore the hospital/flat/house/shop palette visible in
+  `06-building-colors-restored.png`.
 - Manipulation: props, fixtures, cartridges, lever, and stamp register both
   `RayInteractable` and `PokeInteractable`; screen, controller-ray, and direct
   touch samples share constrained ownership/release logic.

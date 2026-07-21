@@ -114,3 +114,15 @@ browser certification and must remain open until XR QA passes.
   focused desktop/mobile browser smoke (3 applicable passes, 3 expected skips,
   zero request/HTTP/page errors). The first sandboxed browser launch failed at
   macOS process startup; the clean self-managed-preview rerun passed.
+
+## 2026-07-21 building-color regression follow-up
+
+- Confirmed the city models remained present but read nearly white after the
+  semantic tint was removed during the authored-material cleanup.
+- Restored per-type teal/coral/yellow/blue tint multiplication on cloned city
+  materials. The original model geometry, texture maps, and window glow remain.
+- Visually confirmed colored buildings plus the repaired car and SUV in
+  `06-building-colors-restored.png`.
+- Validation passed again: typecheck, 24/24 model tests, production build, and
+  focused browser smoke with 3 applicable passes, 3 expected skips, and zero
+  request, HTTP, or page errors.

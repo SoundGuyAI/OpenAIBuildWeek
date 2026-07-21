@@ -1034,14 +1034,23 @@ export function createKaijuQaScene(
     "storm-shift": new Group(),
   };
 
+  const buildingColors: Readonly<Record<string, number>> = {
+    cityHospital: 0x65bdb0,
+    cityFlat: 0xd98263,
+    cityHouse: 0xe2b84f,
+    cityShop: 0x4e9db2,
+  };
+
   const makeBuilding = (key: string, size: number, x: number, z: number, rotation = 0): Group => {
     const model = cloneAsset(key);
     prepareImportedModel(model, importedMaterials);
     fitObject(model, size);
     model.position.set(x, 0.02, z);
     model.rotation.y = rotation;
-    // Keep the authored Quaternius material separation. Flattening every mesh
-    // to one tint made the miniature buildings read like placeholder blocks.
+    // The city pack shares a pale texture atlas. Multiplying its cloned
+    // materials by a semantic building color keeps the authored texture/window
+    // detail while restoring the district's readable color coding.
+    tintModel(model, buildingColors[key] ?? palette.white);
     addWindowGlow(model, palette.yellow);
     return model;
   };
@@ -1542,6 +1551,7 @@ export function createKaijuQaScene(
   };
 
   const fragileTower = makeAuthoredProp("cityFlat", 0.62, 0.08);
+  tintModel(fragileTower, buildingColors.cityFlat);
   for (const x of [-0.22, 0.22]) {
     const warning = cloneAsset("labWarning");
     prepareImportedModel(warning, importedMaterials, 0.55);
