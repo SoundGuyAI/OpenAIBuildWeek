@@ -55,6 +55,14 @@ export const ELEVENLABS_NARRATION = Object.freeze({
   outputFormat: "mp3_44100_128",
 });
 
+export function requireInteractiveTerminal({ stdinIsTTY, stdoutIsTTY }) {
+  if (!stdinIsTTY || !stdoutIsTTY) {
+    throw new Error(
+      "Run this generator from an interactive terminal so the API key can be entered securely.",
+    );
+  }
+}
+
 export function buildSpeechRequest(cue, apiKey) {
   if (!apiKey) throw new Error("An ElevenLabs API key is required.");
 

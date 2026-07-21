@@ -5,6 +5,7 @@ import {
   CUES,
   assertMp3,
   buildSpeechRequest,
+  requireInteractiveTerminal,
   renderCredits,
   renderManifest,
 } from "../../scripts/elevenlabs-narration.mjs";
@@ -35,4 +36,11 @@ test("renderers describe static ElevenLabs MP3 assets without credentials", () =
   assert.match(credits, /ElevenLabs/);
   assert.doesNotMatch(manifest, new RegExp(secret));
   assert.doesNotMatch(credits, new RegExp(secret));
+});
+
+test("requires a terminal prompt instead of accepting an environment key", () => {
+  assert.throws(
+    () => requireInteractiveTerminal({ stdinIsTTY: false, stdoutIsTTY: true }),
+    /interactive terminal/i,
+  );
 });
