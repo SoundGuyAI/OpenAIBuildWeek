@@ -15,6 +15,15 @@ const waitForExit = (child) =>
     child.once("exit", (code) => resolve(code ?? 1));
   });
 
+async function serverIsReady() {
+  try {
+    const response = await fetch(previewURL, { redirect: "manual" });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
 async function waitForServer(server) {
   const deadline = Date.now() + 120_000;
 
@@ -23,12 +32,7 @@ async function waitForServer(server) {
       throw new Error(`Vite preview exited before becoming ready (${server.exitCode}).`);
     }
 
-    try {
-      const response = await fetch(previewURL, { redirect: "manual" });
-      if (response.ok) return;
-    } catch {
-      // Preview is still starting.
-    }
+    if (await serverIsReady()) return;
 
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
@@ -57,7 +61,9 @@ async function stopServer(server) {
 let preview;
 
 try {
-  if (!process.env.PLAYWRIGHT_BASE_URL) {
+  // Reuse an already-running local preview during the edit loop. This avoids a
+  // strict-port failure and removes redundant server startup from every smoke run.
+  if (!process.env.PLAYWRIGHT_BASE_URL && !(await serverIsReady())) {
     preview = spawn(
       process.execPath,
       [
@@ -101,4 +107,3 @@ try {
 } finally {
   if (preview) await stopServer(preview);
 }
-

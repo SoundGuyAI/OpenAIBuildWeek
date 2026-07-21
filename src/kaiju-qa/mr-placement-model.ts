@@ -6,7 +6,10 @@ const MIN_HORIZONTAL_DOT = Math.cos((20 * Math.PI) / 180);
 
 export function isHorizontalPlacementNormal(normal: Vector3): boolean {
   const length = normal.length();
-  return length > 1e-6 && normal.dot(UP) / length >= MIN_HORIZONTAL_DOT;
+  // Plane providers are allowed to return either winding for the same surface.
+  // Treat an upward or downward vertical normal as horizontal so a valid table
+  // does not become an unplaceable red target in IWER or on-device meshes.
+  return length > 1e-6 && Math.abs(normal.dot(UP) / length) >= MIN_HORIZONTAL_DOT;
 }
 
 export function fallbackWorkbenchPosition(
