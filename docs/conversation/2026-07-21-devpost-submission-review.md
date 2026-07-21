@@ -70,3 +70,10 @@ Branch: `codex/devpost-submission-review`
 - No Devpost form field, upload, team invitation, license choice, or final
   submission action was performed. Remaining blockers are explicitly marked in
   the submission pack.
+
+## User prompt — publish the review branch
+
+Logged: 2026-07-21T17:08:18.4433480Z
+Branch: `codex/devpost-submission-review`
+
+> push and make a PR please
