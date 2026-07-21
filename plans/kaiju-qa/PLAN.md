@@ -2,7 +2,7 @@
 
 Branch: `feature/kaiju-qa`
 Created: 2026-07-20T21:49:25.986Z
-Status: tactile redesign publication-frozen; clean serialized PR CI pending
+Status: tactile redesign publication-frozen; artifact-packaging CI rerun pending
 
 ## Player promise
 
@@ -123,9 +123,9 @@ language, environment, and scenery.
 - [x] Model suite passes 8/8
 - [x] Typecheck passes after final source cleanup
 - [x] Production build passes on final source state
-- [ ] Clean serialized browser/touch E2E reporter passes in PR CI
+- [x] Clean serialized browser/touch E2E reporter passes in PR CI: 5 applicable tests passed, 5 project skips
 - [x] XR report and evidence updated from IWER controller run
 - [x] Independent final review has no source blocking finding; clean CI remains its merge gate
 - [x] Final screenshots copied to `evidence/kaiju-qa/`
-- [ ] Branch rebased, committed, pushed, and PR #5 updated
+- [x] Branch rebased, committed, pushed, and PR #5 updated
 - [ ] Telegram completion notification sent after publication

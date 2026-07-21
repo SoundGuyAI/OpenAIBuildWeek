@@ -6,8 +6,16 @@ Scope: independent desktop/touch verification of the current direct-manipulation
 
 ## Current verdict
 
-**CONDITIONAL PASS for publication; final clean-run confirmation is delegated to
-PR CI.**
+**PASS on the clean PR runner.**
+
+GitHub Actions run `29806773348` executed the serialized desktop/mobile suite on
+commit `f1c7c57`: **5 passed, 5 expected project skips, 0 test failures in 9.8
+minutes**. Runtime summaries reported no application console problems, page
+errors, failed requests, or HTTP errors. The overall job was marked failed only
+afterward because the artifact step required the now-unused
+`test-results/evidence/` directory. The workflow now uploads the committed
+desktop/mobile/campaign evidence as a reliable fallback and retains any
+run-generated evidence directory when present.
 
 The stale button-era test was replaced with real canvas input coverage. Runtime
 evidence confirms that an invalid prop drop is recognized and announced, and
@@ -15,9 +23,9 @@ that a CDP-native touch drag places the service car while all sampled scroll
 positions remain `0,0`. A complete real-drag four-district campaign also passed
 during the redesign loop before the final accessibility/causal-visual patch;
 those patches preserve the same IWSDK interaction entities and reducer intents.
-The final production-build rerun did not return a clean reporter result on this
-machine because repeated IWSDK/Chromium runs left an overloaded browser process
-pool. The suite is serialized and bounded for the clean PR runner.
+The final local production-build rerun did not return a clean reporter result
+on this machine because repeated IWSDK/Chromium runs left an overloaded browser
+process pool. The clean PR runner has now supplied that reporter result.
 
 No source defect was established by these runs. The observed failures were test-harness issues or browser/runtime startup limits, documented below.
 
@@ -44,6 +52,7 @@ No source defect was established by these runs. The observed failures were test-
 | `node scripts/run-e2e.mjs tests/e2e/hello-world.spec.ts --project=desktop-chromium --workers=1 --reporter=line --grep=recovers` | **FAIL / startup blocker**. Bundled Chromium did not set `data-iwsdk-ready="true"` within 180 seconds; the body remained at the initial Training Yard state with no readiness attribute. |
 | `$env:KAIJU_QA_BROWSER_CHANNEL='chrome'; node scripts/run-e2e.mjs tests/e2e/hello-world.spec.ts --project=desktop-chromium --workers=1 --reporter=line --grep=recovers` | **Interaction reached; assertion harness failed, then fixed.** The invalid drag produced the exact visible message `Drop the test prop into its glowing city socket.` The run failed only because `getByRole('status')` matched both visible and visually hidden live regions. The assertion now targets `#status`. The post-fix rerun was interrupted before a final reporter result. |
 | `npm run test:e2e:run` after final redesign fixes | **Harness findings fixed; no clean local completion.** The first run exposed an ambiguous heading locator and overly aggressive concurrent XR startup; the selector is now exact, XR startup allows 300 seconds, XR fallback tests run only once, and `playwright.config.ts` uses one worker. A second run was terminated by the external 30-minute ceiling without a final Playwright report; orphaned headless processes confirmed local runner saturation. |
+| GitHub Actions run `29806773348` on commit `f1c7c57` | **PASS for E2E.** 5 applicable tests passed, 5 cross-project skips were expected, and all runtime cleanliness assertions passed in 9.8 minutes. The subsequent artifact upload—not the tests—caused the job's failed conclusion. |
 
 ## Executed interaction evidence
 
@@ -52,7 +61,7 @@ No source defect was established by these runs. The observed failures were test-
 - The service car was dragged from its debug-projected grab point to the separately projected rule socket, not its valid prop socket.
 - The game remained on expected interaction `{ type: "place-prop", prop: "car" }` and announced `Drop the test prop into its glowing city socket.`
 - The authored test then waits for the car to return to its original projected point and performs a valid drag to `drop-prop-car`.
-- Final post-fix pass/fail result: **not returned before handoff**.
+- Final clean-run result: **pass** in GitHub Actions, including the valid retry.
 
 ### Native CDP touch and scroll lock
 
@@ -80,20 +89,16 @@ the physical drag sequence is otherwise unchanged.
 
 - Successful browser initialization emitted the IWSDK/Three.js/EliCS informational banner.
 - Mobile Chromium emitted four repeated browser-driver warnings matching `GL Driver Message ... GPU stall due to ReadPixels`; Chromium then reported that the warning would no longer repeat. These are recorded as browser/WebGL performance noise, not application console failures.
-- No application exception or explicit source error was present in the captured failure artifacts.
-- No failed-request or HTTP `>=400` finding surfaced in the captured artifacts, but the clean-network assertions were not reached after the earlier console-warning failure, so final all-path network sign-off remains open.
+- GitHub Actions runtime summaries reported zero application console problems,
+  zero page errors, zero failed requests, and zero HTTP error responses across
+  invalid-drop recovery, the complete desktop campaign, and native touch.
 
 ## Residual gaps / blocking findings
 
-1. **The final source state still needs a clean CI reporter result.** Local
-   interaction evidence exists, but the final wrapper run was defeated by the
-   saturated host process pool rather than a confirmed app failure.
-2. **Bundled headless Chromium startup is unreliable on this machine.** The
+1. **Bundled headless Chromium startup is unreliable on this machine.** The
    installed Chrome channel reached interaction; PR CI starts from a clean
    one-worker environment.
-3. **Network cleanliness is conditional until CI.** No application exception,
-   failed request, or HTTP error was observed in the completed focused runs.
-4. **XR is independently certified in Quest 3 IWER.** See `xr-qa.md`; physical
+2. **XR is independently certified in Quest 3 IWER.** See `xr-qa.md`; physical
    headset comfort/performance remains outside browser QA.
 
 ## Recommended final integration run
