@@ -2,6 +2,15 @@
 
 **Test small. Help big.**
 
+[Play the public build](https://soundguyai.github.io/OpenAIBuildWeek/) ·
+[View the repository](https://github.com/SoundGuyAI/OpenAIBuildWeek)
+
+Built for the **Education** category of OpenAI Build Week. The reusable IWSDK
+boilerplate was scaffolded during the event, and the Kaiju QA concept, campaign,
+interaction model, tests, art integration, and submission media were created on
+July 20–21, 2026. Dated commits and the append-only prompt logs distinguish the
+game work from the initial shell.
+
 Kaiju QA is a tactile educational game about verifying AI-assisted changes. A
 well-meaning baby kaiju can solve the obvious problem, but each district hides
 an edge case. Players stage fixtures, pull a physical test lever, move rule
@@ -126,9 +135,46 @@ The feature plan and specialist notes live in
 [`plans/kaiju-qa`](plans/kaiju-qa). The full user request and follow-up decisions
 are preserved in [`docs/conversation/2026-07-20-kaiju-qa.md`](docs/conversation/2026-07-20-kaiju-qa.md).
 
-## Remaining release work outside this PR
+## How Codex and GPT-5.6 were used
 
-- A physical-headset comfort/performance pass remains valuable even after IWER
-  controller verification.
-- Public deployment, demo video, final Devpost copy, and repository-wide license
-  selection are submission tasks rather than gameplay implementation.
+GPT-5.6 was used through Codex as a build-time collaborator rather than as a
+runtime dependency. Codex helped turn the initial learning goal into observable
+acceptance criteria, research IWSDK constraints, implement the deterministic
+campaign model and cross-device interaction layer, author regression and
+browser tests, review failures, and prepare the submission video and evidence.
+
+The human owner retained the product and release decisions. They selected Kaiju
+QA from the Loop Engineer concepts, required a step-by-step tactile tutorial,
+rejected the cluttered first layout, directed the full-bleed workbench and
+camera controls, requested passthrough placement and draggable evidence cards,
+and required follow-up fixes for road layering and task-arrow alignment before
+release. Codex accelerated iteration; the owner decided what deserved to ship.
+
+The collaboration record is intentionally inspectable:
+
+- prompt and decision history:
+  [`docs/conversation/2026-07-20-kaiju-qa.md`](docs/conversation/2026-07-20-kaiju-qa.md);
+- acceptance criteria, risks, architecture, and specialist assignments:
+  [`plans/kaiju-qa`](plans/kaiju-qa);
+- desktop, mobile, XR, accessibility, and independent review evidence:
+  [`evidence/kaiju-qa`](evidence/kaiju-qa); and
+- dated implementation history in Git, including the Kaiju QA commits made
+  during the July 13–21 submission period.
+
+## Submission and judge access
+
+- Public playable build:
+  <https://soundguyai.github.io/OpenAIBuildWeek/>
+- Final 95.1-second narrated video master:
+  [`videos/kaiju-qa-devpost/renders/video.mp4`](videos/kaiju-qa-devpost/renders/video.mp4)
+- Paste-ready Devpost copy, compliance audit, gallery PNGs, and final manual
+  checklist:
+  [`docs/submission/DEVPOST_KAIJU_QA_SUBMISSION.md`](docs/submission/DEVPOST_KAIJU_QA_SUBMISSION.md)
+- Asset and audio provenance:
+  [`docs/assets/KAIJU_QA_ASSETS.md`](docs/assets/KAIJU_QA_ASSETS.md) and
+  [`docs/assets/AUDIO_CREDITS.md`](docs/assets/AUDIO_CREDITS.md)
+
+A physical-headset comfort/performance pass and formal assistive-technology
+campaign remain useful follow-up work. The demonstrated desktop and mobile
+browser paths, plus the recorded IWER controller path, are the bounded claims
+supported by the current evidence.
