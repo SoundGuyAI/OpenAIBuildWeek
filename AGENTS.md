@@ -125,6 +125,14 @@ For XR testing, first check whether the IWSDK runtime is already connected. Do
 not start duplicate dev servers. Enter XR, inspect scene/ECS state, exercise the
 applicable controllers and hands, test exit/re-entry, and capture evidence.
 
+### Current VM restriction
+
+On the `OpenAIBuildWeek` Windows VM, do **not** run IWSDK, `npm run dev`, the
+game/browser E2E suite, or any XR runtime. The owner reports that IWSDK causes
+this machine to become stuck. Use this VM only for documentation, asset
+research, and standalone static HTML validation. Run game E2E and all XR checks
+on the designated XR-capable machine, and record that evidence separately.
+
 ## Branch and evidence conventions
 
 - Feature branch: `feature/<kebab-case-slug>`

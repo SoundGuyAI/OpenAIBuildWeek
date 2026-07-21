@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 650" role="img" aria-labelledby="title desc">
+  <title id="title">Shortlist funnel from twenty concepts to one prototype</title>
+  <desc id="desc">Twenty worlds pass through visual comprehension, cross-platform parity, and two-day feasibility to produce five prototypes and one audience-tested loop.</desc>
+  <rect width="1440" height="650" rx="28" fill="#10141d"/>
+  <text x="720" y="72" fill="#f4f0e6" font-family="Arial, sans-serif" font-size="42" font-weight="700" text-anchor="middle">From twenty worlds to one tested loop</text>
+  <g font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#10141d">
+    <path d="M90 150 H520 L630 325 L520 500 H90 Z" fill="#31d9e6"/><text x="315" y="310" font-size="54">20 WORLDS</text><text x="315" y="355" font-size="25">distinct verbs + readable fantasy</text>
+    <path d="M520 190 H900 L1000 325 L900 460 H520 L630 325 Z" fill="#ff8a3d"/><text x="760" y="310" font-size="48">5 PROTOTYPES</text><text x="760" y="350" font-size="24">parity + comfort + two-day proof</text>
+    <path d="M900 230 H1330 V420 H900 L1000 325 Z" fill="#38d996"/><text x="1150" y="310" font-size="44">1 TESTED LOOP</text><text x="1150" y="350" font-size="24">audience sees cause and effect</text>
+  </g>
+  <g fill="#f4f0e6" font-family="Arial, sans-serif" font-size="21" text-anchor="middle">
+    <text x="315" y="565">Silent GIF test</text>
+    <text x="760" y="565">Desktop + touch + XR contract</text>
+    <text x="1150" y="565">Measure delight, clarity, and retry</text>
+  </g>
+</svg>

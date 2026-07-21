@@ -30,3 +30,24 @@ link to the replacement.
   scoring, a risk prototype, a smallest-complete-game definition, and an ordered
   cut ladder. Features that do not strengthen the arc or remove a demonstrated
   blocker should not enter the feature-freeze scope.
+
+## 2026-07-20 - Include Loop Engineer in concept exploration
+
+- **Decision:** Reserve one of the 20 WebXR proposal slots for **Loop Engineer**,
+  an edutainment game where the player employs an NPC who teaches Agenting SDLR.
+- **Reason:** The human owner supplied this premise directly and wants it
+  explored alongside the broader concept set.
+- **Consequence:** The proposal must preserve the name, NPC-teacher relationship,
+  Agenting SDLR learning goal, and cross-platform WebXR requirement while making
+  the playable loop and terminology understandable.
+
+## 2026-07-20 - Loop Engineer teaches agentic SDLC and SDLR
+
+- **Decision:** Supersede the earlier SDLR-only framing. **Loop Engineer** teaches
+  agentic software development across both SDLC and SDLR using loop engineering.
+- **Reason:** The human owner clarified that SDLC and SDLR are both intentional
+  parts of the concept.
+- **Consequence:** The game must connect lifecycle stages to repeatable agent,
+  developer-feedback, and external-feedback loops. SDLR remains an owner-defined
+  term until its expansion and curriculum are supplied; agents must not invent
+  or present an expansion as an external standard.
