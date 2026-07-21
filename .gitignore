@@ -28,6 +28,11 @@ public/glxf/
 .vscode/mcp.json
 .codex/config.toml
 
+# Local agent skill installations
+/.agents/skills/
+/agent/
+/skills-lock.json
+
 # Secrets and local environment
 .env
 .env.*

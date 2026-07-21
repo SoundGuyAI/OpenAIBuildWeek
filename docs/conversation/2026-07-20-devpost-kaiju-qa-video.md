@@ -68,3 +68,14 @@ the PR mergeable and started CI plus automated review. The Symphony notifier
 daemon was started locally because it was initially stopped, and the completion
 message was then delivered successfully to Telegram without printing or copying
 credential values.
+
+## User prompt - clean generated installer artifacts
+
+Logged: 2026-07-21T10:01:04.6591272Z
+Branch: `codex/devpost-kaiju-qa-video`
+
+> why am i seeing many unstaged files? you either should commit them or add them to gitignore.
+
+Outcome: classified `.agents/skills/`, `agent/`, and `skills-lock.json` as local
+HyperFrames/agent skill installer outputs and added narrowly scoped root ignore
+rules. Existing tracked `.agents/README.md` and `.agents/roles/**` remain tracked.
