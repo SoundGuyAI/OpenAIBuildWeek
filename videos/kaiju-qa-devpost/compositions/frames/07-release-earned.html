@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Release Earned</title>
+  </head>
+  <body>
+    <template>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <style>
+        @font-face {
+          font-family: "Archivo Black";
+          src: url("assets/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+          font-weight: 400;
+          font-style: normal;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+          font-weight: 100 800;
+          font-style: normal;
+          font-display: block;
+        }
+
+        @font-face {
+          font-family: "Space Grotesk";
+          src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+          font-weight: 300 700;
+          font-style: normal;
+          font-display: block;
+        }
+
+        #root {
+          --cream: #0b1220;
+          --cream-2: #263449;
+          --ink: #f5f1e8;
+          --ink-2: #d5d5d5;
+          --green: #b7e35a;
+          --green-dark: #83b73d;
+          --orange: #5bd7d1;
+          --yellow: #ffd24a;
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          isolation: isolate;
+          container-type: size;
+          color: var(--ink);
+          font-family: "Space Grotesk";
+        }
+
+        #root,
+        #root * {
+          box-sizing: border-box;
+        }
+
+        .ground-layer {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--cream);
+          z-index: 0;
+        }
+
+        .ground-layer::before {
+          content: "";
+          position: absolute;
+          inset: 0 0 auto;
+          height: 18px;
+          background: var(--green);
+        }
+
+        .ground-layer::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 874px;
+          height: 22px;
+          border-top: 4px solid var(--ink);
+          background: var(--cream-2);
+        }
+
+        .ground-rail {
+          position: absolute;
+          top: 132px;
+          bottom: 204px;
+          width: 36px;
+          background: var(--cream-2);
+          border-top: 6px solid var(--ink);
+          border-bottom: 6px solid var(--ink);
+        }
+
+        .ground-rail-left {
+          left: 0;
+        }
+
+        .ground-rail-right {
+          right: 0;
+        }
+
+        .content-layer {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          z-index: 2;
+        }
+
+        .topbar {
+          position: absolute;
+          top: 42px;
+          left: 64px;
+          right: 64px;
+          height: 58px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          z-index: 12;
+        }
+
+        .topbar-left {
+          display: flex;
+          align-items: center;
+          gap: 22px;
+        }
+
+        .kicker-block {
+          padding: 10px 18px 9px;
+          background: var(--ink);
+          color: var(--cream);
+          font-family: "JetBrains Mono";
+          font-size: 1.02cqw;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .topbar-title {
+          font-family: "JetBrains Mono";
+          font-size: 1.18cqw;
+          font-weight: 500;
+          letter-spacing: 0.08em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .pill-badge {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          min-width: 250px;
+          justify-content: center;
+          padding: 9px 22px;
+          border: 4px solid var(--ink);
+          border-radius: 999px;
+          color: var(--ink);
+          font-family: "JetBrains Mono";
+          font-size: 1.05cqw;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .pill-status {
+          width: 15px;
+          height: 15px;
+          flex: 0 0 15px;
+          background: var(--green);
+          border: 3px solid var(--ink);
+          border-radius: 50%;
+        }
+
+        .top-rule {
+          position: absolute;
+          top: 118px;
+          left: 64px;
+          right: 64px;
+          height: 6px;
+          background: var(--ink);
+          z-index: 11;
+        }
+
+        .evidence-loop {
+          position: absolute;
+          left: 52px;
+          top: 122px;
+          width: 1816px;
+          height: 746px;
+          overflow: visible;
+          pointer-events: none;
+          z-index: 3;
+        }
+
+        .evidence-loop path {
+          fill: none;
+          stroke: var(--orange);
+          stroke-width: 8;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .triptych {
+          position: absolute;
+          left: 92px;
+          right: 92px;
+          top: 158px;
+          height: 470px;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 44px;
+          z-index: 5;
+        }
+
+        .scenario-card {
+          position: relative;
+          min-width: 0;
+          height: 470px;
+          overflow: hidden;
+          border: 8px solid var(--ink);
+          background: var(--cream-2);
+          transform-origin: 50% 100%;
+          will-change: transform, opacity;
+        }
+
+        .card-accent {
+          position: absolute;
+          inset: 0 0 auto;
+          height: 12px;
+          background: var(--green);
+        }
+
+        .tower-card .card-accent {
+          background: var(--orange);
+        }
+
+        .card-head {
+          position: absolute;
+          top: 30px;
+          left: 28px;
+          right: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: var(--ink-2);
+          font-family: "JetBrains Mono";
+          font-size: 1.02cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .card-head strong {
+          color: var(--ink);
+          font-weight: 800;
+        }
+
+        .card-visual {
+          position: absolute;
+          left: 20px;
+          right: 20px;
+          top: 78px;
+          height: 296px;
+        }
+
+        .card-visual svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .route-base {
+          fill: none;
+          stroke: #5d687b;
+          stroke-width: 13;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .route-draw {
+          fill: none;
+          stroke: var(--green);
+          stroke-width: 13;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .route-draw-cyan {
+          stroke: var(--orange);
+        }
+
+        .lane-mark {
+          fill: none;
+          stroke: var(--ink-2);
+          stroke-width: 4;
+          stroke-dasharray: 18 16;
+          opacity: 0.48;
+        }
+
+        .vehicle-body {
+          fill: var(--ink);
+          stroke: var(--cream);
+          stroke-width: 7;
+        }
+
+        .vehicle-window {
+          fill: var(--orange);
+          stroke: var(--cream);
+          stroke-width: 5;
+        }
+
+        .vehicle-wheel {
+          fill: var(--cream);
+          stroke: var(--ink);
+          stroke-width: 5;
+        }
+
+        .local-zone {
+          fill: var(--orange);
+          fill-opacity: 0.16;
+          stroke: var(--orange);
+          stroke-width: 7;
+          stroke-dasharray: 15 11;
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+
+        .tower-shape {
+          fill: var(--ink);
+          stroke: var(--cream);
+          stroke-width: 7;
+        }
+
+        .tower-window {
+          fill: var(--cream);
+        }
+
+        .kaiju-shape {
+          fill: var(--cream);
+          stroke: var(--ink);
+          stroke-width: 7;
+        }
+
+        .kaiju-spike {
+          fill: var(--orange);
+          stroke: var(--ink);
+          stroke-width: 5;
+        }
+
+        .check-node {
+          transform-box: fill-box;
+          transform-origin: center;
+          will-change: transform, opacity;
+        }
+
+        .check-circle {
+          fill: var(--green);
+          stroke: var(--ink);
+          stroke-width: 7;
+        }
+
+        .check-stroke {
+          fill: none;
+          stroke: var(--cream);
+          stroke-width: 10;
+          stroke-linecap: square;
+          stroke-linejoin: miter;
+        }
+
+        .result-lock {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 78px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 0 24px;
+          border-top: 8px solid var(--ink);
+          background: var(--green);
+          color: var(--cream);
+          font-family: "Archivo Black";
+          font-size: 1.9cqw;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          line-height: 0.92;
+          text-transform: uppercase;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+
+        .tower-card .result-lock {
+          background: var(--orange);
+        }
+
+        .ambulance-card .result-lock {
+          font-size: 1.72cqw;
+        }
+
+        .result-dot {
+          width: 18px;
+          height: 18px;
+          flex: 0 0 18px;
+          border: 4px solid var(--cream);
+          border-radius: 50%;
+          background: var(--ink);
+        }
+
+        .ledger-shell {
+          position: absolute;
+          left: 92px;
+          right: 92px;
+          top: 672px;
+          height: 180px;
+          display: grid;
+          grid-template-columns: 0.92fr 1.35fr 0.88fr;
+          border: 8px solid var(--ink);
+          background: var(--cream-2);
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+          z-index: 6;
+        }
+
+        .ledger-cell {
+          min-width: 0;
+          padding: 22px 26px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .ledger-cell + .ledger-cell {
+          border-left: 6px solid var(--ink);
+        }
+
+        .ledger-kicker {
+          color: var(--orange);
+          font-family: "JetBrains Mono";
+          font-size: 0.98cqw;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .ledger-title {
+          margin-top: 13px;
+          font-family: "Archivo Black";
+          font-size: 2.25cqw;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          line-height: 0.92;
+          text-transform: uppercase;
+        }
+
+        .pass-count {
+          font-family: "Archivo Black";
+          font-size: 3.25cqw;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          line-height: 0.88;
+          text-align: center;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .pass-track {
+          width: 100%;
+          height: 22px;
+          margin-top: 20px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 11px;
+        }
+
+        .pass-segment {
+          display: block;
+          width: 100%;
+          height: 100%;
+          border: 4px solid var(--ink);
+          background: var(--green);
+          transform-origin: 0% 50%;
+          will-change: transform;
+        }
+
+        .gate-panel {
+          display: grid;
+          grid-template-columns: 92px minmax(0, 1fr);
+          align-items: center;
+          gap: 20px;
+        }
+
+        .gate-icon {
+          position: relative;
+          width: 86px;
+          height: 98px;
+          overflow: visible;
+          border: 6px solid var(--ink);
+          background: var(--cream);
+        }
+
+        .gate-door {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 50%;
+          background: var(--ink);
+          will-change: transform;
+        }
+
+        .gate-door-left {
+          left: 0;
+          border-right: 3px solid var(--cream);
+        }
+
+        .gate-door-right {
+          right: 0;
+          border-left: 3px solid var(--cream);
+        }
+
+        .gate-latch {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 26px;
+          height: 26px;
+          margin-left: -13px;
+          margin-top: -13px;
+          border: 5px solid var(--cream);
+          border-radius: 50%;
+          background: var(--yellow);
+          z-index: 2;
+        }
+
+        .gate-copy-kicker {
+          color: var(--ink-2);
+          font-family: "JetBrains Mono";
+          font-size: 0.92cqw;
+          font-weight: 700;
+          letter-spacing: 0.11em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .gate-state {
+          position: relative;
+          height: 48px;
+          margin-top: 10px;
+        }
+
+        .gate-state-label {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          font-family: "Archivo Black";
+          font-size: 1.72cqw;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          line-height: 0.92;
+          text-transform: uppercase;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+
+        .gate-open-label {
+          color: var(--green);
+        }
+
+        .claw-wrap {
+          position: absolute;
+          left: 1368px;
+          top: 548px;
+          width: 520px;
+          height: 310px;
+          transform-origin: 78% 10%;
+          will-change: transform, opacity;
+          pointer-events: none;
+          z-index: 8;
+        }
+
+        .claw-wrap svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .claw-body,
+        .claw-finger {
+          fill: var(--ink);
+          stroke: var(--cream-2);
+          stroke-width: 10;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .claw-nail {
+          fill: var(--yellow);
+          stroke: var(--cream);
+          stroke-width: 7;
+          stroke-linejoin: round;
+        }
+
+        .seal-wrap {
+          position: absolute;
+          left: 1534px;
+          top: 734px;
+          width: 112px;
+          height: 112px;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+          z-index: 9;
+        }
+
+        .approval-seal {
+          width: 100%;
+          height: 100%;
+          display: grid;
+          place-content: center;
+          gap: 7px;
+          border: 7px solid var(--cream);
+          background: var(--yellow);
+          box-shadow:
+            12px 12px 0 var(--orange),
+            12px 12px 0 4px var(--ink);
+          color: var(--cream);
+          text-align: center;
+          transform: rotate(-6deg);
+        }
+
+        .seal-pass {
+          font-family: "Archivo Black";
+          font-size: 1.58cqw;
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          line-height: 0.88;
+          text-transform: uppercase;
+        }
+
+        .seal-approved {
+          font-family: "JetBrains Mono";
+          font-size: 0.62cqw;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="07-release-earned"
+        data-start="0"
+        data-duration="15.4"
+        data-fps="30"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div
+          id="re07-ground"
+          class="clip ground-layer"
+          data-start="0"
+          data-duration="15"
+          data-track-index="0"
+          aria-hidden="true"
+        >
+          <div class="ground-rail ground-rail-left"></div>
+          <div class="ground-rail ground-rail-right"></div>
+        </div>
+
+        <div
+          id="re07-content"
+          class="clip content-layer"
+          data-start="0"
+          data-duration="15"
+          data-track-index="1"
+        >
+          <header class="topbar">
+            <div class="topbar-left">
+              <div class="kicker-block">Suite run</div>
+              <div class="topbar-title">Full regression suite</div>
+            </div>
+            <div class="pill-badge">
+              <span class="pill-status"></span>
+              <span>Release gate</span>
+            </div>
+          </header>
+          <div class="top-rule"></div>
+
+          <svg
+            class="evidence-loop"
+            viewBox="0 0 1816 746"
+            aria-hidden="true"
+          >
+            <path id="re07-evidence-loop" d="M 34 50 H 1782 V 708 H 34 Z"></path>
+          </svg>
+
+          <section class="triptych" aria-label="Three regression scenario replays">
+            <article id="re07-car-card" class="scenario-card car-card">
+              <div class="card-accent"></div>
+              <div class="card-head">
+                <strong>Test 01</strong>
+                <span>Replay</span>
+              </div>
+              <div class="card-visual">
+                <svg viewBox="0 0 460 240" aria-hidden="true">
+                  <path class="lane-mark" d="M 20 178 H 440"></path>
+                  <path class="route-base" d="M 24 148 H 434"></path>
+                  <path id="re07-car-route" class="route-draw" d="M 24 148 H 434"></path>
+                  <g id="re07-car-glyph">
+                    <rect class="vehicle-body" x="38" y="103" width="112" height="48"></rect>
+                    <path class="vehicle-body" d="M 58 103 L 78 73 H 128 L 148 103 Z"></path>
+                    <rect class="vehicle-window" x="83" y="81" width="36" height="22"></rect>
+                    <circle class="vehicle-wheel" cx="66" cy="155" r="14"></circle>
+                    <circle class="vehicle-wheel" cx="126" cy="155" r="14"></circle>
+                  </g>
+                  <g id="re07-car-check-node" class="check-node">
+                    <circle class="check-circle" cx="426" cy="76" r="31"></circle>
+                    <path id="re07-car-check" class="check-stroke" d="M 410 76 L 421 88 L 444 60"></path>
+                  </g>
+                </svg>
+              </div>
+              <div id="re07-car-result" class="result-lock">
+                <span class="result-dot"></span>
+                <span>Car rescued</span>
+              </div>
+            </article>
+
+            <article id="re07-tower-card" class="scenario-card tower-card">
+              <div class="card-accent"></div>
+              <div class="card-head">
+                <strong>Test 02</strong>
+                <span>Local zone</span>
+              </div>
+              <div class="card-visual">
+                <svg viewBox="0 0 460 240" aria-hidden="true">
+                  <rect id="re07-local-zone" class="local-zone" x="146" y="32" width="150" height="158"></rect>
+                  <path class="route-base" d="M 22 164 H 316"></path>
+                  <path id="re07-kaiju-path" class="route-draw route-draw-cyan" d="M 22 164 H 286"></path>
+                  <g>
+                    <path class="tower-shape" d="M 300 184 L 318 61 H 374 L 394 184 Z"></path>
+                    <path class="tower-shape" d="M 329 61 L 346 29 L 364 61 Z"></path>
+                    <rect class="tower-window" x="333" y="84" width="13" height="20"></rect>
+                    <rect class="tower-window" x="356" y="84" width="13" height="20"></rect>
+                    <rect class="tower-window" x="329" y="118" width="16" height="22"></rect>
+                    <rect class="tower-window" x="356" y="118" width="16" height="22"></rect>
+                  </g>
+                  <g id="re07-kaiju-glyph">
+                    <path class="kaiju-shape" d="M 37 142 C 34 104 50 76 79 72 C 110 68 132 91 130 124 C 129 143 118 158 100 169 H 57 C 46 163 39 153 37 142 Z"></path>
+                    <path class="kaiju-spike" d="M 56 83 L 62 47 L 81 76 Z"></path>
+                    <path class="kaiju-spike" d="M 82 75 L 96 38 L 108 82 Z"></path>
+                    <path class="kaiju-shape" d="M 54 163 L 50 190 H 72 L 78 166 Z"></path>
+                    <path class="kaiju-shape" d="M 96 165 L 104 190 H 126 L 116 158 Z"></path>
+                  </g>
+                  <g id="re07-tower-check-node" class="check-node">
+                    <circle class="check-circle" cx="414" cy="54" r="31"></circle>
+                    <path id="re07-tower-check" class="check-stroke" d="M 398 54 L 409 66 L 432 38"></path>
+                  </g>
+                </svg>
+              </div>
+              <div id="re07-tower-result" class="result-lock">
+                <span class="result-dot"></span>
+                <span>Tower standing</span>
+              </div>
+            </article>
+
+            <article id="re07-ambulance-card" class="scenario-card ambulance-card">
+              <div class="card-accent"></div>
+              <div class="card-head">
+                <strong>Test 03</strong>
+                <span>Open road</span>
+              </div>
+              <div class="card-visual">
+                <svg viewBox="0 0 460 240" aria-hidden="true">
+                  <path class="lane-mark" d="M 20 178 H 440"></path>
+                  <path class="route-base" d="M 24 148 H 434"></path>
+                  <path id="re07-ambulance-route" class="route-draw" d="M 24 148 H 434"></path>
+                  <g id="re07-ambulance-glyph">
+                    <rect class="vehicle-body" x="32" y="94" width="136" height="60"></rect>
+                    <path class="vehicle-body" d="M 116 94 H 153 L 177 119 V 154 H 116 Z"></path>
+                    <rect class="vehicle-window" x="124" y="104" width="28" height="21"></rect>
+                    <rect x="71" y="104" width="16" height="40" fill="var(--orange)"></rect>
+                    <rect x="59" y="116" width="40" height="16" fill="var(--orange)"></rect>
+                    <circle class="vehicle-wheel" cx="62" cy="158" r="14"></circle>
+                    <circle class="vehicle-wheel" cx="145" cy="158" r="14"></circle>
+                  </g>
+                  <g id="re07-ambulance-check-node" class="check-node">
+                    <circle class="check-circle" cx="426" cy="76" r="31"></circle>
+                    <path id="re07-ambulance-check" class="check-stroke" d="M 410 76 L 421 88 L 444 60"></path>
+                  </g>
+                </svg>
+              </div>
+              <div id="re07-ambulance-result" class="result-lock">
+                <span class="result-dot"></span>
+                <span>Ambulance moving</span>
+              </div>
+            </article>
+          </section>
+
+          <section id="re07-ledger-shell" class="ledger-shell" aria-label="Regression comparison ledger">
+            <div id="re07-ledger-copy" class="ledger-cell">
+              <div class="ledger-kicker">Complete evidence loop</div>
+              <div class="ledger-title">Full suite</div>
+            </div>
+            <div id="re07-pass-panel" class="ledger-cell">
+              <div id="re07-pass-count" class="pass-count">0 OF 3 PASS</div>
+              <div class="pass-track" aria-hidden="true">
+                <span id="re07-pass-seg-1" class="pass-segment"></span>
+                <span id="re07-pass-seg-2" class="pass-segment"></span>
+                <span id="re07-pass-seg-3" class="pass-segment"></span>
+              </div>
+            </div>
+            <div id="re07-gate-panel" class="ledger-cell gate-panel">
+              <div class="gate-icon" aria-hidden="true">
+                <div id="re07-gate-left" class="gate-door gate-door-left"></div>
+                <div id="re07-gate-right" class="gate-door gate-door-right"></div>
+                <div class="gate-latch"></div>
+              </div>
+              <div>
+                <div class="gate-copy-kicker">Release</div>
+                <div class="gate-state">
+                  <div id="re07-gate-locked-label" class="gate-state-label">Gate locked</div>
+                  <div id="re07-gate-open-label" class="gate-state-label gate-open-label">Gate open</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div id="re07-claw-wrap" class="claw-wrap" aria-hidden="true">
+            <svg viewBox="0 0 520 310">
+              <path class="claw-body" d="M 520 24 L 445 20 C 404 18 372 42 359 80 L 338 142 C 331 165 343 188 366 197 L 430 221 C 462 233 494 213 501 180 Z"></path>
+              <path class="claw-finger" d="M 389 157 C 345 163 299 186 272 220 C 255 242 265 271 289 277 C 312 283 327 262 339 243 L 382 181 Z"></path>
+              <path class="claw-finger" d="M 432 177 C 390 188 350 218 331 253 C 319 276 334 299 358 301 C 380 303 391 282 399 260 L 437 205 Z"></path>
+              <path class="claw-finger" d="M 345 139 C 301 137 252 150 214 178 C 191 195 193 226 214 240 C 234 253 255 239 272 223 L 332 173 Z"></path>
+              <path class="claw-nail" d="M 205 220 L 169 235 L 203 247 Z"></path>
+              <path class="claw-nail" d="M 283 267 L 252 286 L 291 286 Z"></path>
+              <path class="claw-nail" d="M 356 292 L 331 309 L 369 306 Z"></path>
+            </svg>
+          </div>
+
+          <div id="re07-seal-wrap" class="seal-wrap">
+            <div class="approval-seal">
+              <div class="seal-pass">Pass</div>
+              <div class="seal-approved">Approved</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (() => {
+          window.__timelines = window.__timelines || {};
+
+          const drawPathIds = [
+            "re07-car-route",
+            "re07-car-check",
+            "re07-kaiju-path",
+            "re07-tower-check",
+            "re07-ambulance-route",
+            "re07-ambulance-check",
+            "re07-evidence-loop",
+          ];
+
+          drawPathIds.forEach((id) => {
+            const path = document.getElementById(id);
+            const length = path.getTotalLength();
+            path.style.strokeDasharray = String(length);
+            path.style.strokeDashoffset = String(length);
+          });
+
+          const passState = { value: 0 };
+          const passCount = document.getElementById("re07-pass-count");
+          const tl = gsap.timeline({ paused: true });
+
+          gsap.set(
+            "#re07-tower-card, #re07-ambulance-card, #re07-ledger-shell, #re07-claw-wrap, #re07-seal-wrap",
+            { opacity: 0 },
+          );
+          gsap.set(".result-lock", { x: -32, opacity: 0 });
+          gsap.set(".check-node", { scale: 0.55, opacity: 0, transformOrigin: "50% 50%" });
+          gsap.set("#re07-local-zone", { scaleX: 0, opacity: 0, transformOrigin: "50% 50%" });
+          gsap.set(".pass-segment", { scaleX: 0, transformOrigin: "0% 50%" });
+          gsap.set("#re07-ledger-copy, #re07-pass-panel, #re07-gate-panel", { y: 16, opacity: 0 });
+          gsap.set("#re07-gate-open-label", { y: 10, opacity: 0 });
+
+          tl.fromTo(
+            "#re07-car-card",
+            { x: -80, y: 18, scale: 0.96, opacity: 0 },
+            { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" },
+            0.04,
+          );
+          tl.to("#re07-car-route", { strokeDashoffset: 0, duration: 1.24, ease: "power2.out" }, 0.28);
+          tl.fromTo(
+            "#re07-car-glyph",
+            { x: -95, opacity: 0.35 },
+            { x: 285, opacity: 1, duration: 1.55, ease: "power2.inOut" },
+            0.4,
+          );
+          tl.fromTo(
+            "#re07-car-check-node",
+            { scale: 0.55, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.42, ease: "power3.out" },
+            1.96,
+          );
+          tl.to("#re07-car-check", { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" }, 2.08);
+          tl.fromTo(
+            "#re07-car-result",
+            { x: -32, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.48, ease: "power3.out" },
+            2.34,
+          );
+
+          tl.fromTo(
+            "#re07-tower-card",
+            { y: 38, scale: 0.96, opacity: 0 },
+            { y: 0, scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" },
+            3.2,
+          );
+          tl.fromTo(
+            "#re07-local-zone",
+            { scaleX: 0, opacity: 0 },
+            { scaleX: 1, opacity: 1, duration: 0.48, ease: "power3.out" },
+            3.54,
+          );
+          tl.to("#re07-kaiju-path", { strokeDashoffset: 0, duration: 1.35, ease: "power2.out" }, 3.58);
+          tl.fromTo(
+            "#re07-kaiju-glyph",
+            { x: -90, opacity: 0 },
+            { x: 65, opacity: 1, duration: 0.62, ease: "power2.out" },
+            3.7,
+          );
+          tl.to("#re07-kaiju-glyph", { x: 115, duration: 1.2, ease: "power3.out" }, 4.32);
+          tl.fromTo(
+            "#re07-tower-check-node",
+            { scale: 0.55, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.42, ease: "power3.out" },
+            5.16,
+          );
+          tl.to("#re07-tower-check", { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" }, 5.28);
+          tl.fromTo(
+            "#re07-tower-result",
+            { x: -32, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
+            5.5,
+          );
+
+          tl.fromTo(
+            "#re07-ambulance-card",
+            { x: 80, y: 18, scale: 0.96, opacity: 0 },
+            { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" },
+            6.4,
+          );
+          tl.to(
+            "#re07-ambulance-route",
+            { strokeDashoffset: 0, duration: 1.3, ease: "power2.out" },
+            6.76,
+          );
+          tl.fromTo(
+            "#re07-ambulance-glyph",
+            { x: -95, opacity: 0.25 },
+            { x: 286, opacity: 1, duration: 1.6, ease: "power2.inOut" },
+            6.88,
+          );
+          tl.fromTo(
+            "#re07-ambulance-check-node",
+            { scale: 0.55, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.42, ease: "power3.out" },
+            8.4,
+          );
+          tl.to(
+            "#re07-ambulance-check",
+            { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" },
+            8.52,
+          );
+          tl.fromTo(
+            "#re07-ambulance-result",
+            { x: -32, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
+            8.72,
+          );
+
+          tl.to(
+            "#re07-car-card",
+            { x: 28, y: -16, scale: 0.97, duration: 0.68, ease: "power3.inOut" },
+            9.6,
+          );
+          tl.to(
+            "#re07-tower-card",
+            { y: -16, scale: 0.97, duration: 0.68, ease: "power3.inOut" },
+            9.6,
+          );
+          tl.to(
+            "#re07-ambulance-card",
+            { x: -28, y: -16, scale: 0.97, duration: 0.68, ease: "power3.inOut" },
+            9.6,
+          );
+          tl.fromTo(
+            "#re07-ledger-shell",
+            { scaleX: 0.88, opacity: 0 },
+            { scaleX: 1, opacity: 1, duration: 0.55, ease: "power3.out" },
+            9.66,
+          );
+          tl.fromTo(
+            "#re07-ledger-copy",
+            { y: 16, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.46, ease: "power3.out" },
+            9.82,
+          );
+          tl.fromTo(
+            "#re07-pass-panel",
+            { y: 16, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.46, ease: "power3.out" },
+            9.9,
+          );
+          tl.fromTo(
+            "#re07-gate-panel",
+            { y: 16, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.46, ease: "power3.out" },
+            9.98,
+          );
+
+          ["#re07-pass-seg-1", "#re07-pass-seg-2", "#re07-pass-seg-3"].forEach((selector, index) => {
+            tl.fromTo(
+              selector,
+              { scaleX: 0 },
+              { scaleX: 1, duration: 0.48, ease: "power3.out" },
+              9.92 + index * 0.32,
+            );
+          });
+
+          tl.to(
+            passState,
+            {
+              value: 3,
+              duration: 1.5,
+              ease: "power2.out",
+              onUpdate: () => {
+                passCount.textContent = String(Math.round(passState.value)) + " OF 3 PASS";
+              },
+            },
+            9.82,
+          );
+          tl.to(
+            "#re07-evidence-loop",
+            { strokeDashoffset: 0, duration: 1.55, ease: "power2.out" },
+            10.08,
+          );
+
+          tl.to("#re07-gate-left", { x: -24, duration: 0.55, ease: "power3.out" }, 12.02);
+          tl.to("#re07-gate-right", { x: 24, duration: 0.55, ease: "power3.out" }, 12.02);
+          tl.to(
+            "#re07-gate-locked-label",
+            { y: -10, opacity: 0, duration: 0.26, ease: "power2.in" },
+            12.02,
+          );
+          tl.fromTo(
+            "#re07-gate-open-label",
+            { y: 10, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+            12.12,
+          );
+          tl.fromTo(
+            "#re07-claw-wrap",
+            { x: 380, y: -150, opacity: 0 },
+            { x: 0, y: 0, opacity: 1, duration: 1.15, ease: "power3.out" },
+            12.05,
+          );
+          tl.to(
+            "#re07-claw-wrap",
+            { y: 14, scale: 0.985, duration: 0.32, ease: "power2.inOut" },
+            13.21,
+          );
+          tl.fromTo(
+            "#re07-seal-wrap",
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.56, ease: "power3.out" },
+            13.28,
+          );
+
+          window.__timelines["07-release-earned"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

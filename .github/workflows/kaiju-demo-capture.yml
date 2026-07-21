@@ -1,0 +1,82 @@
+name: Capture Kaiju QA working demo
+
+on:
+  push:
+    branches:
+      - codex/devpost-kaiju-qa-video
+    paths:
+      - .github/workflows/kaiju-demo-capture.yml
+      - videos/kaiju-qa-devpost/scripts/capture-working-demo.mjs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Record verified browser interaction
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out video source
+        uses: actions/checkout@v7
+        with:
+          path: video-source
+
+      - name: Check out verified Kaiju QA implementation
+        uses: actions/checkout@v7
+        with:
+          ref: 2674d397ad8cf88f7739874f22abbeed7640f9d5
+          path: game
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: game/.nvmrc
+          package-manager-cache: false
+
+      - name: Install game dependencies
+        working-directory: game
+        run: npm ci --no-audit --no-fund
+
+      - name: Build verified production site
+        working-directory: game
+        run: npm run build
+
+      - name: Install Chromium system dependencies
+        working-directory: game
+        run: npx playwright install --with-deps chromium
+
+      - name: Record the interaction loop
+        shell: bash
+        run: |
+          cp video-source/videos/kaiju-qa-devpost/scripts/capture-working-demo.mjs game/scripts/capture-working-demo.mjs
+          cd game
+          node scripts/capture-working-demo.mjs
+
+      - name: Produce an eight-second silent MP4 insert
+        working-directory: game
+        shell: bash
+        run: |
+          START=$(node -p "require('./artifacts/capture-meta.json').trimStartSec")
+          DURATION=$(node -p "require('./artifacts/capture-meta.json').demoDurationSec")
+          SCALE=$(node -e "const d=Number(process.argv[1]); console.log(Math.min(1, 8.15/d).toFixed(6))" "$DURATION")
+          ffmpeg -y -ss "$START" -i artifacts/kaiju-qa-working-demo-raw.webm \
+            -vf "setpts=${SCALE}*PTS,fps=30,scale=1280:720:flags=lanczos" \
+            -t 8.15 -an -c:v libx264 -preset medium -crf 18 -pix_fmt yuv420p \
+            artifacts/kaiju-qa-working-demo.mp4
+          ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate,duration \
+            -show_entries format=duration,size -of json artifacts/kaiju-qa-working-demo.mp4 \
+            > artifacts/working-demo-ffprobe.json
+
+      - name: Upload working-demo evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: kaiju-qa-working-demo-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            game/artifacts/kaiju-qa-working-demo.mp4
+            game/artifacts/capture-meta.json
+            game/artifacts/working-demo-ffprobe.json
+          if-no-files-found: error
+          retention-days: 14
