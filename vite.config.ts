@@ -8,7 +8,7 @@ export default defineConfig(({ command, isPreview }) => ({
       ? [
           mkcert(),
           iwsdkDev({
-            emulator: { device: "metaQuest3" },
+            emulator: { device: "metaQuest3", environment: "office_small" },
             ai: { mode: "agent" },
             verbose: true,
           }),

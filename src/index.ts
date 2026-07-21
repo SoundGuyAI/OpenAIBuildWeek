@@ -4,6 +4,7 @@ import {
   Color,
   DirectionalLight,
   PCFSoftShadowMap,
+  ReferenceSpaceType,
   SessionMode,
   SRGBColorSpace,
   VisibilityState,
@@ -11,6 +12,7 @@ import {
 } from "@iwsdk/core";
 
 import { KAIJU_QA_ASSETS } from "./kaiju-qa/assets.js";
+import { createDesktopCameraNavigation } from "./kaiju-qa/camera-navigation.js";
 import {
   LEVEL_DEFINITIONS,
   LEVEL_IDS,
@@ -45,12 +47,14 @@ import {
   type SceneCue,
   type SceneInteractionTarget,
 } from "./kaiju-qa/scene.js";
+import { createMixedRealityPlacement } from "./kaiju-qa/mr-placement.js";
 import {
   applyImmersiveVrUiState,
   checkImmersiveVrSupport,
   immersiveVrCheckingState,
   immersiveVrLaunchingState,
   launchImmersiveVr,
+  xrSessionUsesPassthrough,
   type ImmersiveVrState,
   type ImmersiveVrSupportState,
 } from "./xr-support.js";
@@ -179,7 +183,7 @@ function setUtilityButtonLabel(
 }
 
 function restoreXrButtonContent(): void {
-  const label = enterXrButton.textContent?.trim() || "VR";
+  const label = enterXrButton.textContent?.trim() || "MR";
   const labelNode = document.createElement("span");
   labelNode.textContent = label;
   enterXrButton.replaceChildren(
@@ -382,17 +386,17 @@ function updateKeyboardTarget(actions = currentKeyboardActions()): void {
     keyboardActionIndex = 0;
   }
   if (actions.length === 0) {
-    keyboardHint.textContent = "Campaign complete. Use Reset to play again.";
+    keyboardHint.textContent = "Campaign complete. Use Reset View to recenter the camera.";
     container.removeAttribute("aria-label");
     container.setAttribute("aria-label", "Interactive 3D Kaiju QA toy lab. Campaign complete.");
     return;
   }
   keyboardActionIndex = Math.min(keyboardActionIndex, actions.length - 1);
   const active = actions[keyboardActionIndex];
-  keyboardHint.textContent = `Keyboard target ${keyboardActionIndex + 1} of ${actions.length}: ${active.label}. Press Enter or Space.`;
+  keyboardHint.textContent = `Camera: W A S D to move, right-drag to look. Action ${keyboardActionIndex + 1} of ${actions.length}: ${active.label}. Press Enter or Space.`;
   container.setAttribute(
     "aria-label",
-    `Interactive 3D Kaiju QA toy lab. ${active.label}. Use arrow keys to choose and Enter or Space to act.`,
+    `Interactive 3D Kaiju QA toy lab. ${active.label}. Use W A S D to move, right-drag to look, arrow keys to choose, and Enter or Space to act.`,
   );
 }
 
@@ -667,15 +671,8 @@ replayButton.addEventListener("click", () => {
 });
 
 resetButton.addEventListener("click", () => {
-  const resetIntent: GameIntent = selectCampaignCompletion(gameState)
-    ? { type: "reset-campaign" }
-    : { type: "reset-level" };
-  dispatch(resetIntent);
   resetPresentationView();
-  if (gameState.currentLevelId === "training-yard") {
-    introFollowUpPlayed = true;
-    void narration.play("place-car");
-  }
+  announce("View reset. Your testing progress is unchanged.");
 });
 
 container.addEventListener("focus", () => {
@@ -730,9 +727,23 @@ renderGame();
 World.create(container, {
   assets: KAIJU_QA_ASSETS,
   xr: {
-    sessionMode: SessionMode.ImmersiveVR,
-    offer: "always",
-    features: { handTracking: true, layers: true },
+    sessionMode: SessionMode.ImmersiveAR,
+    referenceSpace: {
+      type: ReferenceSpaceType.LocalFloor,
+      // Viewer space can become head-locked, which is unsuitable for a placed
+      // tabletop. Local remains the safe world-locked fallback.
+      fallbackOrder: [ReferenceSpaceType.Local],
+    },
+    // Offer once for emulator/headset discovery. Re-entry is then owned by the
+    // explicit Enter MR control, avoiding automatic session churn after exit.
+    offer: "once",
+    features: {
+      handTracking: true,
+      layers: true,
+      planeDetection: true,
+      hitTest: true,
+      anchors: true,
+    },
   },
   render: {
     fov: 42,
@@ -744,8 +755,8 @@ World.create(container, {
     locomotion: false,
     grabbing: { useHandPinchForGrab: true },
     physics: false,
-    sceneUnderstanding: false,
-    environmentRaycast: false,
+    sceneUnderstanding: { showWireFrame: false },
+    environmentRaycast: true,
   },
 })
   .then(async (world) => {
@@ -756,23 +767,16 @@ World.create(container, {
     renderer.toneMappingExposure = 1.08;
     renderer.outputColorSpace = SRGBColorSpace;
 
-    const applyPresentationCamera = () => {
-      const aspect = Math.max(0.1, container.clientWidth / container.clientHeight);
-      if (aspect < 0.82) {
-        camera.position.set(0.12, 3.05, 8.05);
-        camera.lookAt(0, 1.08, -1.45);
-      } else if (aspect < 1.25) {
-        camera.position.set(0.15, 2.65, 5.1);
-        camera.lookAt(0, 1.18, -1.45);
-      } else {
-        camera.position.set(0.18, 2.42, 3.62);
-        camera.lookAt(0, 1.25, -1.45);
-      }
-      camera.updateProjectionMatrix();
-      camera.updateMatrixWorld(true);
-    };
-    applyPresentationCamera();
-    world.scene.background = new Color(0x09131c);
+    const cameraNavigation = createDesktopCameraNavigation({
+      camera,
+      element: container,
+      keyboardTarget: container,
+      moveSpeed: 1.45,
+      orbitSpeed: 0.0034,
+    });
+    const desktopBackground = new Color(0x09131c);
+    world.scene.background = desktopBackground;
+    renderer.setClearColor(desktopBackground, 1);
 
     const ambient = new AmbientLight(0x8fc9d5, 1.35);
     ambient.name = "KaijuQaCoolFill";
@@ -803,15 +807,50 @@ World.create(container, {
       reducedMotion,
     });
     scene.present(buildSceneView());
+    const placement = createMixedRealityPlacement(world, scene, announce);
+    let activeMrSession: XRSession | null = null;
+
+    const activateMixedReality = (session: XRSession) => {
+      if (activeMrSession === session) return;
+      activeMrSession = session;
+      const passthroughAvailable = xrSessionUsesPassthrough(session);
+      world.scene.background = passthroughAvailable ? null : desktopBackground;
+      renderer.setClearColor(
+        passthroughAvailable ? 0x000000 : desktopBackground,
+        passthroughAvailable ? 0 : 1,
+      );
+      scene?.setMixedReality(true, passthroughAvailable);
+      placement.start(session);
+      announce(
+        passthroughAvailable
+          ? "Mixed reality passthrough is active. Place the workbench on a horizontal surface."
+          : "This immersive AR session is opaque, so the lab backdrop remains visible as a safe fallback.",
+      );
+    };
+
+    const restoreDesktopPresentation = () => {
+      if (!activeMrSession && world.visibilityState.value !== VisibilityState.NonImmersive) {
+        return;
+      }
+      activeMrSession = null;
+      placement.stop();
+      scene?.setMixedReality(false);
+      world.scene.background = desktopBackground;
+      renderer.setClearColor(desktopBackground, 1);
+    };
 
     const resetView = () => {
+      if (world.visibilityState.value !== VisibilityState.NonImmersive) {
+        scene?.resetView();
+        placement.reposition();
+        return;
+      }
       world.player.position.set(0, 0, 0);
       world.player.rotation.set(0, 0, 0);
-      applyPresentationCamera();
+      cameraNavigation.reset();
       scene?.resetView();
     };
     resetPresentationView = resetView;
-    window.addEventListener("resize", applyPresentationCamera);
 
     window.__KAIJU_QA__ = {
       getState: () => gameState,
@@ -820,6 +859,11 @@ World.create(container, {
     };
 
     let immersiveVrSupport: ImmersiveVrSupportState | undefined;
+    let xrLaunchPending = false;
+    const activeXrMessage = (session: XRSession): string =>
+      xrSessionUsesPassthrough(session)
+        ? "Mixed reality passthrough is active. Place the workbench, then point, hold, move, and release."
+        : "Immersive AR is active without passthrough. The lab backdrop remains visible while you place and play.";
     const applyXrState = (xrState: ImmersiveVrState) => {
       applyImmersiveVrUiState(xrState, {
         button: enterXrButton,
@@ -838,6 +882,9 @@ World.create(container, {
         xrVisibility === VisibilityState.Hidden ||
         xrVisibility === VisibilityState.VisibleBlurred;
       scene?.setSuspended(suspended);
+      cameraNavigation.setEnabled(
+        !suspended && xrVisibility === VisibilityState.NonImmersive,
+      );
       if (suspended) narration.pause();
       else if (narration.snapshot.status === "paused") void narration.resume();
     };
@@ -846,13 +893,15 @@ World.create(container, {
     world.visibilityState.subscribe((visibilityState) => {
       updateSuspended();
       if (visibilityState === VisibilityState.NonImmersive) {
+        restoreDesktopPresentation();
         if (immersiveVrSupport) applyXrState(immersiveVrSupport);
         return;
       }
       if (world.session) {
+        activateMixedReality(world.session);
         applyXrState({
           state: "active",
-          message: "Immersive VR is active. Point, hold, move, and release.",
+          message: activeXrMessage(world.session),
           session: world.session,
         });
       }
@@ -860,11 +909,25 @@ World.create(container, {
 
     enterXrButton.addEventListener("click", async () => {
       if (world.visibilityState.value === VisibilityState.NonImmersive) {
+        if (xrLaunchPending) return;
+        xrLaunchPending = true;
         applyXrState(immersiveVrLaunchingState());
-        const result = await launchImmersiveVr(world, {
-          support: immersiveVrSupport,
-        });
-        applyXrState(result);
+        try {
+          const result = await launchImmersiveVr(world, {
+            support: immersiveVrSupport,
+          });
+          if (result.state === "active") {
+            activateMixedReality(result.session);
+            applyXrState({
+              ...result,
+              message: activeXrMessage(result.session),
+            });
+          } else {
+            applyXrState(result);
+          }
+        } finally {
+          xrLaunchPending = false;
+        }
       } else {
         await world.exitXR();
       }
@@ -873,8 +936,9 @@ World.create(container, {
     window.addEventListener(
       "beforeunload",
       () => {
-        window.removeEventListener("resize", applyPresentationCamera);
+        cameraNavigation.dispose();
         narration.dispose();
+        placement.dispose();
         scene?.dispose();
         delete window.__KAIJU_QA__;
       },

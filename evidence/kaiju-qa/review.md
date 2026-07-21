@@ -2,9 +2,10 @@
 
 Review date: 2026-07-21 UTC
 Branch: `feature/kaiju-qa`
-Scope: latest working-tree state after the narration and screen-drag fixes. This
-review changed only this file and did not run new validation or perform branch,
-commit, push, or merge operations.
+Scope: independent redesign review plus the orchestrator's final playtest-
+remediation acceptance record. The original reviewer changed only this file;
+the addendum incorporates the later executed camera, controls, card, MR, and
+browser evidence documented beside it.
 
 ## Publication verdict
 
@@ -12,9 +13,9 @@ commit, push, or merge operations.
 experience blocker was found. The feature is approved for commit and PR
 publication; final merge/public release remains gated on a clean PR CI run.**
 
-The failed-to-complete local E2E wrapper is classified as a runner/process-pool
-problem rather than a demonstrated application defect. CI is still a required
-release gate, not an optional follow-up. Physical Quest 3 testing remains a
+The final serialized installed-Chrome run now completes: six applicable tests
+pass with six expected project skips and clean application runtime telemetry.
+PR CI is still a required merge gate. Physical Quest 3 testing remains a
 bounded residual and does not invalidate the completed Quest 3 IWER software
 path.
 
@@ -81,16 +82,14 @@ Native CDP touch placement completed without page or viewport scrolling. Quest
 lever pulls, the release stamp, first-district completion, XR exit/re-entry, and
 post-re-entry progression.
 
-## Required CI gate — not a current source blocker
+## Required PR CI gate — not a current source blocker
 
-The clean PR runner must execute the serialized production E2E command and
-return a final reporter result. The local final wrapper attempts were disrupted
-by slow IWSDK/Chromium startup, external command ceilings, orphaned browser
-processes, and a saturated process pool. Focused runs established real invalid
-drop behavior and native touch/no-scroll behavior; an earlier complete
-four-district campaign used real canvas drags, lever pulls, and stamp presses.
-No application exception, failed request, or HTTP error was established in the
-completed focused evidence.
+The final local installed-Chrome runner executes the serialized production E2E
+command successfully. It covers invalid-drop recovery, the full four-district
+real-drag campaign, native touch/no-scroll, mobile Stage 5 reachability, and MR
+unsupported/denied fallbacks. Runtime hooks report no application exception,
+failed request, HTTP error, or unexpected console error. PR CI remains the
+required clean-environment confirmation for merge.
 
 CI should confirm:
 
@@ -136,14 +135,14 @@ reproducible product failure, that failure is blocking until corrected.
 | Check | Final-review classification |
 | --- | --- |
 | `npm run typecheck` | Pass |
-| `npm run test:model` | Pass, 8/8 |
+| `npm run test:model` | Pass, 22/22 across campaign and remediation helpers |
 | `npm run build` | Pass; known bundle-size warning |
 | `git diff --check` | Pass in the reviewed working tree |
 | Invalid desktop drop | Real interaction observed; authored recovery retry retained |
 | Native CDP touch / no-scroll | Pass |
-| Complete desktop real-drag campaign | Earlier redesign-loop pass; final committed rerun delegated to CI |
-| Quest 3 IWER controller/lifecycle | Pass; physical headset pending |
-| Final local E2E wrapper | Incomplete because of host startup/process issues |
+| Complete desktop real-drag campaign | Pass on the final remediation source |
+| Quest 3 IWER MR/controller/lifecycle | Pass; physical headset pending |
+| Final local E2E wrapper | Pass, 6 applicable tests and 6 expected skips |
 
 ## Merge and publication classification
 

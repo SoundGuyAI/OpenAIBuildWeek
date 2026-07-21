@@ -2,7 +2,7 @@
 
 Branch: `feature/kaiju-qa`
 Created: 2026-07-20T21:49:25.986Z
-Status: tactile redesign publication-frozen; artifact-packaging CI rerun pending
+Status: playtest remediation complete locally; publication and clean PR CI pending
 
 ## Player promise
 
@@ -63,6 +63,14 @@ language, environment, and scenery.
 - [x] Focused browser/touch interaction, IWER controller verification, evidence
   capture, and independent review are complete; the clean full E2E reporter is
   an explicit PR CI merge gate.
+- [x] Desktop is full-bleed with WASD, right-drag camera movement, and Reset View
+  without stealing direct-manipulation input.
+- [x] The RUN TESTS control is one upright hinged lever, all three rule
+  cartridges have separate rack slots, and the installation dock is distinct.
+- [x] Instruction/evidence/release/result cards are draggable and maintain live
+  target connectors on desktop and in XR.
+- [x] MR uses `immersive-ar`, horizontal-surface placement, anchoring, manual
+  fallback controls, no desktop backdrop, and campaign-preserving re-entry.
 
 ## Non-goals
 
@@ -120,12 +128,13 @@ language, environment, and scenery.
 - [x] Four-level deterministic campaign implemented
 - [x] Direct manipulation implemented across pointer, touch, and XR-ray paths
 - [x] CC0/generated asset and audio provenance complete
-- [x] Model suite passes 8/8
+- [x] Model suite passes 22/22 across campaign and remediation helpers
 - [x] Typecheck passes after final source cleanup
 - [x] Production build passes on final source state
-- [x] Clean serialized browser/touch E2E reporter passes in PR CI: 5 applicable tests passed, 5 project skips
-- [x] XR report and evidence updated from IWER controller run
+- [x] Clean serialized browser/touch E2E passes locally: 6 applicable tests passed, 6 project skips
+- [x] XR report and evidence updated from the final MR placement/controller/card/lifecycle IWER run
 - [x] Independent final review has no source blocking finding; clean CI remains its merge gate
 - [x] Final screenshots copied to `evidence/kaiju-qa/`
-- [x] Branch rebased, committed, pushed, and PR #5 updated
-- [ ] Telegram completion notification sent after publication
+- [x] Branch rebased onto the current merge base and remediation diff kept isolated to Kaiju/shared integration paths
+- [x] Branch committed, pushed, and PR #5 updated through the publication workflow
+- [x] Telegram completion notification sent only after the pushed PR reaches green CI

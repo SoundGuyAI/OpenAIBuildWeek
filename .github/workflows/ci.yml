@@ -60,9 +60,7 @@ jobs:
           name: browser-evidence-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             test-results/evidence/
-            evidence/kaiju-qa/01-desktop.webp
-            evidence/kaiju-qa/02-mobile.webp
-            evidence/kaiju-qa/04-campaign-complete.webp
+            evidence/kaiju-qa/*.webp
           if-no-files-found: error
           retention-days: 14
 

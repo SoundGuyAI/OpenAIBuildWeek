@@ -22,6 +22,7 @@ import {
   PlaneGeometry,
   Points,
   PointsMaterial,
+  Quaternion,
   Ray,
   RayInteractable,
   SRGBColorSpace,
@@ -31,6 +32,7 @@ import {
   Vector3,
   Vector2,
   World,
+  XRAnchor,
   createSystem,
   type Entity,
 } from "@iwsdk/core";
@@ -42,6 +44,14 @@ import {
   wrapText,
   type CanvasPanel,
 } from "./canvas-panel.js";
+import {
+  createDraggableCallout,
+  type DraggableCallout,
+} from "./draggable-callout.js";
+import {
+  createRuleRack,
+  createRunTestsLever,
+} from "./control-fixtures.js";
 
 export type SceneLevelId =
   | "training-yard"
@@ -133,6 +143,15 @@ export interface KaijuQaScene {
   present(view: KaijuQaSceneView): void;
   setSuspended(suspended: boolean): void;
   setReducedMotion(reducedMotion: boolean): void;
+  setMixedReality(active: boolean, passthroughAvailable?: boolean): void;
+  setWorkbenchPlacement(
+    phase: "aiming" | "adjusting" | "confirmed" | "inactive",
+    pose?: {
+      readonly position: Vector3;
+      readonly quaternion: Quaternion;
+      readonly scale: number;
+    },
+  ): void;
   resetView(): void;
   getDebugTargets(): Record<string, KaijuQaSceneDebugPoint>;
   dispose(): void;
@@ -172,6 +191,8 @@ interface ManipulationMeta {
   returnStartedAt: number | null;
   returnFrom: Vector3;
   lastSettledAt: number;
+  leverVisualPivot?: Group;
+  leverVisualRoot?: Group;
 }
 
 interface InteractionController {
@@ -193,10 +214,13 @@ const tmpPointer = new Vector2();
 const tmpScreenRay = new Ray();
 const tmpScreenOrigin = new Vector3();
 const tmpScreenDirection = new Vector3();
+const tmpDragPlaneNormal = new Vector3();
+const tmpRootQuaternion = new Quaternion();
 
 interface ScenePointerEvent {
   readonly pointerId: number;
   readonly pointerType: string;
+  readonly button?: number;
   readonly pointer?: Vector2;
   readonly ray: Ray;
   stopPropagation(): void;
@@ -243,7 +267,7 @@ function settleInteraction(world: World, meta: ManipulationMeta): void {
   meta.lastSettledAt = now;
 
   if (meta.kind === "lever") {
-    if (meta.home.z - meta.object.position.z > 0.14 && !meta.triggered) {
+    if (meta.object.position.z - meta.home.z > 0.14 && !meta.triggered) {
       meta.triggered = true;
       CONTROLLERS.get(world)?.onIntent({ type: "PULL_LEVER" });
     }
@@ -306,8 +330,8 @@ class KaijuQaInteractionSystem extends createSystem({
         meta.object.position.y = meta.home.y;
         meta.object.position.z = MathUtils.clamp(
           meta.object.position.z,
-          meta.home.z - 0.27,
           meta.home.z,
+          meta.home.z + 0.27,
         );
       } else if (meta.kind === "stamp") {
         meta.object.position.x = meta.home.x;
@@ -332,6 +356,16 @@ class KaijuQaInteractionSystem extends createSystem({
           meta.returnStartedAt = null;
           meta.triggered = false;
         }
+      }
+      if (meta.kind === "lever" && meta.leverVisualPivot) {
+        const pullOffset = meta.object.position.z - meta.home.z;
+        const progress = MathUtils.clamp(
+          pullOffset / 0.27,
+          0,
+          1,
+        );
+        if (meta.leverVisualRoot) meta.leverVisualRoot.position.z = -pullOffset;
+        meta.leverVisualPivot.rotation.x = MathUtils.degToRad(56) * progress;
       }
     }
     CONTROLLERS.get(this.world)?.tick(delta, time);
@@ -360,6 +394,10 @@ const palette = {
   purple: 0x9d7bff,
   white: 0xfff8e8,
 } as const;
+
+const DESKTOP_ROOT_HOME = new Vector3(0, 0.48, -1.58);
+const TABLE_WIDTH = 4.7;
+const TABLE_DEPTH = 2.72;
 
 const statusColors: Record<SceneEvidenceStatus, string> = {
   untested: "#80939b",
@@ -694,6 +732,52 @@ function drawSpeechBubble(
   });
 }
 
+function drawPlacementBubble(
+  panel: CanvasPanel,
+  phase: "aiming" | "adjusting" | "confirmed",
+): void {
+  const copy =
+    phase === "aiming"
+      ? {
+          kicker: "MIXED REALITY SETUP",
+          title: "Place the workbench",
+          body: "Point at a clear horizontal table, then squeeze the trigger once to hold the preview.",
+        }
+      : phase === "adjusting"
+        ? {
+            kicker: "POSITION LOCKED",
+            title: "Rotate, then confirm",
+            body: "Use the right thumbstick to face the lab toward you. Squeeze the trigger again when it feels comfortable.",
+          }
+        : {
+            kicker: "WORKBENCH READY",
+            title: "Start testing",
+            body: "Point, hold, move, and release objects. The same physical actions work on desktop, touch, and XR.",
+          };
+
+  panel.render((context) => {
+    const { width, height } = panel.canvas;
+    context.shadowColor = "rgba(0, 0, 0, 0.45)";
+    context.shadowBlur = 28;
+    context.fillStyle = "rgba(9, 23, 30, 0.96)";
+    roundedRect(context, 20, 20, width - 40, height - 40, 42);
+    context.fill();
+    context.shadowBlur = 0;
+    context.strokeStyle = phase === "confirmed" ? "#a9dc52" : "#62e2ef";
+    context.lineWidth = 9;
+    context.stroke();
+    context.fillStyle = "#ffc84a";
+    context.font = "800 42px system-ui, sans-serif";
+    context.fillText(copy.kicker, 70, 82);
+    context.fillStyle = "#fff8e8";
+    context.font = "900 61px system-ui, sans-serif";
+    context.fillText(copy.title, 70, 158);
+    context.fillStyle = "#d9e4df";
+    context.font = "500 36px system-ui, sans-serif";
+    wrapText(context, copy.body, 70, 218, width - 140, 49, 3);
+  });
+}
+
 function drawEvidenceBoard(panel: CanvasPanel, view: KaijuQaSceneView): void {
   panel.render((context) => {
     const { width, height } = panel.canvas;
@@ -931,6 +1015,7 @@ export function createKaijuQaScene(
   const ownedTextures: Texture[] = [];
   const panels: CanvasPanel[] = [];
   const metas: ManipulationMeta[] = [];
+  const callouts: DraggableCallout<ScenePointerEvent>[] = [];
 
   const ownGeometry = <T extends BufferGeometry>(geometry: T): T => {
     ownedGeometries.push(geometry);
@@ -1012,14 +1097,29 @@ export function createKaijuQaScene(
 
   const root = new Group();
   root.name = "KaijuQaToyLab";
-  root.position.set(0, 0.8, -1.45);
+  root.position.copy(DESKTOP_ROOT_HOME);
   const rootEntity = world.createTransformEntity(root);
+  let rootHomeParent: Object3D | null = null;
   ownedEntities.push(rootEntity);
 
+  const detachRootFromAnchor = (): void => {
+    const anchored = rootEntity.hasComponent(XRAnchor);
+    if (!anchored && !rootHomeParent && root.parent) rootHomeParent = root.parent;
+    if (anchored) rootEntity.removeComponent(XRAnchor);
+    const destination = rootHomeParent ?? world.scene;
+    if (root.parent !== destination) destination.attach(root);
+  };
+
   const table = new Group();
-  const edge = mesh(ownGeometry(new BoxGeometry(3.6, 0.18, 2.25)), materials.edge);
+  const edge = mesh(
+    ownGeometry(new BoxGeometry(TABLE_WIDTH, 0.18, TABLE_DEPTH)),
+    materials.edge,
+  );
   edge.position.y = -0.12;
-  const surface = mesh(ownGeometry(new BoxGeometry(3.46, 0.12, 2.12)), materials.bench);
+  const surface = mesh(
+    ownGeometry(new BoxGeometry(TABLE_WIDTH - 0.16, 0.12, TABLE_DEPTH - 0.16)),
+    materials.bench,
+  );
   surface.position.y = -0.02;
   table.add(edge, surface);
   root.add(table);
@@ -1027,13 +1127,16 @@ export function createKaijuQaScene(
   const backdropTexture = AssetManager.getTexture("labBackdrop");
   if (!backdropTexture) throw new Error("Kaiju QA lab backdrop was not preloaded");
   backdropTexture.colorSpace = SRGBColorSpace;
+  backdropTexture.repeat.set(1, 0.78);
+  backdropTexture.offset.set(0, 0.11);
+  backdropTexture.needsUpdate = true;
   const backdropMaterial = ownMaterial(new MeshBasicMaterial({
     map: backdropTexture,
     side: DoubleSide,
     toneMapped: false,
   }));
-  const backdrop = mesh(ownGeometry(new PlaneGeometry(5.8, 3.86)), backdropMaterial);
-  backdrop.position.set(0, 1.75, -1.58);
+  const backdrop = mesh(ownGeometry(new PlaneGeometry(8.28, 4.3)), backdropMaterial);
+  backdrop.position.set(0, 1.82, -1.76);
   backdrop.renderOrder = -20;
   root.add(backdrop);
 
@@ -1041,22 +1144,22 @@ export function createKaijuQaScene(
   const leftCrane = cloneAsset("labRobotArmA");
   prepareImportedModel(leftCrane, importedMaterials, 0.54);
   fitObject(leftCrane, 0.8);
-  leftCrane.position.set(-1.5, 0.02, -0.2);
+  leftCrane.position.set(-2.04, 0.02, -0.38);
   leftCrane.rotation.y = 0.52;
   const rightCrane = cloneAsset("labRobotArmB");
   prepareImportedModel(rightCrane, importedMaterials, 0.54);
   fitObject(rightCrane, 0.78);
-  rightCrane.position.set(1.5, 0.02, -0.22);
+  rightCrane.position.set(2.04, 0.02, -0.4);
   rightCrane.rotation.y = -0.58;
   const scanner = cloneAsset("labScanner");
   prepareImportedModel(scanner, importedMaterials, 0.5);
   fitObject(scanner, 0.42);
-  scanner.position.set(-1.48, 0.02, 0.46);
+  scanner.position.set(-2.03, 0.02, 0.68);
   scanner.rotation.y = 0.28;
   const screen = cloneAsset("labScreen");
   prepareImportedModel(screen, importedMaterials, 0.46);
   fitObject(screen, 0.38);
-  screen.position.set(1.46, 0.02, 0.45);
+  screen.position.set(2.03, 0.02, 0.62);
   screen.rotation.y = -0.25;
   labDressing.add(leftCrane, rightCrane, scanner, screen);
   root.add(labDressing);
@@ -1188,24 +1291,38 @@ export function createKaijuQaScene(
   propSocket.add(propSocketRing, propGhost);
   root.add(propSocket);
 
-  const ruleSocket = new Group();
-  const ruleSocketBase = mesh(ownGeometry(new BoxGeometry(0.52, 0.055, 0.35)), materials.edge);
-  ruleSocketBase.position.y = 0.03;
-  const ruleSocketGlow = mesh(ownGeometry(new BoxGeometry(0.46, 0.02, 0.29)), materials.cyan);
-  ruleSocketGlow.position.y = 0.07;
-  ruleSocket.add(ruleSocketBase, ruleSocketGlow);
-  ruleSocket.position.set(0.68, 0, 0.62);
-  root.add(ruleSocket);
+  const ruleFixture = createRuleRack({
+    ownGeometry,
+    ownMaterial,
+    colors: {
+      frame: palette.benchEdge,
+      slot: 0x60717a,
+      marker: 0xc8d5d8,
+      dock: palette.benchEdge,
+      dockAccent: palette.cyan,
+    },
+  });
+  const ruleSocket = ruleFixture.installationDock;
+  const ruleSocketGlow = ruleSocket.getObjectByName(
+    "rule-installation-dock-pad",
+  ) as Mesh;
+  root.add(ruleFixture.root);
 
-  const evidencePanel = createCanvasPanel(1.42, 0.72, 1024);
+  const evidenceDesktopHome = new Vector3(1.18, 0.92, -0.94);
+  const evidenceMobileHome = new Vector3(0.68, 0.72, -0.94);
+  const evidencePanel = createCanvasPanel(1.56, 0.78, 1024);
+  evidencePanel.mesh.name = "evidence-card";
   panels.push(evidencePanel);
-  evidencePanel.mesh.position.set(0.76, 0.72, -0.82);
+  evidencePanel.mesh.position.copy(evidenceDesktopHome);
   evidencePanel.mesh.rotation.x = -0.08;
   root.add(evidencePanel.mesh);
 
-  const speechPanel = createCanvasPanel(1.46, 0.6, 1024);
+  const speechDesktopHome = new Vector3(-1.18, 0.96, -0.2);
+  const speechMobileHome = new Vector3(-0.68, 1.02, -0.2);
+  const speechPanel = createCanvasPanel(1.62, 0.64, 1024);
+  speechPanel.mesh.name = "instruction-card";
   panels.push(speechPanel);
-  speechPanel.mesh.position.set(-0.73, 1.14, -0.08);
+  speechPanel.mesh.position.copy(speechDesktopHome);
   root.add(speechPanel.mesh);
 
   const tutorialArrow = cloneAsset("labArrow");
@@ -1312,6 +1429,38 @@ export function createKaijuQaScene(
   helmet.rotation.x = -0.04;
   kaiju.add(helmet);
 
+  const eyeInk = ownMaterial(
+    new MeshPhysicalMaterial({
+      color: 0x0b1620,
+      roughness: 0.18,
+      metalness: 0,
+      clearcoat: 0.9,
+      clearcoatRoughness: 0.12,
+    }),
+  );
+  for (const x of [-0.105, 0.105]) {
+    const eye = new Group();
+    const white = mesh(
+      ownGeometry(new SphereGeometry(0.055, 24, 18)),
+      materials.white,
+    );
+    white.scale.set(1, 1.14, 0.55);
+    const pupil = mesh(
+      ownGeometry(new SphereGeometry(0.03, 22, 16)),
+      eyeInk,
+    );
+    pupil.position.z = 0.052;
+    pupil.scale.set(0.78, 1.08, 0.42);
+    const glint = mesh(
+      ownGeometry(new SphereGeometry(0.009, 12, 8)),
+      materials.white,
+    );
+    glint.position.set(-0.013, 0.018, 0.078);
+    eye.add(white, pupil, glint);
+    eye.position.set(x * 0.72, 0.43, 0.19);
+    kaiju.add(eye);
+  }
+
   const mixer = new AnimationMixer(kaijuModel);
   const actions = new Map<string, AnimationAction>();
   for (const clip of kaijuAsset.animations) {
@@ -1385,6 +1534,7 @@ export function createKaijuQaScene(
   root.add(releaseCelebration);
 
   const releaseBadge = createCanvasPanel(1.08, 0.28, 1024);
+  releaseBadge.mesh.name = "release-card";
   panels.push(releaseBadge);
   releaseBadge.mesh.position.set(0, 0.82, 0.44);
   releaseBadge.mesh.rotation.x = -0.08;
@@ -1392,6 +1542,109 @@ export function createKaijuQaScene(
   releaseBadge.mesh.renderOrder = 35;
   releaseBadge.mesh.visible = false;
   root.add(releaseBadge.mesh);
+
+  const releaseConnectorTarget = new Group();
+  releaseConnectorTarget.position.set(2.02, 0.36, 0.12);
+  root.add(releaseConnectorTarget);
+  const evidenceConnectorTarget = new Group();
+  evidenceConnectorTarget.position.set(0.45, 0.3, -0.05);
+  root.add(evidenceConnectorTarget);
+
+  const createPanelCallout = (
+    panel: CanvasPanel,
+    target: Object3D,
+    home: Vector3,
+    localSpace: Object3D = root,
+    entityParent: Entity = rootEntity,
+    bounds: {
+      readonly min: { readonly x: number; readonly y: number; readonly z: number };
+      readonly max: { readonly x: number; readonly y: number; readonly z: number };
+    } = {
+      min: { x: -2.12, y: 0.54, z: -1.18 },
+      max: { x: 2.12, y: 1.78, z: 1.16 },
+    },
+  ): DraggableCallout<ScenePointerEvent> => {
+    panel.mesh.intersectChildren = true;
+    const panelEntity = world.createTransformEntity(panel.mesh, { parent: entityParent });
+    panelEntity.addComponent(RayInteractable);
+    ownedEntities.push(panelEntity);
+    pointerEvents(panel.mesh, true);
+    const currentRay = (pointerEvent: ScenePointerEvent): Ray => {
+      if (pointerEvent.pointerType.startsWith("screen") && pointerEvent.pointer) {
+        tmpPointer.copy(pointerEvent.pointer);
+        world.camera.updateMatrixWorld(true);
+        tmpScreenOrigin.setFromMatrixPosition(world.camera.matrixWorld);
+        tmpScreenDirection
+          .set(tmpPointer.x, tmpPointer.y, 0.5)
+          .unproject(world.camera)
+          .sub(tmpScreenOrigin)
+          .normalize();
+        return tmpScreenRay.set(tmpScreenOrigin, tmpScreenDirection);
+      }
+      return pointerEvent.ray;
+    };
+    const controller = createDraggableCallout<ScenePointerEvent>({
+      card: panel.mesh,
+      camera: world.camera,
+      localSpace,
+      home: { x: home.x, y: home.y, z: home.z },
+      bounds,
+      target,
+      getRay: (event) => currentRay(event),
+      reducedMotion: initialReducedMotion,
+      connector: {
+        parent: localSpace,
+        color: 0x62e2ef,
+        opacity: 0.68,
+        depthTest: true,
+        renderOrder: 18,
+      },
+      capturePointer: (pointerId) => {
+        (panel.mesh as CapturableObject).setPointerCapture(pointerId);
+      },
+      releasePointer: (pointerId) => {
+        const capturable = panel.mesh as CapturableObject;
+        if (capturable.hasPointerCapture(pointerId)) {
+          capturable.releasePointerCapture(pointerId);
+        }
+      },
+    });
+    panel.mesh.addEventListener("pointerdown", controller.pointerDown);
+    panel.mesh.addEventListener("pointermove", controller.pointerMove);
+    panel.mesh.addEventListener("pointerup", controller.pointerUp);
+    panel.mesh.addEventListener("pointercancel", controller.pointerCancel);
+    callouts.push(controller);
+    return controller;
+  };
+
+  const speechCallout = createPanelCallout(
+    speechPanel,
+    tutorialArrow,
+    speechDesktopHome,
+  );
+  const evidenceCallout = createPanelCallout(
+    evidencePanel,
+    evidenceConnectorTarget,
+    evidenceDesktopHome,
+  );
+  const releaseCallout = createPanelCallout(
+    releaseBadge,
+    releaseConnectorTarget,
+    releaseBadge.mesh.position.clone(),
+  );
+  let compactPanelLayout = false;
+  const updateResponsiveCallouts = (force = false): void => {
+    const nextCompact = world.camera.aspect < 0.82;
+    if (!force && nextCompact === compactPanelLayout) return;
+    compactPanelLayout = nextCompact;
+    const speechHome = nextCompact ? speechMobileHome : speechDesktopHome;
+    const evidenceHome = nextCompact ? evidenceMobileHome : evidenceDesktopHome;
+    speechPanel.mesh.scale.setScalar(nextCompact ? 0.76 : 1);
+    evidencePanel.mesh.scale.setScalar(nextCompact ? 0.76 : 1);
+    speechCallout.setHome(speechHome, true);
+    evidenceCallout.setHome(evidenceHome, true);
+  };
+  updateResponsiveCallouts(true);
 
   const contactStar = new Group();
   for (const rotation of [0, Math.PI / 4, Math.PI / 2, -Math.PI / 4]) {
@@ -1469,11 +1722,11 @@ export function createKaijuQaScene(
     "rain-module": new Vector3(-0.02, 0.055, 0.02),
   };
   const ruleHomes: Record<SceneRuleId, Vector3> = {
-    broad: new Vector3(-0.72, 0.055, 0.78),
-    alternate: new Vector3(0, 0.055, 0.78),
-    targeted: new Vector3(0.72, 0.055, 0.78),
+    broad: ruleFixture.cartridgeHomes.broad.clone(),
+    alternate: ruleFixture.cartridgeHomes.alternate.clone(),
+    targeted: ruleFixture.cartridgeHomes.targeted.clone(),
   };
-  const ruleTarget = new Vector3(0.68, 0.055, 0.62);
+  const ruleTarget = ruleFixture.installationDockLocation.clone();
 
   type RouteKey = "established-a" | "established-b" | "hazard";
   interface RouteVisual {
@@ -1694,8 +1947,15 @@ export function createKaijuQaScene(
     group.add(marker);
 
     const badge = createCanvasPanel(0.44, 0.17, 640);
+    badge.mesh.name = `route-card-${key}`;
     panels.push(badge);
-    badge.mesh.position.set(0, 0.32, 0.015);
+    const badgeOffset =
+      key === "established-a"
+        ? new Vector3(-0.23, 0.34, 0.04)
+        : key === "established-b"
+          ? new Vector3(0.2, 0.4, -0.04)
+          : new Vector3(0.24, 0.31, 0.05);
+    badge.mesh.position.copy(badgeOffset);
     badge.mesh.rotation.x = -0.1;
     badge.mesh.material.depthTest = false;
     badge.mesh.renderOrder = 32;
@@ -1744,6 +2004,22 @@ export function createKaijuQaScene(
     hazard: createRouteVisual("hazard"),
   };
 
+  for (const route of Object.values(routeVisuals)) {
+    const markerEntity = world.createTransformEntity(route.marker, { parent: rootEntity });
+    ownedEntities.push(markerEntity);
+    createPanelCallout(
+      route.badge,
+      route.marker,
+      route.badge.mesh.position.clone(),
+      route.marker,
+      markerEntity,
+      {
+        min: { x: -0.92, y: 0.22, z: -0.36 },
+        max: { x: 0.92, y: 1.08, z: 0.36 },
+      },
+    );
+  }
+
   const configureSegments = (
     segments: readonly Mesh[],
     points: readonly Vector3[],
@@ -1781,7 +2057,7 @@ export function createKaijuQaScene(
     view: KaijuQaSceneView,
   ): string => {
     if (status === "regression") {
-      return key === "established-a" ? "NOW LATE" : "BLOCKED";
+      return key === "established-a" ? "PRIOR PASS LATE" : "PRIOR PASS BLOCKED";
     }
     if (status === "pass") {
       if (key === "hazard" && view.selectedRule) return "PROTECTED";
@@ -1824,6 +2100,7 @@ export function createKaijuQaScene(
     Object.values(route.markerStates).forEach((state) => {
       state.visible = false;
     });
+    route.marker.visible = status !== "untested" && status !== "ready";
     const markerState =
       status === "pass"
         ? route.markerStates.pass
@@ -1840,11 +2117,15 @@ export function createKaijuQaScene(
     pathPoint(points, endFraction, route.marker.position);
     route.marker.position.y = 0.24;
     drawRouteBadge(route.badge, item?.label ?? "Scenario", status, resultWord(route.key, status, view));
+    route.badge.mesh.visible =
+      status === "fail" || status === "regression" || status === "stale";
 
     pathPoint(points, 1, route.priorBadge.mesh.position);
     route.priorBadge.mesh.position.y = 0.22;
     route.priorBadge.mesh.position.z += route.key === "established-a" ? 0.08 : -0.08;
-    route.priorBadge.mesh.visible = regression;
+    // The prior-pass state is folded into the draggable route result card so
+    // regression evidence never creates a second, non-draggable popup.
+    route.priorBadge.mesh.visible = false;
 
     if (route.actor) {
       const showActor = status === "pass" || regression;
@@ -1931,6 +2212,11 @@ export function createKaijuQaScene(
     updateRouteVisual(routeVisuals["established-a"], view.evidence[0], view);
     updateRouteVisual(routeVisuals["established-b"], view.evidence[1], view);
     updateRouteVisual(routeVisuals.hazard, view.evidence[2], view);
+    evidenceConnectorTarget.position.copy(routeVisuals.hazard.marker.position);
+    evidenceConnectorTarget.position.y = 0.38;
+    evidenceCallout.setConnectorVisible(
+      view.evidence.some((item) => item.status !== "untested"),
+    );
 
     broadBoundary.visible = view.selectedRule === "broad";
     alternateBoundary.visible = view.selectedRule === "alternate";
@@ -1996,10 +2282,22 @@ export function createKaijuQaScene(
     };
     const pointerDown = (event: unknown): void => {
       const pointerEvent = asScenePointerEvent(event);
-      if (!pointerEvent || !meta.enabled || meta.activePointerId !== null) return;
+      if (
+        !pointerEvent ||
+        !meta.enabled ||
+        meta.activePointerId !== null ||
+        (pointerEvent.pointerType.startsWith("screen") &&
+          typeof pointerEvent.button === "number" &&
+          pointerEvent.button !== 0)
+      ) return;
       pointerEvent.stopPropagation();
       meta.activePointerId = pointerEvent.pointerId;
       meta.dragging = true;
+      if (meta.kind === "lever" || meta.kind === "stamp") {
+        // A fresh grab starts a fresh physical action even if the spring-back
+        // animation has not quite reached its final frame yet.
+        meta.triggered = false;
+      }
       meta.returnStartedAt = null;
       meta.halo.visible = true;
 
@@ -2009,10 +2307,12 @@ export function createKaijuQaScene(
         meta.kind === "stamp" ? meta.home.z : 0,
       );
       root.localToWorld(tmpPlanePoint);
-      meta.dragPlane.setFromNormalAndCoplanarPoint(
-        meta.kind === "stamp" ? verticalNormal : tabletopNormal,
-        tmpPlanePoint,
-      );
+      root.getWorldQuaternion(tmpRootQuaternion);
+      tmpDragPlaneNormal
+        .copy(meta.kind === "stamp" ? verticalNormal : tabletopNormal)
+        .applyQuaternion(tmpRootQuaternion)
+        .normalize();
+      meta.dragPlane.setFromNormalAndCoplanarPoint(tmpDragPlaneNormal, tmpPlanePoint);
       if (currentRay(pointerEvent).intersectPlane(meta.dragPlane, tmpWorld)) {
         tmpLocal.copy(tmpWorld);
         root.worldToLocal(tmpLocal);
@@ -2102,6 +2402,7 @@ export function createKaijuQaScene(
 
   const propMetas = new Map<ScenePropId, ManipulationMeta>();
   for (const [id, object] of Object.entries(propObjects) as Array<[ScenePropId, Group]>) {
+    object.name = `prop-${id}`;
     const hitTarget = mesh(
       ownGeometry(new BoxGeometry(0.42, 0.34, 0.42)),
       ownMaterial(new MeshBasicMaterial({
@@ -2127,6 +2428,7 @@ export function createKaijuQaScene(
 
   const ruleMetas = new Map<SceneRuleId, ManipulationMeta>();
   for (const [id, object] of ruleObjects) {
+    object.name = `rule-${id}`;
     const hitTarget = mesh(
       ownGeometry(new BoxGeometry(0.54, 0.34, 0.38)),
       ownMaterial(new MeshBasicMaterial({
@@ -2144,46 +2446,60 @@ export function createKaijuQaScene(
     ruleMetas.set(id, registerManipulation("rule", id, object, ruleHomes[id], ruleTarget, 0.29));
   }
 
-  const leverBase = cloneAsset("labLever");
-  prepareImportedModel(leverBase, importedMaterials, 0.52);
-  fitObject(leverBase, 0.42);
-  leverBase.position.set(1.38, 0.02, 0.72);
-  leverBase.rotation.y = -0.3;
-  root.add(leverBase);
+  const leverLabel = createCanvasPanel(0.42, 0.12, 720);
+  panels.push(leverLabel);
+  leverLabel.render((context) => {
+    const { width, height } = leverLabel.canvas;
+    context.fillStyle = "#101a22";
+    roundedRect(context, 8, 8, width - 16, height - 16, 30);
+    context.fill();
+    context.strokeStyle = "#62e2ef";
+    context.lineWidth = 8;
+    context.stroke();
+    context.fillStyle = "#fff8e8";
+    context.font = "900 76px system-ui, sans-serif";
+    context.textAlign = "center";
+    context.fillText("RUN TESTS", width / 2, height / 2 + 27);
+    context.textAlign = "left";
+  });
+  leverLabel.mesh.material.depthTest = false;
+  leverLabel.mesh.renderOrder = 34;
+  const leverFixture = createRunTestsLever({
+    ownGeometry,
+    ownMaterial,
+    createLabelMesh: () => leverLabel.mesh,
+    colors: {
+      base: palette.benchEdge,
+      metal: 0xc8d5d8,
+      handle: palette.ink,
+      accent: palette.cyan,
+      labelPlate: palette.ink,
+    },
+    pulledAngle: MathUtils.degToRad(56),
+  });
+  leverFixture.hitTarget.name = "lever-drag-target";
   const leverHandle = new Group();
-  const leverStem = mesh(ownGeometry(new CylinderGeometry(0.035, 0.045, 0.34, 14)), materials.edge);
-  leverStem.rotation.x = Math.PI / 2;
-  const leverKnob = mesh(ownGeometry(new SphereGeometry(0.09, 18, 12)), materials.cyan);
-  leverKnob.position.z = -0.19;
-  leverHandle.add(leverStem, leverKnob);
-  const leverHitTarget = mesh(
-    ownGeometry(new BoxGeometry(0.28, 0.34, 0.42)),
-    ownMaterial(new MeshBasicMaterial({
-      transparent: true,
-      opacity: 0,
-      depthWrite: false,
-      colorWrite: false,
-    })),
-  );
-  leverHitTarget.name = "lever-drag-target";
-  leverHitTarget.castShadow = false;
-  leverHitTarget.receiveShadow = false;
-  leverHandle.add(leverHitTarget);
+  leverHandle.name = "run-tests-lever-interaction";
+  leverHandle.add(leverFixture.root);
   const leverMeta = registerManipulation(
     "lever",
     "lever",
     leverHandle,
-    new Vector3(1.38, 0.24, 0.73),
-    new Vector3(1.38, 0.24, 0.48),
-    0.18,
+    new Vector3(1.68, 0.02, 0.78),
+    new Vector3(1.68, 0.02, 1.05),
+    0.25,
   );
+  leverMeta.leverVisualPivot = leverFixture.pivot;
+  leverMeta.leverVisualRoot = leverFixture.root;
+  const leverBase = leverFixture.root;
 
   const stampBase = cloneAsset("labButton");
   prepareImportedModel(stampBase, importedMaterials, 0.48);
   fitObject(stampBase, 0.34);
-  stampBase.position.set(1.38, 0.02, 0.22);
+  stampBase.position.set(2.02, 0.02, 0.12);
   root.add(stampBase);
   const stampHandle = new Group();
+  stampHandle.name = "release-stamp-interaction";
   const stampStem = mesh(ownGeometry(new CylinderGeometry(0.055, 0.065, 0.24, 16)), materials.edge);
   stampStem.position.y = -0.1;
   const stampKnob = mesh(ownGeometry(new SphereGeometry(0.105, 20, 14)), materials.yellow);
@@ -2205,14 +2521,16 @@ export function createKaijuQaScene(
     "stamp",
     "stamp",
     stampHandle,
-    new Vector3(1.38, 0.34, 0.22),
-    new Vector3(1.38, 0.2, 0.22),
+    new Vector3(2.02, 0.34, 0.12),
+    new Vector3(2.02, 0.2, 0.12),
     0.2,
   );
 
   let currentView: KaijuQaSceneView | null = null;
   let reducedMotion = initialReducedMotion;
   let suspended = false;
+  let mixedReality = false;
+  let placementPhase: "aiming" | "adjusting" | "confirmed" | "inactive" = "inactive";
   let disposed = false;
   let cueStartedAt = performance.now();
   let lastCueId = -1;
@@ -2224,6 +2542,21 @@ export function createKaijuQaScene(
     meta.enabled = enabled;
     meta.halo.visible = enabled;
     pointerEvents(meta.object, enabled);
+  };
+
+  const applyExpectedInteractivity = (view: KaijuQaSceneView): void => {
+    for (const meta of metas) setMetaEnabled(meta, false);
+    if (placementPhase === "aiming" || placementPhase === "adjusting") return;
+    if (view.expected?.kind === "prop") {
+      const meta = propMetas.get(view.expected.id);
+      if (meta && !view.placedProps.includes(view.expected.id)) setMetaEnabled(meta, true);
+    } else if (view.expected?.kind === "rule") {
+      for (const meta of ruleMetas.values()) setMetaEnabled(meta, true);
+    } else if (view.expected?.kind === "lever") {
+      setMetaEnabled(leverMeta, true);
+    } else if (view.expected?.kind === "stamp") {
+      setMetaEnabled(stampMeta, view.releaseReady || view.levelReleased);
+    }
   };
 
   const resetKaiju = (): void => {
@@ -2246,21 +2579,25 @@ export function createKaijuQaScene(
     if (view.expected?.kind === "prop") {
       const meta = propMetas.get(view.expected.id);
       if (meta) {
+        speechCallout.setTarget(meta.eventTarget);
         tutorialArrow.position.copy(meta.object.position).setY(0.82);
         tutorialArrowBaseY = tutorialArrow.position.y;
         destinationArrow.position.copy(meta.target).setY(0.62);
         destinationArrowBaseY = destinationArrow.position.y;
       }
     } else if (view.expected?.kind === "rule") {
+      speechCallout.setTarget(ruleSocket);
       tutorialArrow.position.set(0, 0.74, 0.78);
       tutorialArrowBaseY = tutorialArrow.position.y;
       destinationArrow.position.set(ruleTarget.x, 0.62, ruleTarget.z);
       destinationArrowBaseY = destinationArrow.position.y;
     } else if (view.expected?.kind === "lever") {
-      tutorialArrow.position.set(1.38, 0.76, 0.58);
+      speechCallout.setTarget(leverMeta.eventTarget);
+      tutorialArrow.position.set(1.68, 1.04, 0.8);
       tutorialArrowBaseY = tutorialArrow.position.y;
     } else if (view.expected?.kind === "stamp") {
-      tutorialArrow.position.set(1.38, 0.76, 0.22);
+      speechCallout.setTarget(stampMeta.eventTarget);
+      tutorialArrow.position.set(2.02, 0.78, 0.12);
       tutorialArrowBaseY = tutorialArrow.position.y;
     }
   };
@@ -2301,7 +2638,9 @@ export function createKaijuQaScene(
 
   const tick = (delta: number, time: number): void => {
     if (disposed || suspended || !currentView) return;
+    updateResponsiveCallouts();
     mixer.update(delta);
+    for (const callout of callouts) callout.update(delta);
     const now = performance.now();
     const elapsed = (now - cueStartedAt) / 1000;
     const pulse = reducedMotion ? 1 : 1 + Math.sin(time * 3.4) * 0.06;
@@ -2311,7 +2650,7 @@ export function createKaijuQaScene(
     destinationArrow.position.y = destinationArrowBaseY + (reducedMotion ? 0 : Math.sin(time * 4 + 1.2) * 0.022);
     tutorialArrow.rotation.y = Math.sin(time * 1.7) * 0.12;
     destinationArrow.rotation.y = -Math.sin(time * 1.7) * 0.12;
-    speechPanel.mesh.quaternion.copy(world.camera.quaternion);
+    if (!speechCallout.dragging) speechPanel.mesh.quaternion.copy(world.camera.quaternion);
     dust.rotation.y += delta * 0.025;
 
     const dustPositions = dust.geometry.getAttribute("position") as Float32BufferAttribute;
@@ -2405,6 +2744,7 @@ export function createKaijuQaScene(
       }
 
       const showRules = view.expected?.kind === "rule" || view.selectedRule !== null;
+      ruleFixture.root.visible = showRules;
       for (const option of view.ruleOptions) {
         rulePanels.get(option.id) && drawRuleLabel(rulePanels.get(option.id)!, option);
       }
@@ -2437,9 +2777,23 @@ export function createKaijuQaScene(
       updateExpectedVisuals(view);
       setCue(view);
       updateCausalVisuals(view);
+      applyExpectedInteractivity(view);
+      if (placementPhase === "aiming" || placementPhase === "adjusting") {
+        drawPlacementBubble(speechPanel, placementPhase);
+        evidencePanel.mesh.visible = false;
+        tutorialArrow.visible = false;
+        destinationArrow.visible = false;
+      } else {
+        evidencePanel.mesh.visible = true;
+      }
     },
     setSuspended(nextSuspended) {
       suspended = nextSuspended;
+      for (const callout of callouts) {
+        callout.setEnabled(
+          !nextSuspended && placementPhase !== "aiming" && placementPhase !== "adjusting",
+        );
+      }
       tutorialArrow.visible = !nextSuspended && Boolean(currentView?.expected);
       destinationArrow.visible =
         !nextSuspended &&
@@ -2457,11 +2811,76 @@ export function createKaijuQaScene(
     },
     setReducedMotion(nextReducedMotion) {
       reducedMotion = nextReducedMotion;
+      for (const callout of callouts) callout.setReducedMotion(nextReducedMotion);
       if (currentView) updateCausalVisuals(currentView);
     },
+    setMixedReality(active, passthroughAvailable = true) {
+      mixedReality = active;
+      backdrop.visible = !active || !passthroughAvailable;
+      if (!active) {
+        detachRootFromAnchor();
+        placementPhase = "inactive";
+        root.visible = true;
+        root.position.copy(DESKTOP_ROOT_HOME);
+        root.quaternion.identity();
+        root.scale.setScalar(1);
+        evidencePanel.mesh.visible = true;
+        for (const callout of callouts) callout.setEnabled(true);
+        if (currentView) {
+          drawSpeechBubble(speechPanel, currentView);
+          drawEvidenceBoard(evidencePanel, currentView);
+          updateExpectedVisuals(currentView);
+          applyExpectedInteractivity(currentView);
+        }
+      }
+    },
+    setWorkbenchPlacement(phase, pose) {
+      placementPhase = phase;
+      if (phase === "aiming") detachRootFromAnchor();
+      if (pose) {
+        root.position.copy(pose.position);
+        root.quaternion.copy(pose.quaternion);
+        root.scale.setScalar(pose.scale);
+        root.visible = true;
+      } else if (mixedReality && phase === "aiming") {
+        root.position.set(0, 0.72, -1.1);
+        root.quaternion.identity();
+        root.scale.setScalar(0.3);
+        root.visible = true;
+      }
+      if (phase === "confirmed" && !rootEntity.hasComponent(XRAnchor)) {
+        rootEntity.addComponent(XRAnchor);
+      }
+      speechCallout.setTarget(table);
+
+      const placing = phase === "aiming" || phase === "adjusting";
+      for (const callout of callouts) callout.setEnabled(!placing && !suspended);
+      evidencePanel.mesh.visible = !placing;
+      tutorialArrow.visible = !placing && !suspended && Boolean(currentView?.expected);
+      destinationArrow.visible =
+        !placing &&
+        !suspended &&
+        (currentView?.expected?.kind === "prop" || currentView?.expected?.kind === "rule");
+      if (phase !== "inactive") drawPlacementBubble(speechPanel, phase);
+      if (placing) {
+        for (const meta of metas) setMetaEnabled(meta, false);
+      } else if (currentView) {
+        if (phase === "confirmed") {
+          drawPlacementBubble(speechPanel, "confirmed");
+        } else {
+          drawSpeechBubble(speechPanel, currentView);
+          updateExpectedVisuals(currentView);
+        }
+        drawEvidenceBoard(evidencePanel, currentView);
+        applyExpectedInteractivity(currentView);
+      }
+    },
     resetView() {
-      root.position.set(0, 0.8, -1.45);
-      root.rotation.set(0, 0, 0);
+      if (!mixedReality) {
+        root.position.copy(DESKTOP_ROOT_HOME);
+        root.rotation.set(0, 0, 0);
+      }
+      for (const callout of callouts) callout.reset(true);
     },
     getDebugTargets() {
       const result: Record<string, KaijuQaSceneDebugPoint> = {};
@@ -2507,6 +2926,12 @@ export function createKaijuQaScene(
       projectGrabTarget("lever-pull", leverMeta);
       projectObject("stamp", stampMeta.eventTarget);
       projectGrabTarget("stamp-press", stampMeta);
+      projectObject("card-instruction", speechPanel.mesh);
+      projectObject("card-evidence", evidencePanel.mesh);
+      projectObject("card-release", releaseBadge.mesh);
+      for (const [key, route] of Object.entries(routeVisuals)) {
+        projectObject(`card-route-${key}`, route.badge.mesh);
+      }
       return result;
     },
     dispose() {
@@ -2527,6 +2952,7 @@ export function createKaijuQaScene(
         }
         INTERACTIONS.delete(meta.entity as object);
       }
+      for (const callout of callouts) callout.dispose();
       for (const entity of ownedEntities.slice().reverse()) entity.destroy();
       mixer.stopAllAction();
       for (const panel of panels) panel.dispose();

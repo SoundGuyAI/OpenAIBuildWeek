@@ -10,7 +10,7 @@ async function waitForScene(page: import("@playwright/test").Page) {
   });
 }
 
-test.describe("immersive VR availability feedback", () => {
+test.describe("mixed reality availability feedback", () => {
   test.setTimeout(240_000);
 
   test.afterEach(async ({ page }) => {
@@ -45,8 +45,8 @@ test.describe("immersive VR availability feedback", () => {
     const enterVr = page.locator("#enter-xr");
     await expect(enterVr).toHaveAttribute("data-xr-state", "unsupported");
     await expect(enterVr).toBeDisabled();
-    await expect(enterVr).toHaveText("VR unavailable");
-    await expect(page.getByRole("status")).toContainText(
+    await expect(enterVr).toHaveText("MR unavailable");
+    await expect(page.locator("#xr-status")).toContainText(
       "desktop or touch controls",
     );
     await expect(page.locator("body")).toHaveAttribute(
@@ -86,8 +86,8 @@ test.describe("immersive VR availability feedback", () => {
 
     await expect(enterVr).toHaveAttribute("data-xr-state", "launch-failed");
     await expect(enterVr).toBeEnabled();
-    await expect(enterVr).toHaveText("Retry VR");
-    await expect(page.getByRole("status")).toContainText("blocked or cancelled");
+    await expect(enterVr).toHaveText("Retry MR");
+    await expect(page.locator("#xr-status")).toContainText("blocked or cancelled");
     await expect(page.locator("body")).toHaveAttribute(
       "data-xr-state",
       "launch-failed",

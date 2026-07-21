@@ -547,4 +547,31 @@ test.describe("native mobile touch", () => {
     ]);
     assertCleanRuntime(observations, "native-touch-drag");
   });
+
+  test("keeps every rule cartridge and the dock reachable at mobile Stage 5", async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(900_000);
+    test.skip(
+      testInfo.project.name !== "mobile-chromium",
+      "Mobile Chromium-only layout check",
+    );
+    const observations = await openExperience(page);
+
+    await placeProp(page, "car", { type: "pull-lever" });
+    await pullLever(page, { type: "place-prop", prop: "tower" });
+    await placeProp(page, "tower", { type: "pull-lever" });
+    await pullLever(page, { type: "install-rule", rule: "broad" });
+
+    for (const key of [
+      "rule-broad",
+      "rule-alternate",
+      "rule-targeted",
+      "rule-socket",
+    ]) {
+      await debugPoint(page, key);
+    }
+    await expect(page.locator("#progress-label")).toHaveText("Training 5 / 9");
+    assertCleanRuntime(observations, "mobile-stage-5-layout");
+  });
 });

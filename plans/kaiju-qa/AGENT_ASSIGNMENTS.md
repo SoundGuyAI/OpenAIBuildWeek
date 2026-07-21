@@ -2,7 +2,7 @@
 
 Branch: `feature/kaiju-qa`
 Created: 2026-07-20T21:49:25.986Z
-Status: publication freeze; clean PR CI pending
+Status: playtest remediation complete; publication and clean PR CI pending
 
 ## Orchestrator-only paths
 
@@ -57,3 +57,21 @@ Status: publication freeze; clean PR CI pending
 | Poincare (`019f82cb-bee4-7730-b9cd-ebde70c03529`) | Learning-choice engineer | `src/kaiju-qa/game-model.ts`, `tests/model/kaiju-qa-model.test.mjs` | Complete; neutral rule choice and 8/8 model tests |
 | Averroes (`019f82d5-129f-7450-a361-56536cefb6cd`) | Causal-visual engineer | `src/kaiju-qa/scene.ts`, `src/kaiju-qa/canvas-panel.ts` | Complete; persistent causal routes/results, neutral cartridges, stronger districts and celebration |
 | Orchestrator + Locke (`019f82e7-a628-74e1-bdb2-57f78352dc60`) | Accessible-input/mobile implementation and review | `src/index.ts`, `index.html`, `src/styles.css` (orchestrator); read-only review (Locke) | Complete; keyboard and switch controls, semantic evidence, one live region, mobile utility fixes, and inverse narration action label |
+
+## Playtest remediation assignments
+
+The orchestrator retains `src/kaiju-qa/scene.ts`, `src/index.ts`,
+`src/xr-support.ts`, shared styles/configuration, integration, runtime control,
+evidence freeze, branch operations, and final acceptance. The following new
+scopes are disjoint and may be implemented in parallel.
+
+| Agent ID | Expert role | Exclusive write scope | Deliverable | Status |
+| --- | --- | --- | --- | --- |
+| Harvey (`019f842e-e316-7fc3-8e8e-b31e854fd5c0`) | IWSDK MR/passthrough architect | Read-only research | Pinned-0.4.2 implementation plan for passthrough, horizontal-surface workbench placement, capability fallback, and IWER verification | Complete; plan integrated into `mr-placement.ts`, `xr-capabilities.ts`, and final IWER retest |
+| Hilbert (`019f842e-e386-7443-aaca-bebc9b383027`) | Desktop camera/input engineer | `src/kaiju-qa/camera-navigation.ts`, `tests/model/camera-navigation.test.mjs` | Reusable WASD, mouse-look/orbit, drag-conflict guard, reset-view controller with deterministic tests | Complete; integrated and passing focused model/browser checks |
+| Lagrange (`019f842e-e498-7041-aff3-4ca4191eb1aa`) | Draggable callout engineer | `src/kaiju-qa/draggable-callout.ts`, `tests/model/draggable-callout.test.mjs` | Reusable world-space card dragging and live target-connector helper with reset/reduced-motion behavior | Complete; integrated for instruction/evidence/release/result cards and verified in IWER |
+| Hooke (`019f842e-e9ea-79e0-a99c-9bdd681b7632`) | Physical-control/layout engineer | `src/kaiju-qa/control-fixtures.ts`, `tests/model/control-fixtures.test.mjs` | Upright hinged RUN TESTS lever plus three-cartridge rack and separate installation dock builders | Complete; integrated with Stage 5 spacing and fresh-action spring handling |
+| Orchestrator | Remediation integration and publication | Shared scene/index/XR/config/evidence paths | Full-bleed composition, MR placement, lifecycle, E2E, IWER, evidence, PR update, and cleanup | Complete locally; 22/22 model checks, 6 applicable browser tests, 6 expected skips, build and IWER pass |
+
+After integration, separate browser and XR QA agents will own only their test
+spec/report paths and will not modify implementation code.

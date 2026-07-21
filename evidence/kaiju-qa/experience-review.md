@@ -7,6 +7,12 @@ Branch: `feature/kaiju-qa`
 Verdict: **CONDITIONAL APPROVE — no current experience or source blocker;
 clean PR CI remains the publication gate.**
 
+Playtest-remediation addendum: the later full-bleed composition, camera reset,
+hinged lever, separated cartridge rack/dock, draggable connected cards, and MR
+placement flow satisfy the supplied playtest notes. The final serialized
+installed-Chrome run passes six applicable tests with six expected project
+skips, and the final Quest 3 IWER placement/manipulation/lifecycle retest passes.
+
 This retest reviews the latest shared working-tree source and supplied post-fix
 browser/XR evidence. No IWSDK runtime was started for this review. No source,
 test, asset, manifest, branch, commit, or screenshot was changed.
@@ -73,11 +79,8 @@ interaction raycaster remains, so P1 is closed.
 
 ## Non-blocking residuals
 
-- **Clean-CI browser confirmation:** the latest local wrapper was defeated by
-  the saturated VM browser/runtime process pool. Existing desktop campaign,
-  invalid-drop, touch, typecheck, model, and build evidence found no current
-  gameplay failure. A clean serialized CI result remains the appropriate final
-  confirmation after P1 is corrected.
+- **PR CI confirmation:** the final local installed-Chrome run is clean; the
+  GitHub Actions repeat remains the required merge-environment confirmation.
 - **Physical Quest 3 testing:** IWER evidence does not certify real optics,
   tracking, reach, haptics, comfort, thermal behavior, controller loss, or
   sustained headset frame rate.

@@ -10,12 +10,16 @@ after the complete suite passes.
 
 The same interaction language runs from one IWSDK web codebase:
 
-- desktop: point, drag, place, pull, and press with the mouse;
+- desktop: point, drag, place, pull, and press with the mouse, with focus-scoped
+  WASD/right-drag camera movement and Reset View;
 - mobile: touch, move, and release directly on the 3D scene;
-- XR: point a controller ray, hold trigger to grab, move, and release.
+- XR/MR: place the workbench on a horizontal surface, then point a controller
+  ray, hold trigger to grab, move, and release.
 
 Gameplay never depends on a separate desktop-only menu. The small HTML layer is
 limited to captions, narration/replay, reset, reduced motion, and XR entry.
+Instruction and evidence cards can be moved out of the way directly, while live
+connector lines keep each card associated with its world target.
 
 ## The learning arc
 
@@ -100,6 +104,9 @@ review evidence lives in [`evidence/kaiju-qa`](evidence/kaiju-qa).
 - IWSDK `RayInteractable` entities provide shared pointer, touch, and XR-ray input.
 - Screen pointers derive a live camera ray from the current pointer position;
   XR continues to use the controller-provided ray.
+- `immersive-ar` placement uses hit test, horizontal-plane validation, optional
+  anchoring, and a manual translation/height/yaw fallback when MR capabilities
+  are unavailable.
 - Gameplay entities are created through the IWSDK world and use authored
   movement rather than physics or locomotion.
 - Rendering is a projection of deterministic state; animation cannot decide a
