@@ -137,7 +137,7 @@ try {
   await checkWithCursor(
     page,
     "#guardrail-freeze-near-buildings",
-    "label[for='guardrail-freeze-near-buildings']",
+    "#guardrail-freeze-near-buildings + .guardrail-choice",
     "Try the broad guardrail",
     300,
   );
@@ -146,7 +146,7 @@ try {
   await checkWithCursor(
     page,
     "#guardrail-slow-striped-zones",
-    "label[for='guardrail-slow-striped-zones']",
+    "#guardrail-slow-striped-zones + .guardrail-choice",
     "Choose the targeted slow zone",
     320,
   );
