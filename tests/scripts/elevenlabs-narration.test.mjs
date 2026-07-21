@@ -6,6 +6,7 @@ import {
   CUES,
   assertMp3,
   buildSpeechRequest,
+  getMp3DurationSeconds,
   requestSpeech,
   requireInteractiveTerminal,
   renderCredits,
@@ -32,13 +33,25 @@ test("renderers describe static ElevenLabs MP3 assets without credentials", () =
     sha256: "0123456789abcdef",
   };
 
-  const manifest = renderManifest([result]);
-  const credits = renderCredits([result], "2026-07-21");
+  const voiceId = "voice-id-for-test";
+  const manifest = renderManifest([result], voiceId);
+  const credits = renderCredits([result], "2026-07-21", voiceId);
 
   assert.match(manifest, /audio\/narration\/tutorial-intro\.mp3/);
   assert.match(credits, /ElevenLabs/);
+  assert.match(manifest, new RegExp(voiceId));
+  assert.match(credits, new RegExp(voiceId));
   assert.doesNotMatch(manifest, new RegExp(secret));
   assert.doesNotMatch(credits, new RegExp(secret));
+});
+
+test("calculates an MP3 duration from its audio frame headers", () => {
+  const frameLength = 417;
+  const frame = Buffer.alloc(frameLength);
+  frame.set([0xff, 0xfb, 0x90, 0x00]);
+  const audio = Buffer.concat([frame, frame]);
+
+  assert.equal(getMp3DurationSeconds(audio), (2 * 1152) / 44100);
 });
 
 test("requires a terminal prompt instead of accepting an environment key", () => {

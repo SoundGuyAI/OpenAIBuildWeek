@@ -7,12 +7,17 @@ import process from "node:process";
 import {
   CUES,
   assertMp3,
+  getMp3DurationSeconds,
   requireInteractiveTerminal,
+  renderCredits,
+  renderManifest,
   requestSpeech,
 } from "./elevenlabs-narration.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT_DIR = path.join(ROOT, "public", "audio", "narration");
+const MANIFEST_PATH = path.join(ROOT, "src", "kaiju-qa", "narration-manifest.ts");
+const CREDITS_PATH = path.join(ROOT, "docs", "assets", "AUDIO_CREDITS.md");
 
 function promptForValue(label, { hidden }) {
   requireInteractiveTerminal({
@@ -75,7 +80,30 @@ async function generateCue(cue, apiKey, voiceId) {
     await rm(temporary, { force: true });
   }
 
-  return { bytes: buffer.length, sha256: createHash("sha256").update(buffer).digest("hex") };
+  return {
+    ...cue,
+    fileName,
+    durationSeconds: getMp3DurationSeconds(buffer),
+    bytes: buffer.length,
+    sha256: createHash("sha256").update(buffer).digest("hex"),
+  };
+}
+
+async function writeAtomically(target, content) {
+  const temporary = `${target}.tmp`;
+  await rm(temporary, { force: true });
+  try {
+    await writeFile(temporary, content);
+    await rename(temporary, target);
+  } finally {
+    await rm(temporary, { force: true });
+  }
+}
+
+async function updateGeneratedMetadata(results, voiceId) {
+  const generatedAt = new Date().toISOString().slice(0, 10);
+  await writeAtomically(MANIFEST_PATH, renderManifest(results, voiceId));
+  await writeAtomically(CREDITS_PATH, renderCredits(results, generatedAt, voiceId));
 }
 
 async function main() {
@@ -83,10 +111,14 @@ async function main() {
   let voiceId = await promptForValue("ElevenLabs voice ID: ", { hidden: false });
   let apiKey = await promptForValue("ElevenLabs API key (hidden): ", { hidden: true });
   try {
+    const results = [];
     for (const [index, cue] of CUES.entries()) {
       const result = await generateCue(cue, apiKey, voiceId);
+      results.push(result);
       console.log(`[${index + 1}/${CUES.length}] ${cue.id}: ${result.bytes} bytes, ${result.sha256.slice(0, 12)}...`);
     }
+    await updateGeneratedMetadata(results, voiceId);
+    console.log("Updated narration manifest and audio credits.");
   } finally {
     apiKey = "";
     voiceId = "";

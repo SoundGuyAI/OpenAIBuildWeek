@@ -54,3 +54,11 @@ Branch: `main` (planning only; no implementation started)
 ### Intended outcome
 
 - Future generation runs ask for a voice ID first, then prompt privately for the API key. Neither value is persisted.
+
+## 2026-07-21 — one-command voice swapping
+
+> yeh lets do that. we want it to be truly one command
+
+### Intended outcome
+
+- After every narration clip is generated successfully, the generator must refresh the runtime manifest and audio credits using the supplied voice ID and the newly generated MP3 metadata.

@@ -103,11 +103,86 @@ export function assertMp3(buffer, fileName) {
   }
 }
 
+const MPEG1_BITRATES = {
+  1: [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320],
+  2: [0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384],
+  3: [0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448],
+};
+
+const MPEG2_BITRATES = {
+  1: [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160],
+  2: [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160],
+  3: [0, 32, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 224, 256],
+};
+
+/**
+ * Returns the duration represented by valid MPEG audio frames. ElevenLabs'
+ * MP3 output is frame-based, so this avoids requiring ffmpeg or another
+ * machine-specific audio tool for generation.
+ */
+export function getMp3DurationSeconds(buffer) {
+  let offset = 0;
+  let durationSeconds = 0;
+  let frameCount = 0;
+
+  while (offset + 4 <= buffer.length) {
+    const header = buffer.readUInt32BE(offset);
+    const hasSync = ((header & 0xffe00000) >>> 0) === 0xffe00000;
+    const versionBits = (header >>> 19) & 0x3;
+    const layerBits = (header >>> 17) & 0x3;
+    const bitrateIndex = (header >>> 12) & 0xf;
+    const sampleRateIndex = (header >>> 10) & 0x3;
+
+    if (
+      !hasSync ||
+      versionBits === 1 ||
+      layerBits === 0 ||
+      bitrateIndex === 0 ||
+      bitrateIndex === 15 ||
+      sampleRateIndex === 3
+    ) {
+      offset += 1;
+      continue;
+    }
+
+    const mpeg1 = versionBits === 3;
+    const sampleRateDivisor = versionBits === 3 ? 1 : versionBits === 2 ? 2 : 4;
+    const sampleRate = [44100, 48000, 32000][sampleRateIndex] / sampleRateDivisor;
+    const bitrateKbps = (mpeg1 ? MPEG1_BITRATES : MPEG2_BITRATES)[layerBits][bitrateIndex];
+    const padding = (header >>> 9) & 0x1;
+    const layer1 = layerBits === 3;
+    const layer3 = layerBits === 1;
+    const samplesPerFrame = layer1 ? 384 : layer3 && !mpeg1 ? 576 : 1152;
+    const frameCoefficient = layer1 ? 12 : layer3 && !mpeg1 ? 72 : 144;
+    const frameLength = Math.floor(
+      (frameCoefficient * bitrateKbps * 1000) / sampleRate + padding,
+    ) * (layer1 ? 4 : 1);
+
+    if (frameLength <= 4 || offset + frameLength > buffer.length) {
+      offset += 1;
+      continue;
+    }
+
+    durationSeconds += samplesPerFrame / sampleRate;
+    frameCount += 1;
+    offset += frameLength;
+  }
+
+  if (frameCount === 0) {
+    throw new Error("MP3 duration could not be read from audio frames.");
+  }
+
+  return durationSeconds;
+}
+
 function formatNumber(value, digits = 3) {
   return Number(value.toFixed(digits)).toString();
 }
 
-export function renderManifest(results) {
+export function renderManifest(
+  results,
+  voiceId = ELEVENLABS_NARRATION.voiceId,
+) {
   const cueIds = results.map(({ id }) => `  ${JSON.stringify(id)},`).join("\n");
   const entries = results
     .map(
@@ -131,7 +206,7 @@ export function renderManifest(results) {
 
 export const NARRATION_GENERATION = {
   provider: "ElevenLabs",
-  voiceId: ${JSON.stringify(ELEVENLABS_NARRATION.voiceId)},
+  voiceId: ${JSON.stringify(voiceId)},
   modelId: ${JSON.stringify(ELEVENLABS_NARRATION.modelId)},
   outputFormat: ${JSON.stringify(ELEVENLABS_NARRATION.outputFormat)},
 } as const;
@@ -175,7 +250,11 @@ function escapeMarkdown(value) {
   return String(value).replaceAll("|", "\\|").replaceAll("\n", " ");
 }
 
-export function renderCredits(results, generatedAt) {
+export function renderCredits(
+  results,
+  generatedAt,
+  voiceId = ELEVENLABS_NARRATION.voiceId,
+) {
   const totalDuration = results.reduce(
     (sum, result) => sum + result.durationSeconds,
     0,
@@ -196,7 +275,7 @@ in the browser and does not require ElevenLabs at runtime.
 ## Provider and model provenance
 
 - Provider: ElevenLabs
-- Voice ID: \`${ELEVENLABS_NARRATION.voiceId}\`
+- Voice ID: \`${voiceId}\`
 - Model: \`${ELEVENLABS_NARRATION.modelId}\`
 - Delivery format: \`${ELEVENLABS_NARRATION.outputFormat}\`
 - Total authored narration: ${totalDuration.toFixed(3)} seconds across ${results.length} clips
