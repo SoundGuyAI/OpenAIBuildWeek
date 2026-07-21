@@ -47,7 +47,8 @@ a game-over screen, so recovery is one physical action away.
 
 ## Visual and audio direction
 
-- Animated and recolored Quaternius kaiju with an authored safety helmet.
+- Animated Quaternius Dino with its authored face and materials kept as one
+  coherent skeletal assembly.
 - Quaternius buildings and vehicles plus Kenney Factory Kit lab machinery.
 - Stage-specific scenery, lighting, shadows, emissive feedback, particles,
   authored motion, and an optional Azure FLUX laboratory backdrop.
@@ -84,12 +85,20 @@ This starts IWSDK in the foreground without opening a browser tab. Use
 
 ## Validation
 
+Use the smallest gate that matches the change:
+
 ```bash
-npm run typecheck
-npm run test:model
-npm run build
-npm run test:e2e:run
+npm run test:fast          # normal edit loop: typecheck + 23 model tests
+npm run test:e2e:smoke     # browser/input smoke, about 30 seconds locally
+npm run test:preflight     # build + browser smoke before a demo checkpoint
+npm run test:e2e:campaign  # full four-district desktop journey
+npm run check              # complete release/merge gate
 ```
+
+The full campaign is intentionally not the inner-loop test: it exercises every
+district and takes several minutes. Run it before merge, release, or a serious
+demo rehearsal; use the fast/model and smoke tiers after ordinary code edits.
+The E2E runner automatically reuses an existing preview at port 4173.
 
 The pure model suite verifies the deterministic four-level campaign, stale
 evidence, wrong-rule regressions, targeted recovery, level gates, resets, and

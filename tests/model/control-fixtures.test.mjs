@@ -23,6 +23,9 @@ const {
   CONTROL_TABLETOP_WIDTH,
   RULE_RACK_CARTRIDGE_IDS,
   RUN_TESTS_LABEL,
+  RUN_TESTS_LEVER_GRIP_RADIUS,
+  RUN_TESTS_LEVER_HIT_TARGET_CENTER_Y,
+  RUN_TESTS_LEVER_HIT_TARGET_SIZE,
   RUN_TESTS_LEVER_PULLED_ANGLE,
   RUN_TESTS_LEVER_UPRIGHT_ANGLE,
   createRuleRack,
@@ -76,17 +79,52 @@ test("run-tests lever is upright, labeled, hinged, and owns its resources", () =
   assert.equal(fixture.labelAnchor.parent, fixture.root);
   assert.equal(fixture.labelMesh?.parent, fixture.labelAnchor);
   assert.deepEqual(labels, [RUN_TESTS_LABEL]);
+  assert.equal(fixture.root.intersectChildren, true);
+  assert.equal(fixture.handle.intersectChildren, true);
 
   almostEqual(fixture.pivot.rotation.x, RUN_TESTS_LEVER_UPRIGHT_ANGLE);
   assert.ok(fixture.pivot.position.y > 0);
   assert.ok(fixture.hitTarget.position.y > fixture.pivot.position.y);
-  assert.ok(fixture.root.getObjectByName("run-tests-lever-knob").position.y > 0.45);
+  const knob = fixture.root.getObjectByName("run-tests-lever-knob");
+  assert.ok(knob.position.y > 0.45);
+  assert.equal(knob.geometry.parameters.radius, RUN_TESTS_LEVER_GRIP_RADIUS);
+  assert.equal(knob.userData.affordance, "grab-and-pull");
+  assert.ok(fixture.root.getObjectByName("run-tests-lever-pivot-hub"));
+  assert.ok(fixture.root.getObjectByName("run-tests-lever-grip-collar"));
+  assert.equal(
+    fixture.root.getObjectsByProperty(
+      "name",
+      "run-tests-lever-mounting-bolt",
+    ).length,
+    4,
+  );
 
   const hitMaterial = fixture.hitTarget.material;
   assert.ok(hitMaterial instanceof MeshBasicMaterial);
   assert.equal(hitMaterial.opacity, 0);
   assert.equal(hitMaterial.depthWrite, false);
-  assert.ok(ownership.geometries.length >= 9);
+  assert.deepEqual(fixture.hitTarget.geometry.parameters, {
+    width: RUN_TESTS_LEVER_HIT_TARGET_SIZE.width,
+    height: RUN_TESTS_LEVER_HIT_TARGET_SIZE.height,
+    depth: RUN_TESTS_LEVER_HIT_TARGET_SIZE.depth,
+    widthSegments: 1,
+    heightSegments: 1,
+    depthSegments: 1,
+  });
+  assert.equal(
+    fixture.hitTarget.position.y,
+    RUN_TESTS_LEVER_HIT_TARGET_CENTER_Y,
+  );
+  assert.deepEqual(fixture.hitTarget.userData.interactionModes, [
+    "screen-pointer",
+    "controller-ray",
+    "hand-pinch",
+  ]);
+  assert.equal(
+    fixture.hitTarget.userData.capturePolicy,
+    "exclusive-pointer",
+  );
+  assert.ok(ownership.geometries.length >= 16);
   assert.ok(ownership.materials.length >= 6);
 });
 

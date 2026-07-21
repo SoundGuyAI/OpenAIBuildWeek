@@ -17,6 +17,13 @@ export const CONTROL_TABLETOP_DEPTH = 2.72;
 export const RUN_TESTS_LABEL = "RUN TESTS";
 export const RUN_TESTS_LEVER_UPRIGHT_ANGLE = 0;
 export const RUN_TESTS_LEVER_PULLED_ANGLE = Math.PI / 3;
+export const RUN_TESTS_LEVER_GRIP_RADIUS = 0.115;
+export const RUN_TESTS_LEVER_HIT_TARGET_SIZE = Object.freeze({
+  width: 0.36,
+  height: 0.54,
+  depth: 0.36,
+});
+export const RUN_TESTS_LEVER_HIT_TARGET_CENTER_Y = 0.35;
 
 export const RULE_RACK_CARTRIDGE_IDS = [
   "broad",
@@ -221,16 +228,24 @@ export function createRunTestsLever({
   const root = new Group();
   root.name = "run-tests-lever";
   root.userData.fixture = "run-tests-lever";
+  root.intersectChildren = true;
 
   const base = new Group();
   base.name = "run-tests-lever-base";
 
+  const foot = fixtureMesh(
+    ownGeometry(new BoxGeometry(0.52, 0.055, 0.42)),
+    materials.base,
+  );
+  foot.name = "run-tests-lever-foot";
+  foot.position.y = 0.0275;
+
   const pedestal = fixtureMesh(
-    ownGeometry(new BoxGeometry(0.44, 0.12, 0.34)),
+    ownGeometry(new BoxGeometry(0.44, 0.105, 0.34)),
     materials.base,
   );
   pedestal.name = "run-tests-lever-pedestal";
-  pedestal.position.y = 0.06;
+  pedestal.position.y = 0.0925;
 
   const labelPlate = fixtureMesh(
     ownGeometry(new BoxGeometry(0.36, 0.105, 0.035)),
@@ -247,6 +262,18 @@ export function createRunTestsLever({
   axle.position.y = 0.22;
   axle.rotation.z = Math.PI / 2;
 
+  for (const x of [-0.215, 0.215]) {
+    for (const z of [-0.165, 0.165]) {
+      const bolt = fixtureMesh(
+        ownGeometry(new CylinderGeometry(0.018, 0.018, 0.016, 12)),
+        materials.metal,
+      );
+      bolt.name = "run-tests-lever-mounting-bolt";
+      bolt.position.set(x, 0.063, z);
+      base.add(bolt);
+    }
+  }
+
   for (const x of [-0.14, 0.14]) {
     const support = fixtureMesh(
       ownGeometry(new BoxGeometry(0.065, 0.17, 0.09)),
@@ -256,7 +283,7 @@ export function createRunTestsLever({
     support.position.set(x, 0.165, 0);
     base.add(support);
   }
-  base.add(pedestal, labelPlate, axle);
+  base.add(foot, pedestal, labelPlate, axle);
 
   const pivot = new Group();
   pivot.name = "run-tests-lever-pivot";
@@ -266,6 +293,15 @@ export function createRunTestsLever({
 
   const handle = new Group();
   handle.name = "run-tests-lever-handle";
+  handle.intersectChildren = true;
+  handle.userData.role = "lever-moving-assembly";
+
+  const pivotHub = fixtureMesh(
+    ownGeometry(new CylinderGeometry(0.085, 0.085, 0.19, 18)),
+    materials.metal,
+  );
+  pivotHub.name = "run-tests-lever-pivot-hub";
+  pivotHub.rotation.z = Math.PI / 2;
 
   const collar = fixtureMesh(
     ownGeometry(new CylinderGeometry(0.058, 0.058, 0.09, 16)),
@@ -282,23 +318,45 @@ export function createRunTestsLever({
   stem.position.y = 0.25;
 
   const knob = fixtureMesh(
-    ownGeometry(new SphereGeometry(0.09, 20, 14)),
+    ownGeometry(new SphereGeometry(RUN_TESTS_LEVER_GRIP_RADIUS, 20, 14)),
     materials.accent,
   );
   knob.name = "run-tests-lever-knob";
   knob.position.y = 0.5;
+  knob.userData.role = "lever-grip";
+  knob.userData.affordance = "grab-and-pull";
+
+  const gripCollar = fixtureMesh(
+    ownGeometry(new CylinderGeometry(0.062, 0.062, 0.045, 16)),
+    materials.metal,
+  );
+  gripCollar.name = "run-tests-lever-grip-collar";
+  gripCollar.position.y = 0.425;
 
   const hitTarget = fixtureMesh(
-    ownGeometry(new BoxGeometry(0.26, 0.62, 0.26)),
+    ownGeometry(
+      new BoxGeometry(
+        RUN_TESTS_LEVER_HIT_TARGET_SIZE.width,
+        RUN_TESTS_LEVER_HIT_TARGET_SIZE.height,
+        RUN_TESTS_LEVER_HIT_TARGET_SIZE.depth,
+      ),
+    ),
     materials.hitTarget,
   );
   hitTarget.name = "run-tests-lever-hit-target";
-  hitTarget.position.y = 0.29;
+  hitTarget.position.y = RUN_TESTS_LEVER_HIT_TARGET_CENTER_Y;
   hitTarget.castShadow = false;
   hitTarget.receiveShadow = false;
   hitTarget.userData.role = "handle-hit-target";
+  hitTarget.userData.affordance = "grab-and-pull";
+  hitTarget.userData.interactionModes = [
+    "screen-pointer",
+    "controller-ray",
+    "hand-pinch",
+  ];
+  hitTarget.userData.capturePolicy = "exclusive-pointer";
 
-  handle.add(collar, stem, knob, hitTarget);
+  handle.add(pivotHub, collar, stem, gripCollar, knob, hitTarget);
   pivot.add(handle);
 
   const labelAnchor = new Group();

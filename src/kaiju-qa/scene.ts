@@ -5,13 +5,13 @@ import {
   Box3,
   BoxGeometry,
   BufferGeometry,
-  CanvasTexture,
   Color,
   ConeGeometry,
   CylinderGeometry,
   DoubleSide,
   Float32BufferAttribute,
   Group,
+  LoopOnce,
   MathUtils,
   Mesh,
   MeshBasicMaterial,
@@ -20,6 +20,7 @@ import {
   Object3D,
   Plane,
   PlaneGeometry,
+  PokeInteractable,
   Points,
   PointsMaterial,
   Quaternion,
@@ -27,7 +28,6 @@ import {
   RayInteractable,
   SRGBColorSpace,
   SphereGeometry,
-  Texture,
   TorusGeometry,
   Vector3,
   Vector2,
@@ -225,6 +225,7 @@ interface ScenePointerEvent {
   readonly button?: number;
   readonly pointer?: Vector2;
   readonly ray: Ray;
+  readonly point: Vector3;
   stopPropagation(): void;
 }
 
@@ -246,7 +247,9 @@ function pointerEvents(object: Object3D, enabled: boolean): void {
 function asScenePointerEvent(event: unknown): ScenePointerEvent | null {
   if (!event || typeof event !== "object") return null;
   const candidate = event as Partial<ScenePointerEvent>;
-  return typeof candidate.pointerId === "number" && candidate.ray instanceof Ray
+  return typeof candidate.pointerId === "number" &&
+    candidate.ray instanceof Ray &&
+    candidate.point instanceof Vector3
     ? (candidate as ScenePointerEvent)
     : null;
 }
@@ -261,6 +264,19 @@ function beginReturn(meta: ManipulationMeta): void {
   meta.returnStartedAt = performance.now();
   meta.returnFrom.copy(meta.object.position);
   meta.snapped = false;
+}
+
+function cancelActiveManipulation(meta: ManipulationMeta): void {
+  const pointerId = meta.activePointerId;
+  if (pointerId !== null) {
+    const capturable = meta.eventTarget as CapturableObject;
+    if (capturable.hasPointerCapture(pointerId)) {
+      capturable.releasePointerCapture(pointerId);
+    }
+  }
+  meta.activePointerId = null;
+  meta.dragging = false;
+  beginReturn(meta);
 }
 
 function settleInteraction(world: World, meta: ManipulationMeta): void {
@@ -532,169 +548,6 @@ function tintModel(object: Object3D, color: number): void {
       material.needsUpdate = true;
     }
   });
-}
-
-function rgbToHsv(red: number, green: number, blue: number): [number, number, number] {
-  const maximum = Math.max(red, green, blue);
-  const minimum = Math.min(red, green, blue);
-  const delta = maximum - minimum;
-  let hue = 0;
-  if (delta > 0) {
-    if (maximum === red) hue = ((green - blue) / delta) % 6;
-    else if (maximum === green) hue = (blue - red) / delta + 2;
-    else hue = (red - green) / delta + 4;
-    hue /= 6;
-    if (hue < 0) hue += 1;
-  }
-  const saturation = maximum === 0 ? 0 : delta / maximum;
-  return [hue, saturation, maximum];
-}
-
-function hsvToRgb(hue: number, saturation: number, value: number): [number, number, number] {
-  const index = Math.floor(hue * 6);
-  const fraction = hue * 6 - index;
-  const p = value * (1 - saturation);
-  const q = value * (1 - fraction * saturation);
-  const t = value * (1 - (1 - fraction) * saturation);
-  switch (index % 6) {
-    case 0: return [value, t, p];
-    case 1: return [q, value, p];
-    case 2: return [p, value, t];
-    case 3: return [p, q, value];
-    case 4: return [t, p, value];
-    default: return [value, p, q];
-  }
-}
-
-function recolorKaijuAtlas(source: Texture): CanvasTexture | null {
-  const image = source.image as CanvasImageSource & {
-    readonly width?: number;
-    readonly height?: number;
-  };
-  const width = image.width ?? 0;
-  const height = image.height ?? 0;
-  if (!width || !height) return null;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const context = canvas.getContext("2d", { willReadFrequently: true });
-  if (!context) return null;
-  context.drawImage(image, 0, 0, width, height);
-  const pixels = context.getImageData(0, 0, width, height);
-  for (let offset = 0; offset < pixels.data.length; offset += 4) {
-    const [hue, saturation, value] = rgbToHsv(
-      pixels.data[offset] / 255,
-      pixels.data[offset + 1] / 255,
-      pixels.data[offset + 2] / 255,
-    );
-    if (saturation < 0.26 || (hue < 0.72 && hue > 0.075)) continue;
-    const [red, green, blue] = hsvToRgb(
-      value < 0.4 ? 0.49 : 0.475,
-      Math.min(0.78, saturation * 0.92 + 0.18),
-      Math.min(0.82, value * 1.08 + 0.05),
-    );
-    pixels.data[offset] = Math.round(red * 255);
-    pixels.data[offset + 1] = Math.round(green * 255);
-    pixels.data[offset + 2] = Math.round(blue * 255);
-  }
-  context.putImageData(pixels, 0, 0);
-  const texture = new CanvasTexture(canvas);
-  texture.colorSpace = SRGBColorSpace;
-  texture.flipY = source.flipY;
-  texture.needsUpdate = true;
-  return texture;
-}
-
-function createTower(materials: Record<string, MeshStandardMaterial>): Group {
-  const group = new Group();
-  const colors = [materials.coral, materials.yellow, materials.teal, materials.white];
-  const positions = [
-    [-0.08, 0.06, 0],
-    [0.07, 0.06, 0],
-    [0, 0.17, 0],
-    [-0.06, 0.28, 0],
-    [0.07, 0.28, 0],
-    [0.02, 0.39, 0],
-  ] as const;
-  positions.forEach(([x, y, z], index) => {
-    const block = mesh(new BoxGeometry(0.13, 0.11, 0.13), colors[index % colors.length]);
-    block.position.set(x, y, z);
-    block.rotation.y = (index % 2 ? -1 : 1) * 0.08;
-    group.add(block);
-  });
-  return group;
-}
-
-function createServiceCar(materials: Record<string, MeshStandardMaterial>): Group {
-  const group = new Group();
-  const body = mesh(new SphereGeometry(0.16, 22, 14), materials.coral);
-  body.scale.set(1.35, 0.48, 0.76);
-  body.position.y = 0.13;
-  const cabin = mesh(new SphereGeometry(0.12, 20, 12), materials.blue);
-  cabin.scale.set(0.82, 0.62, 0.7);
-  cabin.position.set(0.015, 0.22, 0);
-  const windshield = mesh(new BoxGeometry(0.075, 0.075, 0.19), materials.cyan);
-  windshield.position.set(0.085, 0.23, 0);
-  const bumper = mesh(new BoxGeometry(0.035, 0.055, 0.22), materials.yellow);
-  bumper.position.set(0.22, 0.09, 0);
-  group.add(body, cabin, windshield, bumper);
-
-  for (const x of [-0.105, 0.11]) {
-    for (const z of [-0.115, 0.115]) {
-      const wheel = mesh(new CylinderGeometry(0.052, 0.052, 0.038, 16), materials.edge);
-      wheel.rotation.x = Math.PI / 2;
-      wheel.position.set(x, 0.065, z);
-      group.add(wheel);
-    }
-  }
-  return group;
-}
-
-function createCrosswalk(materials: Record<string, MeshStandardMaterial>): Group {
-  const group = new Group();
-  const base = mesh(new BoxGeometry(0.42, 0.035, 0.28), materials.road);
-  base.position.y = 0.018;
-  group.add(base);
-  for (let index = -2; index <= 2; index += 1) {
-    const stripe = mesh(new BoxGeometry(0.045, 0.012, 0.24), materials.white);
-    stripe.position.set(index * 0.075, 0.042, 0);
-    group.add(stripe);
-  }
-  const signPost = mesh(new CylinderGeometry(0.018, 0.018, 0.26, 10), materials.yellow);
-  signPost.position.set(0.18, 0.16, -0.08);
-  const sign = mesh(new BoxGeometry(0.14, 0.12, 0.025), materials.blue);
-  sign.position.set(0.18, 0.3, -0.08);
-  group.add(signPost, sign);
-  return group;
-}
-
-function createCargo(materials: Record<string, MeshStandardMaterial>): Group {
-  const group = new Group();
-  const crate = mesh(new BoxGeometry(0.32, 0.28, 0.32), materials.yellow);
-  crate.position.y = 0.14;
-  group.add(crate);
-  for (const rotation of [0, Math.PI / 2]) {
-    const band = mesh(new BoxGeometry(0.045, 0.3, 0.34), materials.road);
-    band.position.y = 0.14;
-    band.rotation.y = rotation;
-    group.add(band);
-  }
-  return group;
-}
-
-function createRainModule(materials: Record<string, MeshStandardMaterial>): Group {
-  const group = new Group();
-  const body = mesh(new CylinderGeometry(0.16, 0.18, 0.24, 20), materials.blue);
-  body.position.y = 0.12;
-  const cloud = mesh(new SphereGeometry(0.14, 18, 12), materials.white);
-  cloud.scale.set(1.35, 0.65, 0.8);
-  cloud.position.set(0, 0.31, 0);
-  const drop = mesh(new ConeGeometry(0.035, 0.1, 12), materials.cyan);
-  drop.position.set(0.04, 0.19, -0.13);
-  drop.rotation.x = Math.PI;
-  group.add(body, cloud, drop);
-  return group;
 }
 
 function drawSpeechBubble(
@@ -1014,7 +867,6 @@ export function createKaijuQaScene(
   const ownedGeometries: BufferGeometry[] = [];
   const ownedMaterials: Array<MeshStandardMaterial | MeshPhysicalMaterial | MeshBasicMaterial | PointsMaterial> = [];
   const importedMaterials: MeshStandardMaterial[] = [];
-  const ownedTextures: Texture[] = [];
   const panels: CanvasPanel[] = [];
   const metas: ManipulationMeta[] = [];
   const callouts: DraggableCallout<ScenePointerEvent>[] = [];
@@ -1185,14 +1037,25 @@ export function createKaijuQaScene(
     fitObject(model, size);
     model.position.set(x, 0.02, z);
     model.rotation.y = rotation;
-    const buildingColors: Readonly<Record<string, number>> = {
-      cityHospital: 0x65bdb0,
-      cityFlat: 0xd98263,
-      cityHouse: 0xe2b84f,
-      cityShop: 0x4e9db2,
-    };
-    tintModel(model, buildingColors[key] ?? palette.white);
+    // Keep the authored Quaternius material separation. Flattening every mesh
+    // to one tint made the miniature buildings read like placeholder blocks.
     addWindowGlow(model, palette.yellow);
+    return model;
+  };
+
+  const makeVehicle = (
+    key: "vehicleCar" | "vehicleSuv" | "vehicleEmergency",
+    size: number,
+    x: number,
+    z: number,
+    rotation = Math.PI / 2,
+  ): Group => {
+    const model = cloneAsset(key);
+    prepareImportedModel(model, importedMaterials, 0.5);
+    fitObject(model, size);
+    model.position.set(x, 0.035, z);
+    model.rotation.y = rotation;
+    model.userData.role = "district-scenery";
     return model;
   };
 
@@ -1215,10 +1078,14 @@ export function createKaijuQaScene(
   training.add(makeBuilding("cityFlat", 0.46, 1.02, -0.54, -0.08));
   training.add(makeBuilding("cityHouse", 0.4, 1.23, 0.32, -0.2));
   training.add(makeBuilding("cityShop", 0.36, -1.18, 0.24, 0.16));
+  training.add(makeVehicle("vehicleSuv", 0.5, 0.7, -0.18));
   for (const x of [-1.34, 1.34]) {
-    const cone = mesh(ownGeometry(new ConeGeometry(0.075, 0.2, 12)), materials.yellow);
-    cone.position.set(x, 0.11, 0.55);
-    training.add(cone);
+    const warning = cloneAsset("labWarning");
+    prepareImportedModel(warning, importedMaterials, 0.58);
+    fitObject(warning, 0.2);
+    warning.position.set(x, 0.02, 0.55);
+    warning.rotation.y = x < 0 ? 0.2 : -0.2;
+    training.add(warning);
   }
 
   const school = districts["school-crossing"];
@@ -1232,8 +1099,25 @@ export function createKaijuQaScene(
   school.add(makeBuilding("cityFlat", 0.5, -1.1, -0.5, 0.1));
   school.add(makeBuilding("cityHouse", 0.42, 1.05, -0.48, -0.08));
   school.add(makeBuilding("cityShop", 0.37, -1.16, 0.35, 0.14));
-  const schoolTree = mesh(ownGeometry(new ConeGeometry(0.16, 0.42, 10)), materials.teal);
-  schoolTree.position.set(1.15, 0.23, 0.36);
+  school.add(makeVehicle("vehicleEmergency", 0.48, 0.78, -0.18));
+  const schoolTree = new Group();
+  const schoolTreeTrunk = mesh(
+    ownGeometry(new CylinderGeometry(0.035, 0.048, 0.24, 8)),
+    materials.edge,
+  );
+  schoolTreeTrunk.position.y = 0.12;
+  schoolTree.add(schoolTreeTrunk);
+  for (const [x, y, z, scale] of [
+    [0, 0.3, 0, 1],
+    [-0.08, 0.28, 0.01, 0.72],
+    [0.07, 0.29, -0.025, 0.78],
+  ] as const) {
+    const crown = mesh(ownGeometry(new SphereGeometry(0.13, 10, 8)), materials.teal);
+    crown.position.set(x, y, z);
+    crown.scale.setScalar(scale);
+    schoolTree.add(crown);
+  }
+  schoolTree.position.set(1.15, 0.02, 0.36);
   school.add(schoolTree);
   const schoolYard = mesh(ownGeometry(new BoxGeometry(0.82, 0.025, 0.48)), materials.blue);
   schoolYard.position.set(0.82, 0.02, 0.38);
@@ -1268,6 +1152,7 @@ export function createKaijuQaScene(
   storm.add(makeBuilding("cityFlat", 0.45, 1.08, -0.5, -0.12));
   storm.add(makeBuilding("cityHouse", 0.39, 1.2, 0.36, -0.18));
   storm.add(makeBuilding("cityShop", 0.35, -1.15, 0.34, 0.16));
+  storm.add(makeVehicle("vehicleEmergency", 0.46, -0.72, -0.18));
   for (const [x, z, scale] of [
     [-0.78, 0.34, 1],
     [0.63, -0.1, 0.78],
@@ -1278,11 +1163,12 @@ export function createKaijuQaScene(
     puddle.scale.set(scale, 1, scale * 0.62);
     storm.add(puddle);
   }
-  const stormBeacon = mesh(ownGeometry(new CylinderGeometry(0.035, 0.05, 0.58, 12)), materials.purple);
-  stormBeacon.position.set(1.34, 0.3, 0.48);
-  const stormBeaconCap = mesh(ownGeometry(new ConeGeometry(0.12, 0.2, 12)), materials.cyan);
-  stormBeaconCap.position.set(1.34, 0.68, 0.48);
-  storm.add(stormBeacon, stormBeaconCap);
+  const stormBeacon = cloneAsset("labIndicatorArrow");
+  prepareImportedModel(stormBeacon, importedMaterials, 0.52);
+  fitObject(stormBeacon, 0.48);
+  stormBeacon.position.set(1.3, 0.02, 0.42);
+  stormBeacon.rotation.y = -0.45;
+  storm.add(stormBeacon);
 
   Object.values(districts).forEach((group) => {
     group.visible = false;
@@ -1404,76 +1290,14 @@ export function createKaijuQaScene(
   const kaijuModel = kaijuAsset.scene;
   prepareImportedModel(kaijuModel, importedMaterials, 0.62);
   fitObject(kaijuModel, 0.93);
-  const recoloredMaps = new Map<Texture, CanvasTexture>();
-  kaijuModel.traverse((child) => {
-    if (!(child instanceof Mesh)) return;
-    const modelMaterials = Array.isArray(child.material)
-      ? child.material
-      : [child.material];
-    for (const material of modelMaterials) {
-      if (!(material instanceof MeshStandardMaterial) || !material.map) continue;
-      let recolored = recoloredMaps.get(material.map);
-      if (!recolored) {
-        recolored = recolorKaijuAtlas(material.map) ?? undefined;
-        if (recolored) {
-          recoloredMaps.set(material.map, recolored);
-          ownedTextures.push(recolored);
-        }
-      }
-      if (recolored) material.map = recolored;
-      material.color.setHex(0xffffff);
-      material.roughness = 0.68;
-      material.metalness = 0;
-      material.needsUpdate = true;
-    }
-  });
+  // Preserve the authored Quaternius Dino materials and face. Earlier custom
+  // recoloring plus separate procedural eyes and a helmet created a visibly
+  // detached mask whenever the animated head bone moved.
   const kaiju = new Group();
   kaiju.add(kaijuModel);
   kaiju.position.set(0.03, 0.035, 0.04);
   kaiju.rotation.y = 0;
   root.add(kaiju);
-
-  const helmet = new Group();
-  const helmetDome = mesh(ownGeometry(new SphereGeometry(0.15, 24, 14, 0, Math.PI * 2, 0, Math.PI / 2)), materials.yellow);
-  helmetDome.scale.set(1.08, 0.68, 1);
-  const helmetBrim = mesh(ownGeometry(new BoxGeometry(0.36, 0.04, 0.15)), materials.yellow);
-  helmetBrim.position.set(0, -0.012, 0.075);
-  helmet.add(helmetDome, helmetBrim);
-  helmet.position.set(0, 0.57, 0.005);
-  helmet.rotation.x = -0.04;
-  kaiju.add(helmet);
-
-  const eyeInk = ownMaterial(
-    new MeshPhysicalMaterial({
-      color: 0x0b1620,
-      roughness: 0.18,
-      metalness: 0,
-      clearcoat: 0.9,
-      clearcoatRoughness: 0.12,
-    }),
-  );
-  for (const x of [-0.105, 0.105]) {
-    const eye = new Group();
-    const white = mesh(
-      ownGeometry(new SphereGeometry(0.055, 24, 18)),
-      materials.white,
-    );
-    white.scale.set(1, 1.14, 0.55);
-    const pupil = mesh(
-      ownGeometry(new SphereGeometry(0.03, 22, 16)),
-      eyeInk,
-    );
-    pupil.position.z = 0.052;
-    pupil.scale.set(0.78, 1.08, 0.42);
-    const glint = mesh(
-      ownGeometry(new SphereGeometry(0.009, 12, 8)),
-      materials.white,
-    );
-    glint.position.set(-0.013, 0.018, 0.078);
-    eye.add(white, pupil, glint);
-    eye.position.set(x * 0.72, 0.43, 0.19);
-    kaiju.add(eye);
-  }
 
   const mixer = new AnimationMixer(kaijuModel);
   const actions = new Map<string, AnimationAction>();
@@ -1481,13 +1305,26 @@ export function createKaijuQaScene(
     actions.set(clip.name.toLowerCase(), mixer.clipAction(clip));
   }
   let activeAction: AnimationAction | null = null;
+  let activeActionName = "";
+  const oneShotActions = new Set(["hitreact", "no", "yes", "wave", "jump_land"]);
   const playAction = (name: string, fade = 0.22) => {
-    const action = actions.get(name.toLowerCase()) ?? actions.get("idle");
+    const normalizedName = actions.has(name.toLowerCase()) ? name.toLowerCase() : "idle";
+    const action = actions.get(normalizedName);
     if (!action || action === activeAction) return;
-    action.reset().play();
+    action.reset();
+    action.clampWhenFinished = oneShotActions.has(normalizedName);
+    if (action.clampWhenFinished) action.setLoop(LoopOnce, 1);
+    action.play();
     if (activeAction) activeAction.crossFadeTo(action, fade, false);
     activeAction = action;
+    activeActionName = normalizedName;
   };
+  mixer.addEventListener("finished", (event) => {
+    if (event.action !== activeAction || !oneShotActions.has(activeActionName)) return;
+    // Keep the finished action as the cross-fade source. Clearing it first
+    // leaves a clamped weight behind and lets reaction poses accumulate.
+    playAction("idle", 0.18);
+  });
   playAction("idle", 0);
 
   const dust = createParticles(90, 0xffd589, 0.012, [3.4, 1.5, 1.8]);
@@ -1675,14 +1512,44 @@ export function createKaijuQaScene(
   contactStar.visible = false;
   root.add(contactStar);
 
-  const serviceCar = createServiceCar(materials);
+  const serviceCar = new Group();
+  const serviceCarModel = cloneAsset("vehicleCar");
+  prepareImportedModel(serviceCarModel, importedMaterials, 0.58);
+  // This is the player's first prop and must read clearly against the pale
+  // tabletop from both its home ring and the street socket.
+  fitObject(serviceCarModel, 0.64);
+  serviceCarModel.rotation.y = Math.PI / 2;
+  serviceCar.add(serviceCarModel);
+
+  const makeAuthoredProp = (
+    key: "cityFlat" | "labConveyor" | "labMachine" | "labIndicatorCross",
+    size: number,
+    rotation = 0,
+  ): Group => {
+    const prop = new Group();
+    const model = cloneAsset(key);
+    prepareImportedModel(model, importedMaterials, 0.54);
+    fitObject(model, size);
+    model.rotation.y = rotation;
+    prop.add(model);
+    return prop;
+  };
+
+  const fragileTower = makeAuthoredProp("cityFlat", 0.62, 0.08);
+  for (const x of [-0.22, 0.22]) {
+    const warning = cloneAsset("labWarning");
+    prepareImportedModel(warning, importedMaterials, 0.55);
+    fitObject(warning, 0.17);
+    warning.position.set(x, 0, 0.1);
+    fragileTower.add(warning);
+  }
 
   const propObjects: Record<ScenePropId, Group> = {
     car: serviceCar,
-    tower: createTower(materials),
-    crosswalk: createCrosswalk(materials),
-    "heavy-cargo": createCargo(materials),
-    "rain-module": createRainModule(materials),
+    tower: fragileTower,
+    crosswalk: makeAuthoredProp("labConveyor", 0.46, Math.PI / 2),
+    "heavy-cargo": makeAuthoredProp("labMachine", 0.58, -0.18),
+    "rain-module": makeAuthoredProp("labIndicatorCross", 0.54, 0.12),
   };
 
   const rulePanels = new Map<SceneRuleId, CanvasPanel>();
@@ -2277,6 +2144,7 @@ export function createKaijuQaScene(
     object.intersectChildren = true;
     const entity = world.createTransformEntity(object, { parent: rootEntity });
     entity.addComponent(RayInteractable);
+    entity.addComponent(PokeInteractable);
     const dragOffset = new Vector3();
     const dragPlane = new Plane();
     const eventTarget = object.getObjectByName(`${id}-drag-target`) ?? object;
@@ -2293,6 +2161,13 @@ export function createKaijuQaScene(
         return tmpScreenRay.set(tmpScreenOrigin, tmpScreenDirection);
       }
       return pointerEvent.ray;
+    };
+    const currentWorldSample = (pointerEvent: ScenePointerEvent): boolean => {
+      if (!pointerEvent.pointerType.startsWith("screen")) {
+        tmpWorld.copy(pointerEvent.point);
+        return true;
+      }
+      return Boolean(currentRay(pointerEvent).intersectPlane(meta.dragPlane, tmpWorld));
     };
     const pointerDown = (event: unknown): void => {
       const pointerEvent = asScenePointerEvent(event);
@@ -2327,7 +2202,7 @@ export function createKaijuQaScene(
         .applyQuaternion(tmpRootQuaternion)
         .normalize();
       meta.dragPlane.setFromNormalAndCoplanarPoint(tmpDragPlaneNormal, tmpPlanePoint);
-      if (currentRay(pointerEvent).intersectPlane(meta.dragPlane, tmpWorld)) {
+      if (currentWorldSample(pointerEvent)) {
         tmpLocal.copy(tmpWorld);
         root.worldToLocal(tmpLocal);
         meta.dragOffset.copy(meta.object.position).sub(tmpLocal);
@@ -2344,7 +2219,7 @@ export function createKaijuQaScene(
         meta.activePointerId !== pointerEvent.pointerId
       ) return;
       pointerEvent.stopPropagation();
-      if (!currentRay(pointerEvent).intersectPlane(meta.dragPlane, tmpWorld)) return;
+      if (!currentWorldSample(pointerEvent)) return;
       tmpLocal.copy(tmpWorld);
       root.worldToLocal(tmpLocal);
       meta.object.position.copy(tmpLocal).add(meta.dragOffset);
@@ -2418,7 +2293,7 @@ export function createKaijuQaScene(
   for (const [id, object] of Object.entries(propObjects) as Array<[ScenePropId, Group]>) {
     object.name = `prop-${id}`;
     const hitTarget = mesh(
-      ownGeometry(new BoxGeometry(0.42, 0.34, 0.42)),
+      ownGeometry(new BoxGeometry(0.72, 0.5, 0.72)),
       ownMaterial(new MeshBasicMaterial({
         transparent: true,
         opacity: 0,
@@ -2551,11 +2426,16 @@ export function createKaijuQaScene(
   let previousLevel: SceneLevelId | null = null;
   let tutorialArrowBaseY = 0.72;
   let destinationArrowBaseY = 0.58;
+  let baselineArrivalCelebrated = false;
 
   const setMetaEnabled = (meta: ManipulationMeta, enabled: boolean): void => {
     meta.enabled = enabled;
     meta.halo.visible = enabled;
-    pointerEvents(meta.object, enabled);
+    // Imported meshes can be wider than the authored grab collider. Keep
+    // decorative/model children from winning the raycast and route every input
+    // mode through the one dedicated event target instead.
+    pointerEvents(meta.object, false);
+    pointerEvents(meta.eventTarget, enabled);
   };
 
   const applyExpectedInteractivity = (view: KaijuQaSceneView): void => {
@@ -2620,6 +2500,7 @@ export function createKaijuQaScene(
     if (view.cueId === lastCueId) return;
     lastCueId = view.cueId;
     cueStartedAt = performance.now();
+    baselineArrivalCelebrated = false;
     celebration.visible = false;
     contact.visible = false;
     resetKaiju();
@@ -2703,7 +2584,10 @@ export function createKaijuQaScene(
       const t = Math.min(1, elapsed / 1.8);
       kaiju.position.x = MathUtils.lerp(0.02, -0.48, t);
       kaiju.position.z = MathUtils.lerp(0.08, -0.02, t);
-      if (t >= 1) playAction("yes");
+      if (t >= 1 && !baselineArrivalCelebrated) {
+        baselineArrivalCelebrated = true;
+        playAction("yes");
+      }
     } else if (currentView.cue === "failure") {
       const towerMeta = propMetas.get("tower");
       if (towerMeta && (towerMeta.snapped || currentView.placedProps.includes("tower"))) {
@@ -2818,9 +2702,7 @@ export function createKaijuQaScene(
       if (nextSuspended) {
         for (const meta of metas) {
           if (!meta.dragging) continue;
-          meta.dragging = false;
-          meta.activePointerId = null;
-          beginReturn(meta);
+          cancelActiveManipulation(meta);
         }
         celebration.visible = false;
         contact.visible = false;
@@ -2880,7 +2762,10 @@ export function createKaijuQaScene(
         (currentView?.expected?.kind === "prop" || currentView?.expected?.kind === "rule");
       if (phase !== "inactive") drawPlacementBubble(speechPanel, phase);
       if (placing) {
-        for (const meta of metas) setMetaEnabled(meta, false);
+        for (const meta of metas) {
+          if (meta.dragging) cancelActiveManipulation(meta);
+          setMetaEnabled(meta, false);
+        }
       } else if (currentView) {
         if (phase === "confirmed") {
           drawPlacementBubble(speechPanel, "confirmed");
@@ -2956,6 +2841,7 @@ export function createKaijuQaScene(
       disposed = true;
       CONTROLLERS.delete(world);
       for (const meta of metas) {
+        if (meta.dragging) cancelActiveManipulation(meta);
         meta.eventTarget.removeEventListener("pointerdown", meta.pointerDown);
         meta.eventTarget.removeEventListener("pointermove", meta.pointerMove);
         meta.eventTarget.removeEventListener("pointerup", meta.pointerUp);
@@ -2973,7 +2859,6 @@ export function createKaijuQaScene(
       for (const entity of ownedEntities.slice().reverse()) entity.destroy();
       mixer.stopAllAction();
       for (const panel of panels) panel.dispose();
-      for (const texture of ownedTextures) texture.dispose();
       for (const geometry of ownedGeometries) geometry.dispose();
       for (const material of [...ownedMaterials, ...importedMaterials]) material.dispose();
     },

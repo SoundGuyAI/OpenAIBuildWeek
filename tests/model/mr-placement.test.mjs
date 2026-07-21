@@ -26,6 +26,7 @@ const { xrSessionUsesPassthrough } = await import("../../src/xr-capabilities.ts"
 
 test("accepts horizontal placement normals and rejects steep surfaces", () => {
   assert.equal(isHorizontalPlacementNormal(new Vector3(0, 1, 0)), true);
+  assert.equal(isHorizontalPlacementNormal(new Vector3(0, -1, 0)), true);
   assert.equal(
     isHorizontalPlacementNormal(
       new Vector3(0, 1, 0).applyAxisAngle(
