@@ -46,3 +46,11 @@ Branch: `main` (planning only; no implementation started)
 ### Intended outcome
 
 - Update the shipped narration manifest to resolve the generated ElevenLabs MP3 files instead of the previous Kokoro WAV files.
+
+## 2026-07-21 — generator input order
+
+> for the script, it should ask for two things, first the elevenlabs voice id, then the API key
+
+### Intended outcome
+
+- Future generation runs ask for a voice ID first, then prompt privately for the API key. Neither value is persisted.

@@ -14,14 +14,14 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT_DIR = path.join(ROOT, "public", "audio", "narration");
 
-function promptForApiKey() {
+function promptForValue(label, { hidden }) {
   requireInteractiveTerminal({
     stdinIsTTY: process.stdin.isTTY,
     stdoutIsTTY: process.stdout.isTTY,
   });
 
   return new Promise((resolve, reject) => {
-    let key = "";
+    let value = "";
     const wasRaw = process.stdin.isRaw;
 
     const cleanup = () => {
@@ -38,23 +38,25 @@ function promptForApiKey() {
       } else if (input === "\r" || input === "\n") {
         cleanup();
         process.stdout.write("\n");
-        key ? resolve(key) : reject(new Error("An ElevenLabs API key is required."));
+        value ? resolve(value) : reject(new Error(`${label.trim()} is required.`));
       } else if (input === "\u007f" || input === "\b") {
-        key = key.slice(0, -1);
+        value = value.slice(0, -1);
+        if (!hidden) process.stdout.write("\b \b");
       } else {
-        key += input;
+        value += input;
+        if (!hidden) process.stdout.write(input);
       }
     };
 
-    process.stdout.write("ElevenLabs API key (hidden): ");
+    process.stdout.write(label);
     process.stdin.setRawMode(true);
     process.stdin.resume();
     process.stdin.on("data", onData);
   });
 }
 
-async function generateCue(cue, apiKey) {
-  const response = await requestSpeech(fetch, cue, apiKey);
+async function generateCue(cue, apiKey, voiceId) {
+  const response = await requestSpeech(fetch, cue, apiKey, voiceId);
   if (!response.ok) {
     throw new Error(`ElevenLabs failed for ${cue.id} with HTTP ${response.status}.`);
   }
@@ -78,14 +80,16 @@ async function generateCue(cue, apiKey) {
 
 async function main() {
   await mkdir(OUTPUT_DIR, { recursive: true });
-  let apiKey = await promptForApiKey();
+  let voiceId = await promptForValue("ElevenLabs voice ID: ", { hidden: false });
+  let apiKey = await promptForValue("ElevenLabs API key (hidden): ", { hidden: true });
   try {
     for (const [index, cue] of CUES.entries()) {
-      const result = await generateCue(cue, apiKey);
+      const result = await generateCue(cue, apiKey, voiceId);
       console.log(`[${index + 1}/${CUES.length}] ${cue.id}: ${result.bytes} bytes, ${result.sha256.slice(0, 12)}...`);
     }
   } finally {
     apiKey = "";
+    voiceId = "";
   }
 }
 

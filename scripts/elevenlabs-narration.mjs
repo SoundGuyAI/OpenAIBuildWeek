@@ -63,11 +63,16 @@ export function requireInteractiveTerminal({ stdinIsTTY, stdoutIsTTY }) {
   }
 }
 
-export function buildSpeechRequest(cue, apiKey) {
+export function buildSpeechRequest(
+  cue,
+  apiKey,
+  voiceId = ELEVENLABS_NARRATION.voiceId,
+) {
   if (!apiKey) throw new Error("An ElevenLabs API key is required.");
+  if (!voiceId) throw new Error("An ElevenLabs voice ID is required.");
 
   return {
-    url: `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_NARRATION.voiceId}?output_format=${ELEVENLABS_NARRATION.outputFormat}`,
+    url: `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=${ELEVENLABS_NARRATION.outputFormat}`,
     init: {
       method: "POST",
       headers: {
@@ -83,8 +88,8 @@ export function buildSpeechRequest(cue, apiKey) {
   };
 }
 
-export function requestSpeech(fetchImpl, cue, apiKey) {
-  const { url, init } = buildSpeechRequest(cue, apiKey);
+export function requestSpeech(fetchImpl, cue, apiKey, voiceId) {
+  const { url, init } = buildSpeechRequest(cue, apiKey, voiceId);
   return fetchImpl(url, init);
 }
 

@@ -13,10 +13,11 @@ import {
 } from "../../scripts/elevenlabs-narration.mjs";
 
 test("buildSpeechRequest creates an ElevenLabs request without sending it", () => {
-  const request = buildSpeechRequest(CUES[0], "secret-value");
+  const voiceId = "voice-id-for-test";
+  const request = buildSpeechRequest(CUES[0], "secret-value", voiceId);
 
   assert.equal(CUES.length, 12);
-  assert.match(request.url, /wBXNqKUATyqu0RtYt25i/);
+  assert.match(request.url, new RegExp(voiceId));
   assert.equal(request.init.headers["xi-api-key"], "secret-value");
   assert.throws(() => assertMp3(Buffer.from("not audio"), "cue.mp3"));
 });
