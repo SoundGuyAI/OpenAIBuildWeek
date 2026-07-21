@@ -16,6 +16,8 @@ This folder contains the fresh evidence for `fix/scenery-hand-interactions`.
   and white district SUV visibly rendered after the vehicle-material repair.
 - `06-building-colors-restored.png` — rebuilt Training Yard with teal, coral,
   yellow, and blue city-model identities restored alongside visible vehicles.
+- `07-single-task-arrow.png` — one bright authored source arrow over the active
+  object, with the cyan glowing socket retained as the destination cue.
 
 ## Independent reports
 
@@ -52,6 +54,8 @@ mobile prop without page, request, or HTTP errors.
 - Building color: city-model texture maps and geometry remain authored, while
   semantic tints restore the hospital/flat/house/shop palette visible in
   `06-building-colors-restored.png`.
+- Task cue clarity: duplicate procedural arrows and the overlapping destination
+  arrow are removed; `07-single-task-arrow.png` shows the single-arrow result.
 - Manipulation: props, fixtures, cartridges, lever, and stamp register both
   `RayInteractable` and `PokeInteractable`; screen, controller-ray, and direct
   touch samples share constrained ownership/release logic.

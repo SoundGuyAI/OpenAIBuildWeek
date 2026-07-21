@@ -1241,62 +1241,28 @@ export function createKaijuQaScene(
   tintModel(tutorialArrowModel, palette.yellow);
   tutorialArrowModel.rotation.z = Math.PI / 2;
   tutorialArrow.add(tutorialArrowModel);
-  const pointerCone = mesh(
-    ownGeometry(new ConeGeometry(0.105, 0.22, 16)),
-    ownMaterial(new MeshBasicMaterial({
-      color: palette.yellow,
-      depthTest: false,
-      toneMapped: false,
-    })),
-  );
-  pointerCone.rotation.z = Math.PI;
-  const pointerStem = mesh(
-    ownGeometry(new CylinderGeometry(0.032, 0.032, 0.2, 12)),
-    pointerCone.material as MeshBasicMaterial,
-  );
-  pointerStem.position.y = 0.17;
-  tutorialArrow.add(pointerCone, pointerStem);
   tutorialArrow.traverse((child) => {
     if (!(child instanceof Mesh)) return;
     child.renderOrder = 30;
     const arrowMaterials = Array.isArray(child.material)
       ? child.material
       : [child.material];
-    for (const material of arrowMaterials) material.depthTest = false;
+    for (const material of arrowMaterials) {
+      material.depthTest = false;
+      if (material instanceof MeshStandardMaterial) {
+        material.emissive.setHex(palette.yellow);
+        material.emissiveIntensity = 0.48;
+      }
+    }
   });
   tutorialArrow.visible = false;
   root.add(tutorialArrow);
 
   const destinationArrow = new Group();
-  const destinationArrowModel = cloneAsset("labArrow");
-  prepareImportedModel(destinationArrowModel, importedMaterials, 0.46);
-  fitObject(destinationArrowModel, 0.29);
-  tintModel(destinationArrowModel, palette.cyan);
-  destinationArrowModel.rotation.z = Math.PI / 2;
-  destinationArrow.add(destinationArrowModel);
-  const destinationCone = mesh(
-    ownGeometry(new ConeGeometry(0.1, 0.21, 16)),
-    ownMaterial(new MeshBasicMaterial({
-      color: palette.cyan,
-      depthTest: false,
-      toneMapped: false,
-    })),
-  );
-  destinationCone.rotation.z = Math.PI;
-  const destinationStem = mesh(
-    ownGeometry(new CylinderGeometry(0.03, 0.03, 0.19, 12)),
-    destinationCone.material as MeshBasicMaterial,
-  );
-  destinationStem.position.y = 0.16;
-  destinationArrow.add(destinationCone, destinationStem);
-  destinationArrow.traverse((child) => {
-    if (!(child instanceof Mesh)) return;
-    child.renderOrder = 30;
-    const arrowMaterials = Array.isArray(child.material)
-      ? child.material
-      : [child.material];
-    for (const material of arrowMaterials) material.depthTest = false;
-  });
+  // The cyan socket/rack already provides a strong destination cue. Retain an
+  // empty compatibility group for the existing placement/update lifecycle, but
+  // render only the authored source arrow so nearby source/destination points
+  // cannot project as a doubled arrow from the player's camera.
   destinationArrow.visible = false;
   root.add(destinationArrow);
 

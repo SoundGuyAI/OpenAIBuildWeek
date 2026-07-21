@@ -126,3 +126,15 @@ browser certification and must remain open until XR QA passes.
 - Validation passed again: typecheck, 24/24 model tests, production build, and
   focused browser smoke with 3 applicable passes, 3 expected skips, and zero
   request, HTTP, or page errors.
+
+## 2026-07-21 doubled-arrow follow-up
+
+- Removed the procedural cone-and-stem overlays that duplicated each imported
+  Quaternius task arrow.
+- Removed the rendered destination arrow because its projection overlapped the
+  source arrow on the first car task; the cyan socket remains the drop cue.
+- Brightened the remaining authored yellow arrow and preserved its downward
+  orientation, target tracking, and reduced-motion behavior.
+- Visually confirmed the single cue in `07-single-task-arrow.png` and passed
+  typecheck, 24/24 model tests, production build, and focused browser smoke with
+  3 applicable passes, 3 expected skips, and zero request/HTTP/page errors.
