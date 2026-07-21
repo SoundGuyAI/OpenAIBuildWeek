@@ -7,8 +7,8 @@ import process from "node:process";
 import {
   CUES,
   assertMp3,
-  buildSpeechRequest,
   requireInteractiveTerminal,
+  requestSpeech,
 } from "./elevenlabs-narration.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -54,7 +54,7 @@ function promptForApiKey() {
 }
 
 async function generateCue(cue, apiKey) {
-  const response = await fetch(...buildSpeechRequest(cue, apiKey));
+  const response = await requestSpeech(fetch, cue, apiKey);
   if (!response.ok) {
     throw new Error(`ElevenLabs failed for ${cue.id} with HTTP ${response.status}.`);
   }

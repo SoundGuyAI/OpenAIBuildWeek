@@ -83,6 +83,11 @@ export function buildSpeechRequest(cue, apiKey) {
   };
 }
 
+export function requestSpeech(fetchImpl, cue, apiKey) {
+  const { url, init } = buildSpeechRequest(cue, apiKey);
+  return fetchImpl(url, init);
+}
+
 export function assertMp3(buffer, fileName) {
   const startsWithId3 = buffer.subarray(0, 3).toString("ascii") === "ID3";
   const startsWithFrame =

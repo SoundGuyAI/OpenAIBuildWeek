@@ -5,6 +5,7 @@ import {
   CUES,
   assertMp3,
   buildSpeechRequest,
+  requestSpeech,
   requireInteractiveTerminal,
   renderCredits,
   renderManifest,
@@ -43,4 +44,20 @@ test("requires a terminal prompt instead of accepting an environment key", () =>
     () => requireInteractiveTerminal({ stdinIsTTY: false, stdoutIsTTY: true }),
     /interactive terminal/i,
   );
+});
+
+test("passes the request URL and options separately to fetch", async () => {
+  let received;
+  await requestSpeech(
+    async (...args) => {
+      received = args;
+      return { ok: true };
+    },
+    CUES[0],
+    "secret-value",
+  );
+
+  assert.equal(received.length, 2);
+  assert.match(received[0], /api\.elevenlabs\.io/);
+  assert.equal(received[1].headers["xi-api-key"], "secret-value");
 });
