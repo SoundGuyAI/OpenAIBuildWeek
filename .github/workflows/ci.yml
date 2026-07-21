@@ -54,11 +54,13 @@ jobs:
           --project=desktop-chromium
           --project=mobile-chromium
 
-      - name: Upload desktop and mobile evidence screenshots
+      - name: Upload committed and run-generated evidence screenshots
         uses: actions/upload-artifact@v7
         with:
           name: browser-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: test-results/evidence/
+          path: |
+            test-results/evidence/
+            evidence/kaiju-qa/*.webp
           if-no-files-found: error
           retention-days: 14
 

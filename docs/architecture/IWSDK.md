@@ -30,9 +30,14 @@ the scene, player rig, camera, renderer, XR lifecycle, input, and feature system
 
 ```bash
 npm run dev
+npm run dev:open
 npm run dev:status
 npm run dev:down
 ```
+
+`npm run dev` is the zero-tab default. `npm run dev:open` requests exactly one
+browser tab through IWSDK; Vite's own automatic browser opening is disabled to
+avoid duplicate tabs.
 
 The Vite dev plugin supplies HTTPS, Quest 3 IWER emulation, scene/ECS inspection,
 controller simulation, console capture, and AI agent integration. Local runtime

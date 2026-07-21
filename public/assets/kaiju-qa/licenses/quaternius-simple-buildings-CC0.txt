@@ -1,0 +1,30 @@
+Quaternius - Simple Buildings
+=============================
+
+Creator: Quaternius (@Quaternius)
+Pack page: https://quaternius.com/packs/simplebuildings.html
+Official source folder:
+https://drive.google.com/drive/folders/1r-FcNFxC6ziN0oI3GqZJdEkdzglFQHQH?usp=sharing
+Project download date: 2026-07-20
+
+License: CC0 1.0 Universal (Public Domain Dedication)
+Quaternius license statement: https://quaternius.com/faq.html
+CC0 legal tool: https://creativecommons.org/publicdomain/zero/1.0/
+
+Selected source files:
+- FBX/Hospital.fbx
+- FBX/Flat.fbx
+- FBX/House.fbx
+- FBX/Shop.fbx
+
+Bundled-license note
+--------------------
+
+The official Simple Buildings source folder inspected during the selective
+download did not expose a pack-specific License.txt, and no such file was
+present in the local source subset. This project provenance record supplements
+that missing bundled record; it does not claim to be an original vendor file.
+The CC0 status is recorded from the official Quaternius pack/license pages.
+
+Attribution is not required by CC0. Voluntary credit: "Simple Buildings by
+Quaternius."

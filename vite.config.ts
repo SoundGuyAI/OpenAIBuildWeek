@@ -8,13 +8,13 @@ export default defineConfig(({ command, isPreview }) => ({
       ? [
           mkcert(),
           iwsdkDev({
-            emulator: { device: "metaQuest3" },
+            emulator: { device: "metaQuest3", environment: "office_small" },
             ai: { mode: "agent" },
             verbose: true,
           }),
         ]
       : [],
-  server: { host: "0.0.0.0", port: 8081, open: true },
+  server: { host: "0.0.0.0", port: 8081, open: false },
   preview: { host: "0.0.0.0", port: 4173 },
   build: {
     outDir: "dist",

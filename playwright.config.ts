@@ -10,10 +10,13 @@ export default defineConfig({
   // this must cover fixture creation as well as the test body.
   timeout: 240_000,
   expect: { timeout: 10_000 },
-  fullyParallel: true,
+  // IWSDK initializes a full WebGL/XR world and local GLB set for every page.
+  // Running those worlds concurrently causes false startup timeouts on both
+  // developer machines and smaller CI runners.
+  fullyParallel: false,
   forbidOnly: isCI,
   retries: isCI ? 1 : 0,
-  workers: isCI ? 1 : undefined,
+  workers: 1,
   reporter: isCI
     ? [["github"], ["html", { open: "never", outputFolder: "playwright-report" }]]
     : [["list"], ["html", { open: "never", outputFolder: "playwright-report" }]],

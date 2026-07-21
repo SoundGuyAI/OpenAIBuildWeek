@@ -7,6 +7,8 @@ import {
   type XROptions,
 } from "@iwsdk/core";
 
+export { xrSessionUsesPassthrough } from "./xr-capabilities.js";
+
 type XRSystemLike = Pick<XRSystem, "isSessionSupported" | "requestSession">;
 
 export type ImmersiveVrUnsupportedReason =
@@ -63,14 +65,14 @@ export interface LaunchImmersiveVrOptions {
 export function immersiveVrCheckingState(): ImmersiveVrState {
   return {
     state: "checking",
-    message: "Ready - checking whether immersive VR is available...",
+    message: "Ready - checking whether an immersive AR session is available...",
   };
 }
 
 export function immersiveVrLaunchingState(): ImmersiveVrState {
   return {
     state: "launching",
-    message: "Starting immersive VR...",
+    message: "Starting mixed reality...",
   };
 }
 
@@ -86,8 +88,8 @@ function unsupported(
 ): Extract<ImmersiveVrState, { state: "unsupported" }> {
   const message =
     reason === "support-check-failed"
-      ? "Ready - VR availability could not be checked. You can keep playing with desktop or touch controls."
-      : "Ready - immersive VR is not available in this browser or device. You can keep playing with desktop or touch controls.";
+      ? "Ready - mixed reality availability could not be checked. You can keep playing with desktop or touch controls."
+      : "Ready - immersive AR is not available in this browser or device. You can keep playing with desktop or touch controls.";
 
   return {
     state: "unsupported",
@@ -103,11 +105,11 @@ export async function checkImmersiveVrSupport(
   if (!xr) return unsupported("api-unavailable");
 
   try {
-    const isSupported = await xr.isSessionSupported(SessionMode.ImmersiveVR);
+    const isSupported = await xr.isSessionSupported(SessionMode.ImmersiveAR);
     return isSupported
       ? {
           state: "supported",
-          message: "Ready - immersive VR is available. Enter VR when you are ready.",
+          message: "Ready - immersive AR is available. Passthrough is verified after entry, then you can place the workbench.",
         }
       : unsupported("session-unsupported");
   } catch (error) {
@@ -126,7 +128,7 @@ function launchFailure(
       state: "launch-failed",
       reason: "permission-denied",
       message:
-        "VR launch was blocked or cancelled. Check the browser and headset permissions, then try again.",
+        "Mixed reality launch was blocked or cancelled. Check the browser and headset permissions, then try again.",
       error,
     };
   }
@@ -136,7 +138,7 @@ function launchFailure(
       state: "launch-failed",
       reason: "security-error",
       message:
-        "VR could not start because this page is not in a secure WebXR context. Use HTTPS or localhost, then try again.",
+        "Mixed reality could not start because this page is not in a secure WebXR context. Use HTTPS or localhost, then try again.",
       error,
     };
   }
@@ -145,8 +147,8 @@ function launchFailure(
     state: "launch-failed",
     reason: duringSetup ? "session-setup-failed" : "session-request-failed",
     message: duringSetup
-      ? "The headset connected, but the VR scene could not finish starting. Exit VR on the headset and try again."
-      : "VR could not start. Check that the headset is connected and available, then try again.",
+      ? "The headset connected, but the mixed reality scene could not finish starting. Exit XR on the headset and try again."
+      : "Mixed reality could not start. Check that the headset is connected and available, then try again.",
     error,
   };
 }
@@ -184,7 +186,7 @@ function attachCameraRestore(world: World, session: XRSession): void {
 }
 
 /**
- * Launch immersive VR through IWSDK 0.4.2 while preserving the rejected
+ * Launch immersive AR through IWSDK 0.4.2 while preserving the rejected
  * requestSession promise so the caller can show a useful failure state.
  *
  * IWSDK 0.4.2's World.launchXR() returns void, so it cannot be awaited by UI
@@ -198,7 +200,7 @@ export async function launchImmersiveVr(
   if (world.session) {
     return {
       state: "active",
-      message: "Immersive VR is active.",
+      message: "Mixed reality is active.",
       session: world.session,
     };
   }
@@ -214,14 +216,14 @@ export async function launchImmersiveVr(
   const mergedOptions: XROptions = {
     ...base,
     ...overrides,
-    sessionMode: SessionMode.ImmersiveVR,
+    sessionMode: SessionMode.ImmersiveAR,
     ...(Object.keys(features).length ? { features } : {}),
   };
 
   let session: XRSession;
   try {
     session = await xr.requestSession(
-      SessionMode.ImmersiveVR,
+      SessionMode.ImmersiveAR,
       buildSessionInit(mergedOptions),
     );
   } catch (error) {
@@ -254,7 +256,7 @@ export async function launchImmersiveVr(
 
     return {
       state: "active",
-      message: "Immersive VR is active.",
+      message: "Mixed reality is active.",
       session,
     };
   } catch (error) {
@@ -279,27 +281,27 @@ export function applyImmersiveVrUiState(
 
   switch (state.state) {
     case "checking":
-      button.textContent = "Checking VR...";
+      button.textContent = "Checking MR...";
       button.disabled = true;
       break;
     case "supported":
-      button.textContent = "Enter VR";
+      button.textContent = "Enter MR";
       button.disabled = false;
       break;
     case "launching":
-      button.textContent = "Entering VR...";
+      button.textContent = "Entering MR...";
       button.disabled = true;
       break;
     case "active":
-      button.textContent = "Exit VR";
+      button.textContent = "Exit MR";
       button.disabled = false;
       break;
     case "unsupported":
-      button.textContent = "VR unavailable";
+      button.textContent = "MR unavailable";
       button.disabled = true;
       break;
     case "launch-failed":
-      button.textContent = "Retry VR";
+      button.textContent = "Retry MR";
       button.disabled = false;
       break;
   }

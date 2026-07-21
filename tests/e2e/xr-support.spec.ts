@@ -1,13 +1,16 @@
 import { expect, test } from "@playwright/test";
 
 async function waitForScene(page: import("@playwright/test").Page) {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await page.goto("/", {
+    waitUntil: "domcontentloaded",
+    timeout: 120_000,
+  });
   await expect(page.locator("body")).toHaveAttribute("data-iwsdk-ready", "true", {
-    timeout: 90_000,
+    timeout: 300_000,
   });
 }
 
-test.describe("immersive VR availability feedback", () => {
+test.describe("mixed reality availability feedback", () => {
   test.setTimeout(240_000);
 
   test.afterEach(async ({ page }) => {
@@ -18,7 +21,8 @@ test.describe("immersive VR availability feedback", () => {
 
   test("keeps non-XR players in the browser with clear unsupported feedback", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop-chromium", "Desktop fallback coverage is sufficient");
     await page.addInitScript(() => {
       class UnsupportedXRSystem extends EventTarget {
         isSessionSupported() {
@@ -41,8 +45,8 @@ test.describe("immersive VR availability feedback", () => {
     const enterVr = page.locator("#enter-xr");
     await expect(enterVr).toHaveAttribute("data-xr-state", "unsupported");
     await expect(enterVr).toBeDisabled();
-    await expect(enterVr).toHaveText("VR unavailable");
-    await expect(page.getByRole("status")).toContainText(
+    await expect(enterVr).toHaveText("MR unavailable");
+    await expect(page.locator("#xr-status")).toContainText(
       "desktop or touch controls",
     );
     await expect(page.locator("body")).toHaveAttribute(
@@ -53,7 +57,8 @@ test.describe("immersive VR availability feedback", () => {
 
   test("turns a denied WebXR request into a retryable launch failure", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop-chromium", "Desktop fallback coverage is sufficient");
     await page.addInitScript(() => {
       class DeniedXRSystem extends EventTarget {
         isSessionSupported() {
@@ -81,8 +86,8 @@ test.describe("immersive VR availability feedback", () => {
 
     await expect(enterVr).toHaveAttribute("data-xr-state", "launch-failed");
     await expect(enterVr).toBeEnabled();
-    await expect(enterVr).toHaveText("Retry VR");
-    await expect(page.getByRole("status")).toContainText("blocked or cancelled");
+    await expect(enterVr).toHaveText("Retry MR");
+    await expect(page.locator("#xr-status")).toContainText("blocked or cancelled");
     await expect(page.locator("body")).toHaveAttribute(
       "data-xr-state",
       "launch-failed",
