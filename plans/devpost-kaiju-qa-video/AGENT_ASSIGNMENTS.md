@@ -1,7 +1,7 @@
 # Agent assignments: devpost-kaiju-qa-video
 
 Branch: `codex/devpost-kaiju-qa-video`  
-Status: final review and PR preparation
+Status: complete; draft PR #6 open
 
 ## Orchestrator-only paths
 

@@ -1,7 +1,7 @@
 # Evidence: Devpost Kaiju QA video
 
 Branch: `codex/devpost-kaiju-qa-video`  
-Status: final master approved / PR preparation
+Status: complete; final master approved and draft PR #6 open
 
 ## Artifact inventory
 

@@ -60,3 +60,11 @@ identified only the planned commit/push/PR/logging tasks and submission-external
 Devpost gates. The orchestrator then completed the append-only log, excluded
 generated skill-cache folders, and proceeded with the user-authorized draft PR
 and post-PR Telegram notification.
+
+Publication result: final master committed at `11516ac`, pushed to
+`origin/codex/devpost-kaiju-qa-video`, and opened as draft PR #6 against
+`main`: `https://github.com/SoundGuyAI/OpenAIBuildWeek/pull/6`. GitHub reported
+the PR mergeable and started CI plus automated review. The Symphony notifier
+daemon was started locally because it was initially stopped, and the completion
+message was then delivered successfully to Telegram without printing or copying
+credential values.

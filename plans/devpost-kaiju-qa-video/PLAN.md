@@ -2,7 +2,7 @@
 
 Branch: `codex/devpost-kaiju-qa-video`  
 Slug: `devpost-kaiju-qa-video`  
-Status: rendered; final review and PR preparation
+Status: complete; draft PR #6 open
 
 ## Outcome
 
