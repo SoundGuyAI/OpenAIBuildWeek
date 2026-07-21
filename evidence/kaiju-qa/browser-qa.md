@@ -30,13 +30,15 @@ dispatch reducer intents or mutate game state.
   visual viewport.
 - Portrait Stage 5 keeps Broad, Alternate, Targeted, and the separate dock
   visible and reachable.
+- Route ribbons obey depth ordering: the School Crossing cyan traces remain
+  readable on the road but are occluded by the kaiju, buildings, and vehicles.
 - Unsupported and denied MR entry preserve a clear desktop fallback.
 - Desktop WASD/right-drag camera controls are focus-scoped and do not steal
   primary-button object or card drags.
 
 ## Deterministic checks
 
-`npm run test:model` passes 22 checks across the campaign reducer, camera
+`npm run test:model` passes 23 checks across the campaign reducer, camera
 navigation, draggable callout, control-fixture, and MR-placement models.
 
 The focused model coverage verifies:
@@ -54,6 +56,7 @@ The focused model coverage verifies:
 - `05-desktop-stage5.webp`: Stage 5 rack/dock and failure-causality frame.
 - `02-mobile.webp`: 360x740 portrait frame after the mobile FOV/reachability fix.
 - `04-campaign-complete.webp`: final four-district completion frame.
+- `11-route-layering-fixed.webp`: fixed School Crossing route-depth frame.
 
 ## Command record
 

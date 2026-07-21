@@ -128,7 +128,7 @@ language, environment, and scenery.
 - [x] Four-level deterministic campaign implemented
 - [x] Direct manipulation implemented across pointer, touch, and XR-ray paths
 - [x] CC0/generated asset and audio provenance complete
-- [x] Model suite passes 22/22 across campaign and remediation helpers
+- [x] Model suite passes 23/23 across campaign and remediation helpers
 - [x] Typecheck passes after final source cleanup
 - [x] Production build passes on final source state
 - [x] Clean serialized browser/touch E2E passes locally: 6 applicable tests passed, 6 project skips

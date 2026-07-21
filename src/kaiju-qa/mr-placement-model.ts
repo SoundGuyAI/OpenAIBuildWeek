@@ -1,4 +1,4 @@
-import { MathUtils, Vector3 } from "three";
+import { MathUtils, Vector3 } from "@iwsdk/core";
 
 const UP = new Vector3(0, 1, 0);
 const HORIZONTAL_FORWARD = new Vector3();

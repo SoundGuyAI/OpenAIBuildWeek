@@ -9,7 +9,7 @@ import {
   SphereGeometry,
   Vector3,
   type Object3D,
-} from "three";
+} from "@iwsdk/core";
 
 export const CONTROL_TABLETOP_WIDTH = 4.7;
 export const CONTROL_TABLETOP_DEPTH = 2.72;

@@ -4,7 +4,7 @@ Branch: `feature/kaiju-qa`
 
 Review date: 2026-07-21 UTC
 
-Status: playtest remediation complete; PR #5 publication and CI are the final gate
+Status: PR feedback and route-layering follow-up complete locally; push and CI are the final gate
 
 ## Build under test
 
@@ -37,7 +37,7 @@ Status: playtest remediation complete; PR #5 publication and CI are the final ga
 | Check | Result |
 | --- | --- |
 | `npm run typecheck` | Pass |
-| `npm run test:model` | Pass, 22/22 |
+| `npm run test:model` | Pass, 23/23 |
 | `npm run build` | Pass; existing IWSDK large-chunk warning only |
 | Serialized desktop/mobile browser E2E | Pass, 6 applicable tests and 6 expected project skips |
 | Browser runtime cleanliness | No application console errors, page errors, request failures, or HTTP failures |
@@ -58,6 +58,7 @@ Status: playtest remediation complete; PR #5 publication and CI are the final ga
 | `08-mr-card-drag.webp` | 800x800 | XR card dragging with a live connector and controller ray |
 | `09-mr-controller-drag.webp` | 800x800 | XR controller manipulation after workbench placement |
 | `10-mr-reentry.webp` | 800x800 | MR re-entry with one persistent workbench and preserved tutorial state |
+| `11-route-layering-fixed.webp` | 1208x602 | School Crossing route ribbons obey depth and disappear behind the kaiju/buildings instead of drawing over them |
 
 All committed images are WebP files below 120 KB. Temporary PNGs, traces, and
 browser-session state remain ignored under `output/playwright/`.

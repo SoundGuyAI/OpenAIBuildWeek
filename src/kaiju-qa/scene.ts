@@ -46,6 +46,7 @@ import {
 } from "./canvas-panel.js";
 import {
   createDraggableCallout,
+  setLocalQuaternionFromWorld,
   type DraggableCallout,
 } from "./draggable-callout.js";
 import {
@@ -216,6 +217,7 @@ const tmpScreenOrigin = new Vector3();
 const tmpScreenDirection = new Vector3();
 const tmpDragPlaneNormal = new Vector3();
 const tmpRootQuaternion = new Quaternion();
+const tmpCameraWorldQuaternion = new Quaternion();
 
 interface ScenePointerEvent {
   readonly pointerId: number;
@@ -1063,34 +1065,40 @@ export function createKaijuQaScene(
   const traceMaterials = {
     pass: ownMaterial(new MeshBasicMaterial({
       color: palette.lime,
-      depthTest: false,
+      depthTest: true,
+      depthWrite: false,
       toneMapped: false,
     })),
     fail: ownMaterial(new MeshBasicMaterial({
       color: palette.coral,
-      depthTest: false,
+      depthTest: true,
+      depthWrite: false,
       toneMapped: false,
     })),
     active: ownMaterial(new MeshBasicMaterial({
       color: palette.cyan,
-      depthTest: false,
+      depthTest: true,
+      depthWrite: false,
       toneMapped: false,
     })),
     stale: ownMaterial(new MeshBasicMaterial({
       color: palette.yellow,
-      depthTest: false,
+      depthTest: true,
+      depthWrite: false,
       toneMapped: false,
     })),
     neutral: ownMaterial(new MeshBasicMaterial({
       color: 0x71848d,
-      depthTest: false,
+      depthTest: true,
+      depthWrite: false,
       toneMapped: false,
     })),
     prior: ownMaterial(new MeshBasicMaterial({
       color: 0x76a9bb,
       transparent: true,
       opacity: 0.72,
-      depthTest: false,
+      depthTest: true,
+      depthWrite: false,
       toneMapped: false,
     })),
   };
@@ -2650,7 +2658,10 @@ export function createKaijuQaScene(
     destinationArrow.position.y = destinationArrowBaseY + (reducedMotion ? 0 : Math.sin(time * 4 + 1.2) * 0.022);
     tutorialArrow.rotation.y = Math.sin(time * 1.7) * 0.12;
     destinationArrow.rotation.y = -Math.sin(time * 1.7) * 0.12;
-    if (!speechCallout.dragging) speechPanel.mesh.quaternion.copy(world.camera.quaternion);
+    if (!speechCallout.dragging) {
+      world.camera.getWorldQuaternion(tmpCameraWorldQuaternion);
+      setLocalQuaternionFromWorld(speechPanel.mesh, tmpCameraWorldQuaternion);
+    }
     dust.rotation.y += delta * 0.025;
 
     const dustPositions = dust.geometry.getAttribute("position") as Float32BufferAttribute;

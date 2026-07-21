@@ -6,10 +6,11 @@ import {
   MathUtils,
   Object3D,
   Plane,
+  Quaternion,
   Ray,
   Vector3,
   type ColorRepresentation,
-} from "three";
+} from "@iwsdk/core";
 
 export interface DraggableCalloutPoint {
   readonly x: number;
@@ -82,6 +83,25 @@ type Axis = "x" | "y" | "z";
 
 const AXES: readonly Axis[] = ["x", "y", "z"];
 const EPSILON = 1e-10;
+const parentWorldQuaternion = new Quaternion();
+const desiredWorldQuaternion = new Quaternion();
+
+export function setLocalQuaternionFromWorld(
+  object: Object3D,
+  worldQuaternion: Quaternion,
+): void {
+  desiredWorldQuaternion.copy(worldQuaternion);
+  if (!object.parent) {
+    object.quaternion.copy(desiredWorldQuaternion);
+    return;
+  }
+
+  object.parent.getWorldQuaternion(parentWorldQuaternion);
+  object.quaternion
+    .copy(parentWorldQuaternion)
+    .invert()
+    .multiply(desiredWorldQuaternion);
+}
 
 function defaultPointerId(event: unknown): number | null {
   if (!event || typeof event !== "object") return null;

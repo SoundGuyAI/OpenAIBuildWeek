@@ -2,7 +2,7 @@
 
 Branch: `feature/kaiju-qa`
 Created: 2026-07-20T21:49:25.986Z
-Status: playtest remediation complete; publication and clean PR CI pending
+Status: PR feedback and route-layering fixes complete locally; publication and clean PR CI pending
 
 ## Orchestrator-only paths
 
@@ -72,6 +72,15 @@ scopes are disjoint and may be implemented in parallel.
 | Lagrange (`019f842e-e498-7041-aff3-4ca4191eb1aa`) | Draggable callout engineer | `src/kaiju-qa/draggable-callout.ts`, `tests/model/draggable-callout.test.mjs` | Reusable world-space card dragging and live target-connector helper with reset/reduced-motion behavior | Complete; integrated for instruction/evidence/release/result cards and verified in IWER |
 | Hooke (`019f842e-e9ea-79e0-a99c-9bdd681b7632`) | Physical-control/layout engineer | `src/kaiju-qa/control-fixtures.ts`, `tests/model/control-fixtures.test.mjs` | Upright hinged RUN TESTS lever plus three-cartridge rack and separate installation dock builders | Complete; integrated with Stage 5 spacing and fresh-action spring handling |
 | Orchestrator | Remediation integration and publication | Shared scene/index/XR/config/evidence paths | Full-bleed composition, MR placement, lifecycle, E2E, IWER, evidence, PR update, and cleanup | Complete locally; 22/22 model checks, 6 applicable browser tests, 6 expected skips, build and IWER pass |
+
+## PR review feedback assignments
+
+| Agent ID | Expert role | Exclusive write scope | Deliverable | Status |
+| --- | --- | --- | --- | --- |
+| Nietzsche (`019f84c4-8668-7b11-be01-e948b0462276`) | IWSDK import compatibility engineer | `src/kaiju-qa/control-fixtures.ts`, `src/kaiju-qa/mr-placement-model.ts`, `tests/model/control-fixtures.test.mjs`, `tests/model/mr-placement.test.mjs` | Replace direct Three.js imports with the pinned IWSDK entry point without behavior changes | Complete; focused tests 6/6 pass |
+| Boyle (`019f84c4-8612-73b0-88d0-965bb420bdc9`) | Card transform engineer | `src/kaiju-qa/draggable-callout.ts`, `tests/model/draggable-callout.test.mjs` | IWSDK-safe imports plus a tested world-to-local quaternion helper for rotated MR parents | Complete; focused tests 4/4 and typecheck pass |
+| Huygens (`019f84c8-ff93-7491-bf25-ae511ba230ad`) | Route-layering reviewer | Read-only review of `src/kaiju-qa/scene.ts` and supplied screenshots | Confirm the minimal depth/render-order fix and side effects without modifying implementation | Complete; confirmed `depthTest: true` plus `depthWrite: false` as the minimal fix |
+| Orchestrator | Review integration and publication | `src/kaiju-qa/scene.ts`, `package.json`, prompt/plan/evidence files, branch and PR operations | Integrate card orientation, correct Node support claim, run validation, publish, and notify | Complete locally; typecheck, 23/23 model tests, build, visual capture, and 6-pass/6-skip browser suite pass |
 
 After integration, separate browser and XR QA agents will own only their test
 spec/report paths and will not modify implementation code.

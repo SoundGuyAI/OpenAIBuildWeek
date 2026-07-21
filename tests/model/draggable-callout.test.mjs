@@ -1,12 +1,44 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {
+
+const originalDocument = globalThis.document;
+globalThis.document = {
+  createElement(tagName) {
+    assert.equal(tagName, "canvas");
+    return {
+      width: 0,
+      height: 0,
+      getContext(contextType) {
+        assert.equal(contextType, "2d");
+        return {
+          clearRect() {},
+          beginPath() {},
+          arc() {},
+          fill() {},
+          stroke() {},
+        };
+      },
+    };
+  },
+};
+
+const {
   Group,
   PerspectiveCamera,
+  Quaternion,
   Ray,
   Vector3,
-} from "three";
-import { createDraggableCallout } from "../../src/kaiju-qa/draggable-callout.ts";
+} = await import("@iwsdk/core");
+const {
+  createDraggableCallout,
+  setLocalQuaternionFromWorld,
+} = await import("../../src/kaiju-qa/draggable-callout.ts");
+
+if (originalDocument === undefined) {
+  delete globalThis.document;
+} else {
+  globalThis.document = originalDocument;
+}
 
 const EPSILON = 1e-6;
 
@@ -55,6 +87,26 @@ function nearPoints(actual, expected) {
     }
   }
 }
+
+test("sets local rotation to match a desired world orientation under a rotated parent", () => {
+  const parent = new Group();
+  parent.rotation.set(0.35, -0.7, 0.2);
+  const child = new Group();
+  parent.add(child);
+
+  const desiredWorldOrientation = new Quaternion().setFromAxisAngle(
+    new Vector3(1, 2, -1).normalize(),
+    0.9,
+  );
+  setLocalQuaternionFromWorld(child, desiredWorldOrientation);
+
+  const actualWorldOrientation = new Quaternion();
+  child.getWorldQuaternion(actualWorldOrientation);
+  assert.ok(
+    actualWorldOrientation.angleTo(desiredWorldOrientation) <= EPSILON,
+    "child world orientation should match the requested world orientation",
+  );
+});
 
 test("drags on a camera-facing ray plane with local bounds and pointer ownership", () => {
   const space = new Group();

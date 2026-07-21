@@ -93,3 +93,19 @@ Status: complete on `feature/kaiju-qa`; publication/CI confirmation follows this
   manipulation, draggable cards with live connectors, and clean exit/re-entry.
 - `evidence/kaiju-qa/` now contains fresh initial, Stage 5, mobile, campaign,
   placement, controller, card-drag, and re-entry captures from this remediation.
+
+## PR review and route-layering follow-up
+
+- [x] Import every new Three.js primitive helper through `@iwsdk/core` so IWSDK
+  scene/ECS interaction never receives objects from a second Three.js instance.
+- [x] Convert the camera world quaternion into each card parent's local space so
+  instruction cards still face the player after MR workbench yaw adjustment.
+- [x] Remove Node 20 from the advertised engine range because the model-test
+  command relies on Node's TypeScript stripping available in supported Node 22+
+  and Node 24 releases.
+- [x] Make route ribbons depth-test against the world while keeping them
+  non-depth-writing, eliminating always-on-top roads over the kaiju/buildings.
+- [x] Preserve the supplied route-layering screenshots and capture a fixed
+  School Crossing frame as `evidence/kaiju-qa/11-route-layering-fixed.webp`.
+- [x] Rerun typecheck, 23/23 model tests, build, and the serialized browser suite
+  with 6 passes, 6 expected skips, and clean runtime telemetry.

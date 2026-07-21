@@ -1,11 +1,28 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { Vector3 } from "three";
-import {
+
+globalThis.document ??= {
+  createElement() {
+    return {
+      getContext() {
+        return {
+          arc() {},
+          beginPath() {},
+          clearRect() {},
+          fill() {},
+          stroke() {},
+        };
+      },
+    };
+  },
+};
+
+const { Vector3 } = await import("@iwsdk/core");
+const {
   fallbackWorkbenchPosition,
   isHorizontalPlacementNormal,
-} from "../../src/kaiju-qa/mr-placement-model.ts";
-import { xrSessionUsesPassthrough } from "../../src/xr-capabilities.ts";
+} = await import("../../src/kaiju-qa/mr-placement-model.ts");
+const { xrSessionUsesPassthrough } = await import("../../src/xr-capabilities.ts");
 
 test("accepts horizontal placement normals and rejects steep surfaces", () => {
   assert.equal(isHorizontalPlacementNormal(new Vector3(0, 1, 0)), true);

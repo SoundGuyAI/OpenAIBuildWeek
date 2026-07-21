@@ -135,7 +135,7 @@ reproducible product failure, that failure is blocking until corrected.
 | Check | Final-review classification |
 | --- | --- |
 | `npm run typecheck` | Pass |
-| `npm run test:model` | Pass, 22/22 across campaign and remediation helpers |
+| `npm run test:model` | Pass, 23/23 across campaign and remediation helpers |
 | `npm run build` | Pass; known bundle-size warning |
 | `git diff --check` | Pass in the reviewed working tree |
 | Invalid desktop drop | Real interaction observed; authored recovery retry retained |
@@ -143,6 +143,24 @@ reproducible product failure, that failure is blocking until corrected.
 | Complete desktop real-drag campaign | Pass on the final remediation source |
 | Quest 3 IWER MR/controller/lifecycle | Pass; physical headset pending |
 | Final local E2E wrapper | Pass, 6 applicable tests and 6 expected skips |
+
+## PR feedback follow-up
+
+- The historical XR-status thread is already addressed: XR UI updates restore
+  the latest lab announcement in `#status` and publish XR-specific copy through
+  `#xr-status`/the announcement channel instead.
+- The historical stale-pose thread is outdated; the current `VisualCue` contract
+  no longer exposes the old stale cue, and rule installation maps to the placed
+  state before the fresh rerun.
+- New fixture, callout, and placement helpers now import Three.js primitives
+  exclusively through `@iwsdk/core`.
+- Draggable card billboarding converts the camera's world quaternion into the
+  card parent's local space, with a rotated-parent unit test.
+- The package engine range now matches the TypeScript-stripping model-test
+  command by supporting Node 22.12+ and Node 24+ rather than Node 20.
+- Route ribbons now obey scene depth and no longer paint over the kaiju,
+  buildings, or vehicles; the fixed School Crossing frame is committed as
+  `11-route-layering-fixed.webp`.
 
 ## Merge and publication classification
 

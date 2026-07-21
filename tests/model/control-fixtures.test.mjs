@@ -1,7 +1,24 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { Group, MeshBasicMaterial } from "three";
-import {
+
+globalThis.document ??= {
+  createElement() {
+    return {
+      getContext() {
+        return {
+          arc() {},
+          beginPath() {},
+          clearRect() {},
+          fill() {},
+          stroke() {},
+        };
+      },
+    };
+  },
+};
+
+const { Group, MeshBasicMaterial } = await import("@iwsdk/core");
+const {
   CONTROL_TABLETOP_DEPTH,
   CONTROL_TABLETOP_WIDTH,
   RULE_RACK_CARTRIDGE_IDS,
@@ -12,7 +29,7 @@ import {
   createRunTestsLever,
   leverAngleFromProgress,
   leverProgressFromAngle,
-} from "../../src/kaiju-qa/control-fixtures.ts";
+} = await import("../../src/kaiju-qa/control-fixtures.ts");
 
 function createOwnershipHarness() {
   const geometries = [];
