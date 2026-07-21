@@ -75,6 +75,9 @@ For the IWSDK development runtime:
 npm run dev
 ```
 
+This starts IWSDK in the foreground without opening a browser tab. Use
+`npm run dev:open` when one automatic tab is desired.
+
 ## Validation
 
 ```bash

@@ -14,7 +14,7 @@ export default defineConfig(({ command, isPreview }) => ({
           }),
         ]
       : [],
-  server: { host: "0.0.0.0", port: 8081, open: true },
+  server: { host: "0.0.0.0", port: 8081, open: false },
   preview: { host: "0.0.0.0", port: 4173 },
   build: {
     outDir: "dist",
