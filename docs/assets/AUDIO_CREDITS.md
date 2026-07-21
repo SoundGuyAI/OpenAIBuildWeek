@@ -1,34 +1,19 @@
 # Kaiju QA narration audio credits
 
 Generated 2026-07-21 from project-authored English narration. The committed
-WAV files are pre-generated runtime assets; the game does not synthesize speech
-in the browser and does not require a TTS service or model download at runtime.
+MP3 files are pre-generated runtime assets; the game does not synthesize speech
+in the browser and does not require ElevenLabs at runtime.
 
-## Tool and model provenance
+## Provider and model provenance
 
-- Command: `npx --yes=false hyperframes tts <script.txt> --output <cue.wav> --voice bf_emma --speed 0.92 --json`
-- Environment: `HYPERFRAMES_PYTHON=C:\Python313\python.exe`
-- Tool: HyperFrames CLI `0.7.64`, local/offline `tts` command (Apache-2.0)
-- Synthesis engine: Kokoro-82M
-- Voice preset: `bf_emma` (Emma, British English)
-- Model bundle: `kokoro-v1.0.onnx` and `voices-v1.0.bin` from the
-  `thewh1teagle/kokoro-onnx` `model-files-v1.0` release
-- Delivery format: 24000 Hz, 1 channel, 16-bit WAV
-- Total authored narration: 49.216 seconds across 12 clips
+- Provider: ElevenLabs
+- Voice ID: `TZl0VZDEkMLBwlPLAKD9`
+- Model: `eleven_multilingual_v2`
+- Delivery format: `mp3_44100_128`
+- Total authored narration: 52.349 seconds across 12 clips
 - Reproduction entry point: `node scripts/generate-narration.mjs`
 
-HyperFrames is Apache-2.0 licensed. Its local TTS implementation uses the
-MIT-licensed `kokoro-onnx` wrapper and downloads that project's v1.0 ONNX model
-and voice bundle. The underlying Kokoro-82M model card declares the model and
-weights Apache-2.0. Provenance and license references:
-
-- https://github.com/heygen-com/hyperframes/blob/main/LICENSE
-- https://github.com/thewh1teagle/kokoro-onnx/blob/main/LICENSE
-- https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
-- https://huggingface.co/hexgrad/Kokoro-82M
-- https://github.com/hexgrad/kokoro/blob/main/LICENSE
-
-These WAVs contain newly synthesized performances of text authored for Kaiju QA.
+These MP3s contain newly synthesized performances of text authored for Kaiju QA.
 No third-party music, field recording, actor recording, or franchise audio is
 redistributed in this narration set. Keep this credit file with redistributed
 builds that include the generated clips.
@@ -37,15 +22,15 @@ builds that include the generated clips.
 
 | Cue ID | File | Duration | SHA-256 | Script |
 | --- | --- | ---: | --- | --- |
-| `tutorial-intro` | `tutorial-intro.wav` | 5.397 s | `b73a6c2f3f73...` | Welcome to Kaiju QA. This little helper means well. Your job is to prove it is safe. |
-| `place-car` | `place-car.wav` | 3.051 s | `58e6b3f0835e...` | Grab the stalled car and snap it into the glowing street. |
-| `baseline` | `baseline.wav` | 3.648 s | `59e81c4d5d44...` | Pull the test lever. One happy path is not permission to ship. |
-| `place-tower` | `place-tower.wav` | 4.693 s | `c2bcd525ad2d...` | Place the fragile tower beside the route. Same behavior, tougher evidence. |
-| `tower-fail` | `tower-fail.wav` | 4.160 s | `b5b3a9d23088...` | The tower failed. Try the broad freeze rule, then rerun every test. |
-| `regression` | `regression.wav` | 3.691 s | `c0be20eda8d9...` | Tower safe. Ambulance blocked. The fix broke an old pass. |
-| `targeted` | `targeted.wav` | 4.053 s | `310b1a0469ae...` | Swap in the striped slow zone. Change only where the hazard exists. |
-| `release` | `release.wav` | 3.264 s | `108d4971da0e...` | Three passes, no regressions. Press the release stamp. |
-| `school` | `school.wav` | 3.947 s | `be2aca2dfc86...` | School crossing. Protect walkers without slowing the emergency route. |
-| `harbor` | `harbor.wav` | 4.608 s | `52c5de51a367...` | Harbor load test. Check the heavy cargo boundary, not just the easy crate. |
-| `storm` | `storm.wav` | 3.904 s | `ef285bd9f457...` | Storm shift. Add the rain condition and preserve every rescue route. |
-| `finale` | `finale.wav` | 4.800 s | `1cb9fda4ee7a...` | Evidence accepted. Release earned. Our baby kaiju is ready for the city. |
+| `tutorial-intro` | `tutorial-intro.mp3` | 5.303 s | `44576a7ac09a...` | Welcome to Kaiju QA. This little helper means well. Your job is to prove it is safe. |
+| `place-car` | `place-car.mp3` | 3.396 s | `f7fb88bf01d6...` | Grab the stalled car and snap it into the glowing street. |
+| `baseline` | `baseline.mp3` | 3.814 s | `c185d9cc7f0b...` | Pull the test lever. One happy path is not permission to ship. |
+| `place-tower` | `place-tower.mp3` | 4.989 s | `f42cbe856c1f...` | Place the fragile tower beside the route. Same behavior, tougher evidence. |
+| `tower-fail` | `tower-fail.mp3` | 4.284 s | `ff7278578f98...` | The tower failed. Try the broad freeze rule, then rerun every test. |
+| `regression` | `regression.mp3` | 4.023 s | `e076aea60a64...` | Tower safe. Ambulance blocked. The fix broke an old pass. |
+| `targeted` | `targeted.mp3` | 4.153 s | `96a140f847c2...` | Swap in the striped slow zone. Change only where the hazard exists. |
+| `release` | `release.mp3` | 3.788 s | `e8e912c21248...` | Three passes, no regressions. Press the release stamp. |
+| `school` | `school.mp3` | 4.389 s | `cd8af0409b90...` | School crossing. Protect walkers without slowing the emergency route. |
+| `harbor` | `harbor.mp3` | 4.702 s | `94f51b4a8b2d...` | Harbor load test. Check the heavy cargo boundary, not just the easy crate. |
+| `storm` | `storm.mp3` | 4.441 s | `166c2bbb42b0...` | Storm shift. Add the rain condition and preserve every rescue route. |
+| `finale` | `finale.mp3` | 5.068 s | `5465187d9df7...` | Evidence accepted. Release earned. Our baby kaiju is ready for the city. |

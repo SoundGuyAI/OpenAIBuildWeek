@@ -19,6 +19,7 @@
     "test:e2e:run": "node scripts/run-e2e.mjs",
     "test:e2e:headed": "npm run build && node scripts/run-e2e.mjs --headed",
     "test:model": "node --experimental-strip-types --test tests/model/kaiju-qa-model.test.mjs tests/model/camera-navigation.test.mjs tests/model/draggable-callout.test.mjs tests/model/control-fixtures.test.mjs tests/model/mr-placement.test.mjs",
+    "test:narration": "node --test tests/scripts/elevenlabs-narration.test.mjs",
     "check": "npm run typecheck && npm run test:model && npm run test:e2e",
     "feature:new": "node scripts/new-feature.mjs"
   },
