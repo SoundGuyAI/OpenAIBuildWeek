@@ -1,0 +1,5 @@
+# Project-scoped MCP server for browser and Playwright validation.
+
+[mcp_servers.chrome_devtools]
+args = ["chrome-devtools-mcp@latest"]
+command = "npx"
